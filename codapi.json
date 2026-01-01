@@ -8,8 +8,12 @@
         "network": "codapi-net",
         "writable": false,
         "volume": "%s:/sandbox:ro",
-        "cap_drop": ["all"],
-        "ulimit": ["nofile=96"],
+        "cap_drop": [
+            "all"
+        ],
+        "ulimit": [
+            "nofile=96"
+        ],
         "nproc": 128
     },
     "step": {
