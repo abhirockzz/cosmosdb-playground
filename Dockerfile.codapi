@@ -24,6 +24,9 @@ RUN curl -L -o codapi.tar.gz "https://github.com/nalgeon/codapi/releases/downloa
     chmod +x /usr/local/bin/codapi && \
     rm codapi.tar.gz
 
+# Copy custom configuration
+COPY codapi.json /app/codapi.json
+
 # Override with custom Cosmos DB sandbox
 COPY sandboxes/cosmosdb /app/sandboxes/cosmosdb
 
@@ -33,5 +36,5 @@ RUN mkdir -p /tmp/codapi && chmod 777 /tmp/codapi
 # Expose Codapi port
 EXPOSE 1313
 
-# Run Codapi server
-CMD ["codapi", "serve"]
+# Run Codapi server with custom config
+CMD ["codapi", "serve", "--config", "/app/codapi.json"]

@@ -1,0 +1,21 @@
+{
+    "pool_size": 20,
+    "verbose": true,
+    "box": {
+        "runtime": "runc",
+        "cpu": 2,
+        "memory": 512,
+        "network": "codapi-net",
+        "writable": false,
+        "volume": "%s:/sandbox:ro",
+        "cap_drop": ["all"],
+        "ulimit": ["nofile=96"],
+        "nproc": 128
+    },
+    "step": {
+        "user": "sandbox",
+        "action": "run",
+        "timeout": 15,
+        "noutput": 8192
+    }
+}
