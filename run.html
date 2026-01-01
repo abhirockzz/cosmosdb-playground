@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmos DB Interactive Code</title>
+
+    <!-- Codapi Widget -->
+    <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.js"></script>
+    <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/settings.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.css" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            background: #f5f7fa;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 16px 0;
+            margin-bottom: 20px;
+        }
+
+        .github-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .github-button:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .github-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #4a5568;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+        }
+
+        .data-display {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .error-message {
+            background: #fef0f0;
+            border: 1px solid #dc3545;
+            padding: 15px;
+            border-radius: 4px;
+            color: #721c24;
+            margin-bottom: 20px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .create-link {
+            color: #0078d4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .create-link:hover {
+            text-decoration: underline;
+        }
+
+        .powered-by {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+
+        .powered-by a {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .powered-by a:hover {
+            color: #005a9e;
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #f0f9ff;
+            border-left: 3px solid #0078d4;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #014361;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .data-editor-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-textarea {
+            width: 100%;
+            min-height: 200px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            padding: 16px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: #f7fafc;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .data-textarea:focus {
+            outline: none;
+            border-color: #0078d4;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+        }
+
+        .apply-button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .apply-button:hover {
+            background: #005a9e;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+        }
+
+        .apply-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .data-textarea.modified {
+            border-color: #ffb900;
+            border-width: 2px;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Auto-detect environment and write codapi-settings element with correct URL
+        const isLocal = window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1' ||
+            window.location.protocol === 'file:';
+
+        const codapiUrl = isLocal
+            ? 'http://localhost/v1'  // Use nginx proxy on localhost
+            : `${window.location.protocol}//${window.location.host}/v1`;
+
+        document.write('<codapi-settings url="' + codapiUrl + '"></codapi-settings>');
+    </script>
+
+    <nav class="top-nav">
+        <a href="https://github.com/abhirockzz/cosmosdb-codapi" target="_blank" class="github-button">
+            <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor">
+                <path
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            Give a ★
+        </a>
+    </nav>
+
+    <div id="loading" class="loading">
+        <p>Loading code...</p>
+    </div>
+
+    <div id="content" class="container" style="display: none;">
+        <div class="powered-by">
+            <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
+                alt="Azure Cosmos DB" style="height: 20px; vertical-align: middle; margin-right: 8px;">
+            Powered by <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank">Azure Cosmos
+                DB vNext Emulator</a> and <a href="https://codapi.org/" target="_blank">Codapi</a>
+        </div>
+
+        <p style="text-align: center; margin-bottom: 30px; line-height: 1.6; color: #4a5568;">This was generated from
+            the <a href="playground.html" style="color: #0078d4; text-decoration: none; font-weight: 500;">Azure Cosmos
+                DB Playground</a> and is ready to execute. Feel free to
+            modify and test different variations.</p>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+
+        <!-- Partition Key Info -->
+        <details
+            style="margin: 0 0 25px 0; padding: 15px; background: #f9f9f9; border-radius: 4px; border: 1px solid #e0e0e0;">
+            <summary style="cursor: pointer; font-weight: 600; color: #555;">
+                About Partition Keys in this Playground
+            </summary>
+            <p style="margin-top: 10px; margin-bottom: 10px; line-height: 1.6;">
+                This playground uses <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/id</code>
+                as
+                the partition key for all queries.
+                This works with any JSON data you upload since the script auto-generates
+                an <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">id</code> field if needed.
+            </p>
+            <p style="margin-bottom: 0; line-height: 1.6;">
+                <strong>In production Cosmos DB:</strong> Choose partition keys based on your
+                query patterns (e.g., <code
+                    style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/tenantId</code>,
+                <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/userId</code>,
+                <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/category</code>).
+                <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank">
+                    Learn more about partition key selection →
+                </a>
+            </p>
+        </details>
+
+        <div class="section">
+            <h2>Sample Data</h2>
+            <div class="data-editor-section">
+                <textarea id="data-textarea" class="data-textarea" placeholder="JSON data will load here..."
+                    oninput="handleDataEdit()"></textarea>
+                <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>Apply
+                    Changes</button>
+                <div id="data-status" class="status-message hidden"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>SQL Query</h2>
+            <!-- Hidden script tag for codapi to reference -->
+            <script id="data.json" type="text/plain"></script>
+
+            <!-- Query pre element that codapi will attach to -->
+            <pre><code id="query-code" class="language-sql"></code></pre>
+
+            <!-- Codapi Widget -->
+            <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
+            </codapi-snippet>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Try new base64 format first, fall back to old format
+        let query, data;
+
+        const encoded = urlParams.get('c');
+        if (encoded) {
+            // New base64 format
+            try {
+                // URL-decode first to restore + and / characters
+                const urlDecoded = decodeURIComponent(encoded);
+                const decoded = atob(urlDecoded);
+                const payload = JSON.parse(decoded);
+                query = payload.query;
+                data = payload.data;
+            } catch (e) {
+                console.error('Failed to decode base64 parameter:', e);
+            }
+        } else {
+            // Old format (backward compatibility)
+            query = urlParams.get('query');
+            data = urlParams.get('data');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        let originalData = '';
+
+        function loadCode() {
+            // Hide loading, show content
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+
+            // Validate parameters
+            if (!query || !data) {
+                showError('⚠️ Invalid link: Missing query or data parameters. Please use the "Open Playground" link to create a valid code link.');
+                return;
+            }
+
+            // Validate JSON
+            let parsedData;
+            try {
+                parsedData = JSON.parse(data);
+                // Pretty print JSON
+                const prettyData = JSON.stringify(parsedData, null, 2);
+
+                // Update hidden script tag (for codapi)
+                document.getElementById('data.json').textContent = prettyData;
+
+                // Update textarea
+                const textarea = document.getElementById('data-textarea');
+                if (textarea) {
+                    textarea.value = prettyData;
+                    textarea.classList.remove('modified');
+                }
+
+                // Store original data
+                originalData = prettyData;
+
+                // Disable apply button initially
+                const applyButton = document.getElementById('apply-button');
+                if (applyButton) {
+                    applyButton.disabled = true;
+                }
+            } catch (e) {
+                showError('⚠️ Invalid JSON data: ' + e.message);
+                return;
+            }
+
+            // Display query in the editable section
+            document.getElementById('query-code').textContent = query;
+        }
+
+        // Handle textarea edits
+        function handleDataEdit() {
+            const textarea = document.getElementById('data-textarea');
+            const applyButton = document.getElementById('apply-button');
+
+            // Enable button if data has changed
+            const hasChanged = textarea.value.trim() !== originalData.trim();
+            applyButton.disabled = !hasChanged;
+
+            // Add visual indicator
+            if (hasChanged) {
+                textarea.classList.add('modified');
+            } else {
+                textarea.classList.remove('modified');
+            }
+        }
+
+        // Apply data changes from textarea to hidden script tag
+        function applyDataChanges() {
+            const textarea = document.getElementById('data-textarea');
+            const applyButton = document.getElementById('apply-button');
+            const data = textarea.value.trim();
+
+            if (!data) {
+                showDataStatus('Please enter JSON data', true);
+                return;
+            }
+
+            try {
+                // Validate JSON
+                const parsed = JSON.parse(data);
+                const prettyData = JSON.stringify(parsed, null, 2);
+
+                // Update the hidden script tag (used by codapi)
+                const scriptTag = document.getElementById('data.json');
+                if (scriptTag) {
+                    scriptTag.textContent = prettyData;
+                }
+
+                // Update textarea with formatted JSON
+                textarea.value = prettyData;
+
+                // Update original data tracker
+                originalData = prettyData;
+
+                // Disable button and remove visual indicator
+                applyButton.disabled = true;
+                textarea.classList.remove('modified');
+
+                showDataStatus('✓ Data updated successfully', false);
+            } catch (error) {
+                showDataStatus(`Invalid JSON: ${error.message}`, true);
+            }
+        }
+
+        function showDataStatus(message, isError = false) {
+            const statusDiv = document.getElementById('data-status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Load code when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadCode);
+        } else {
+            loadCode();
+        }
+    </script>
+
+</body>
+
+</html>

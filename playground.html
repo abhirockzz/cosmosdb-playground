@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Cosmos DB Playground - Preset Datasets</title>
+
+    <!-- Codapi Widget -->
+    <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.js"></script>
+    <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/settings.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.css" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            background: #fafbfc;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 16px 0;
+            margin-bottom: 20px;
+        }
+
+        .github-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .github-button:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .github-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            color: #4a5568;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        pre {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        code {
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .dataset-selector-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .dataset-selector-section:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dataset-selector-section label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .dataset-selector-section select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: #f7fafc;
+            cursor: pointer;
+            font-family: system-ui, -apple-system, sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .dataset-selector-section select:hover {
+            border-color: #0078d4;
+            background: white;
+        }
+
+        .dataset-selector-section select:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+            background: white;
+        }
+
+        .dataset-info {
+            margin-top: 14px;
+            padding: 14px;
+            background: #f7fafc;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dataset-info strong {
+            color: #0078d4;
+        }
+
+        .file-upload-section {
+            background: white;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .file-upload-section input[type="file"] {
+            margin-right: 10px;
+        }
+
+        .file-upload-section button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .file-upload-section button:hover {
+            background: #005a9e;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+        }
+
+        .file-upload-section button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .share-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 30px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .share-section h3 {
+            margin-top: 0;
+            color: #0078d4;
+        }
+
+        .share-button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .share-button:hover {
+            background: #005a9e;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+        }
+
+        .copy-button {
+            background: #f7fafc;
+            color: #2d3748;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .copy-button:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        .info-banner {
+            background: #fff4e5;
+            border-left: 4px solid #ffb900;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .data-editor-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-textarea {
+            width: 100%;
+            min-height: 200px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            padding: 16px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: #f7fafc;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .data-textarea:focus {
+            outline: none;
+            border-color: #0078d4;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+        }
+
+        .apply-button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .apply-button:hover {
+            background: #005a9e;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+        }
+
+        .apply-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .data-textarea.modified {
+            border-color: #ffb900;
+            border-width: 2px;
+        }
+
+        .query-suggestions {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #0078d4;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .query-suggestions h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .query-button {
+            background: #f7fafc;
+            color: #0078d4;
+            border: 1px solid #cbd5e0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .query-button:hover {
+            background: #0078d4;
+            color: white;
+            border-color: #0078d4;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.2);
+        }
+
+        .powered-by {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+
+        .powered-by a {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .powered-by a:hover {
+            color: #005a9e;
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Auto-detect environment and write codapi-settings element with correct URL
+        const isLocal = window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1' ||
+            window.location.protocol === 'file:';
+
+        const codapiUrl = isLocal
+            ? 'http://localhost/v1'  // Use nginx proxy on localhost
+            : `${window.location.protocol}//${window.location.host}/v1`;
+
+        document.write('<codapi-settings url="' + codapiUrl + '"></codapi-settings>');
+    </script>
+
+    <nav class="top-nav">
+        <a href="https://github.com/abhirockzz/cosmosdb-codapi" target="_blank" class="github-button">
+            <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor">
+                <path
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            Give a ★
+        </a>
+    </nav>
+
+    <h1>
+        <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
+            alt="Azure Cosmos DB" style="height: 40px; vertical-align: middle; margin-right: 12px;">
+        Azure Cosmos DB Playground
+    </h1>
+
+    <div class="powered-by">
+        Powered by <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank">Azure Cosmos DB
+            vNext Emulator</a> and <a href="https://codapi.org/" target="_blank">Codapi</a>
+    </div>
+
+    <div id="url-loaded-banner" class="info-banner hidden">
+        ✨ Code loaded from shared link. You can edit and experiment freely!
+    </div>
+
+    <p>Experiment with <a href="https://learn.microsoft.com/en-us/cosmos-db/query/overview" target="_blank">Cosmos DB
+            SQL queries</a> interactively. Choose a preset dataset or load your own data.</p>
+
+    <h2>Sample Data</h2>
+
+    <!-- Dataset Selector -->
+    <div class="dataset-selector-section">
+        <label for="dataset-picker">📚 Choose a Dataset:</label>
+        <select id="dataset-picker" onchange="loadPresetDataset()">
+            <option value="simple">Simple Demo (3 items)</option>
+            <option value="products">E-commerce Products (10 items)</option>
+            <option value="iot">IoT Device Telemetry (15 items)</option>
+            <option value="custom">Custom Data</option>
+        </select>
+        <div id="dataset-info" class="dataset-info">
+            Basic user records with name, city, and age. Perfect for learning SQL query basics.
+        </div>
+    </div>
+
+    <!-- Query Suggestions (shown when preset is selected) -->
+    <div id="query-suggestions" class="query-suggestions hidden">
+        <h4>💡 Try these queries:</h4>
+        <div id="query-buttons-container"></div>
+    </div>
+
+    <!-- Partition Key Info -->
+    <details style="margin: 15px 0; padding: 15px; background: #f9f9f9; border-radius: 4px; border: 1px solid #e0e0e0;">
+        <summary style="cursor: pointer; font-weight: 600; color: #555;">
+            About Partition Keys in this Playground
+        </summary>
+        <p style="margin-top: 10px; margin-bottom: 10px; line-height: 1.6;">
+            This playground uses <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/id</code> as
+            the partition key for all queries.
+            This works with any JSON data you upload since the script auto-generates
+            an <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">id</code> field if needed.
+        </p>
+        <p style="margin-bottom: 0; line-height: 1.6;">
+            <strong>In production Cosmos DB:</strong> Choose partition keys based on your
+            query patterns (e.g., <code
+                style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/tenantId</code>,
+            <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/userId</code>,
+            <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/category</code>).
+            <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank">
+                Learn more about partition key selection →
+            </a>
+        </p>
+    </details>
+
+    <!-- File Upload Section (only shown when "Custom Data" is selected) -->
+    <div id="file-upload-section" class="file-upload-section hidden">
+        <div>
+            <input type="file" id="data-file-picker" accept=".json,application/json">
+            <button id="load-file-btn" onclick="loadFromFile()">Load from File</button>
+        </div>
+        <div id="status-message" class="status-message hidden"></div>
+    </div>
+
+    <!-- Hidden script tag for codapi to reference -->
+    <script id="data.json" type="text/plain">
+[
+  {"id": "1", "name": "Alice", "city": "New York", "age": 30},
+  {"id": "2", "name": "Bob", "city": "London", "age": 25},
+  {"id": "3", "name": "Charlie", "city": "London", "age": 35}
+]
+    </script>
+
+    <!-- Editable data section -->
+    <div class="data-editor-section">
+        <textarea id="data-textarea" class="data-textarea" placeholder="Paste or edit your JSON data here..."
+            oninput="handleDataEdit()">[
+  {"id": "1", "name": "Alice", "city": "New York", "age": 30},
+  {"id": "2", "name": "Bob", "city": "London", "age": 25},
+  {"id": "3", "name": "Charlie", "city": "London", "age": 35}
+]</textarea>
+        <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>Apply Changes</button>
+        <div id="data-status" class="status-message hidden"></div>
+    </div>
+
+    <h2>SQL Query</h2>
+    <pre><code id="query-display" class="language-sql">SELECT * FROM c WHERE c.city = 'London'</code></pre>
+
+    <!-- Codapi Widget with multiple files -->
+    <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
+    </codapi-snippet>
+
+    <!-- Share Section -->
+    <div class="share-section">
+        <h3>🔗 Share Your Code</h3>
+        <p>Generate a shareable link to this query and data. Perfect for blog posts, articles, or newsletters!</p>
+        <button class="share-button" onclick="generateShareLink()">Generate Share Link</button>
+        <div id="share-buttons" class="hidden" style="margin-top: 10px;">
+            <button class="copy-button" onclick="copyShareLink()">📋 Copy Link</button>
+            <button class="copy-button" onclick="openShareLink()">🚀 Open Link</button>
+        </div>
+        <div id="share-status" class="status-message hidden"></div>
+    </div>
+
+    <script>
+        // Preset Datasets
+        const presetDatasets = {
+            simple: {
+                name: "Simple Demo",
+                description: "Basic user records with name, city, and age. Perfect for learning SQL query basics.",
+                itemCount: 3,
+                data: [
+                    { "id": "1", "name": "Alice", "city": "New York", "age": 30 },
+                    { "id": "2", "name": "Bob", "city": "London", "age": 25 },
+                    { "id": "3", "name": "Charlie", "city": "London", "age": 35 }
+                ],
+                queries: [
+                    { label: "All users", query: "SELECT * FROM c" },
+                    { label: "Filter by city", query: "SELECT * FROM c WHERE c.city = 'London'" },
+                    { label: "Age > 25", query: "SELECT c.name, c.age FROM c WHERE c.age > 25" },
+                    { label: "Order by age", query: "SELECT * FROM c ORDER BY c.age DESC" }
+                ]
+            },
+            products: {
+                name: "E-commerce Products",
+                description: "Product catalog with nested objects, arrays, and complex queries. Includes inventory, specs, and reviews.",
+                itemCount: 10,
+                data: [
+                    {
+                        "id": "1", "name": "Laptop Pro 15", "category": "Electronics", "price": 1299.99, "inStock": true, "inventory": 45,
+                        "tags": ["computers", "productivity", "premium"],
+                        "specs": { "cpu": "Intel i7", "ram": "16GB", "storage": "512GB SSD" },
+                        "reviews": [
+                            { "rating": 5, "comment": "Excellent performance" },
+                            { "rating": 4, "comment": "Great but pricey" }
+                        ]
+                    },
+                    {
+                        "id": "2", "name": "Wireless Mouse", "category": "Electronics", "price": 29.99, "inStock": true, "inventory": 150,
+                        "tags": ["accessories", "wireless"],
+                        "specs": { "connectivity": "Bluetooth 5.0", "battery": "AA" },
+                        "reviews": [{ "rating": 4, "comment": "Comfortable grip" }]
+                    },
+                    {
+                        "id": "3", "name": "Office Chair Deluxe", "category": "Furniture", "price": 349.99, "inStock": false, "inventory": 0,
+                        "tags": ["office", "ergonomic", "premium"],
+                        "specs": { "material": "Leather", "adjustable": true, "warranty": "5 years" },
+                        "reviews": []
+                    },
+                    {
+                        "id": "4", "name": "USB-C Hub", "category": "Electronics", "price": 49.99, "inStock": true, "inventory": 200,
+                        "tags": ["accessories", "connectivity"],
+                        "specs": { "ports": 7, "hdmi": true },
+                        "reviews": [
+                            { "rating": 5, "comment": "Essential for my laptop" },
+                            { "rating": 5, "comment": "Works perfectly" },
+                            { "rating": 3, "comment": "Gets a bit warm" }
+                        ]
+                    },
+                    {
+                        "id": "5", "name": "Standing Desk", "category": "Furniture", "price": 599.99, "inStock": true, "inventory": 12,
+                        "tags": ["office", "ergonomic", "adjustable"],
+                        "specs": { "height_range": "29-49 inches", "motor": "dual", "weight_capacity": "275 lbs" },
+                        "reviews": [
+                            { "rating": 5, "comment": "Changed my work life!" },
+                            { "rating": 4, "comment": "Sturdy and quiet" }
+                        ]
+                    },
+                    {
+                        "id": "6", "name": "4K Monitor", "category": "Electronics", "price": 449.99, "inStock": true, "inventory": 30,
+                        "tags": ["display", "premium"],
+                        "specs": { "resolution": "3840x2160", "size": "27 inches", "refresh_rate": "60Hz" },
+                        "reviews": [{ "rating": 5, "comment": "Crystal clear display" }]
+                    },
+                    {
+                        "id": "7", "name": "Mechanical Keyboard", "category": "Electronics", "price": 129.99, "inStock": true, "inventory": 75,
+                        "tags": ["accessories", "gaming", "productivity"],
+                        "specs": { "switches": "Cherry MX Blue", "backlight": "RGB", "wireless": false },
+                        "reviews": [
+                            { "rating": 5, "comment": "Best typing experience" },
+                            { "rating": 4, "comment": "A bit loud" }
+                        ]
+                    },
+                    {
+                        "id": "8", "name": "Desk Lamp LED", "category": "Furniture", "price": 39.99, "inStock": true, "inventory": 120,
+                        "tags": ["office", "lighting"],
+                        "specs": { "brightness": "800 lumens", "color_temp": "adjustable", "usb_port": true },
+                        "reviews": [{ "rating": 4, "comment": "Great value" }]
+                    },
+                    {
+                        "id": "9", "name": "Webcam HD", "category": "Electronics", "price": 79.99, "inStock": true, "inventory": 60,
+                        "tags": ["video", "accessories"],
+                        "specs": { "resolution": "1080p", "fps": 30, "autofocus": true },
+                        "reviews": [
+                            { "rating": 5, "comment": "Clear video quality" },
+                            { "rating": 4, "comment": "Good for video calls" }
+                        ]
+                    },
+                    {
+                        "id": "10", "name": "Noise Cancelling Headphones", "category": "Electronics", "price": 299.99, "inStock": true, "inventory": 40,
+                        "tags": ["audio", "wireless", "premium"],
+                        "specs": { "battery": "30 hours", "anc": true, "bluetooth": "5.1" },
+                        "reviews": [
+                            { "rating": 5, "comment": "Incredible sound quality" },
+                            { "rating": 5, "comment": "Best ANC I've tried" },
+                            { "rating": 4, "comment": "Expensive but worth it" }
+                        ]
+                    }
+                ],
+                queries: [
+                    { label: "In stock items", query: "SELECT c.name, c.price FROM c WHERE c.inStock = true" },
+                    { label: "Electronics under $100", query: "SELECT * FROM c WHERE c.category = 'Electronics' AND c.price < 100" },
+                    { label: "Items with premium tag", query: "SELECT c.name, c.price FROM c WHERE ARRAY_CONTAINS(c.tags, 'premium')" },
+                    { label: "Avg price by category", query: "SELECT c.category, AVG(c.price) as avgPrice FROM c GROUP BY c.category" },
+                    { label: "Highly rated (>4 stars)", query: "SELECT c.name, c.reviews FROM c WHERE EXISTS(SELECT VALUE r FROM r IN c.reviews WHERE r.rating >= 5)" }
+                ]
+            },
+            iot: {
+                name: "IoT Device Telemetry",
+                description: "Time-series data from IoT devices including temperature, humidity, and status metrics.",
+                itemCount: 15,
+                data: [
+                    { "id": "1", "deviceId": "sensor-001", "location": "Building-A-Floor-1", "temperature": 22.5, "humidity": 45, "status": "online", "batteryLevel": 85, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "2", "deviceId": "sensor-002", "location": "Building-A-Floor-1", "temperature": 23.1, "humidity": 42, "status": "online", "batteryLevel": 92, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "3", "deviceId": "sensor-003", "location": "Building-A-Floor-2", "temperature": 21.8, "humidity": 48, "status": "online", "batteryLevel": 78, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "4", "deviceId": "sensor-004", "location": "Building-B-Floor-1", "temperature": 24.2, "humidity": 38, "status": "warning", "batteryLevel": 15, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "5", "deviceId": "sensor-005", "location": "Building-B-Floor-2", "temperature": 22.0, "humidity": 50, "status": "online", "batteryLevel": 88, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "6", "deviceId": "sensor-006", "location": "Building-C-Floor-1", "temperature": 19.5, "humidity": 55, "status": "offline", "batteryLevel": 0, "timestamp": "2024-01-15T09:15:00Z" },
+                    { "id": "7", "deviceId": "sensor-007", "location": "Building-C-Floor-2", "temperature": 23.8, "humidity": 44, "status": "online", "batteryLevel": 95, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "8", "deviceId": "sensor-008", "location": "Building-A-Floor-3", "temperature": 22.3, "humidity": 46, "status": "online", "batteryLevel": 82, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "9", "deviceId": "sensor-009", "location": "Building-B-Floor-3", "temperature": 25.1, "humidity": 35, "status": "warning", "batteryLevel": 18, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "10", "deviceId": "sensor-010", "location": "Building-C-Floor-3", "temperature": 21.2, "humidity": 52, "status": "online", "batteryLevel": 90, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "11", "deviceId": "sensor-011", "location": "Building-A-Floor-2", "temperature": 23.5, "humidity": 40, "status": "online", "batteryLevel": 76, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "12", "deviceId": "sensor-012", "location": "Building-B-Floor-2", "temperature": 22.7, "humidity": 47, "status": "online", "batteryLevel": 84, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "13", "deviceId": "sensor-013", "location": "Building-C-Floor-1", "temperature": 20.9, "humidity": 53, "status": "online", "batteryLevel": 91, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "14", "deviceId": "sensor-014", "location": "Building-A-Floor-1", "temperature": 24.8, "humidity": 36, "status": "online", "batteryLevel": 87, "timestamp": "2024-01-15T10:30:00Z" },
+                    { "id": "15", "deviceId": "sensor-015", "location": "Building-B-Floor-1", "temperature": 21.6, "humidity": 49, "status": "offline", "batteryLevel": 5, "timestamp": "2024-01-15T08:45:00Z" }
+                ],
+                queries: [
+                    { label: "All online devices", query: "SELECT * FROM c WHERE c.status = 'online'" },
+                    { label: "Low battery (<20%)", query: "SELECT c.deviceId, c.location, c.batteryLevel FROM c WHERE c.batteryLevel < 20" },
+                    { label: "Temp > 24°C", query: "SELECT c.deviceId, c.temperature FROM c WHERE c.temperature > 24" },
+                    { label: "Avg temp by building", query: "SELECT SUBSTRING(c.location, 0, 10) as building, AVG(c.temperature) as avgTemp FROM c GROUP BY SUBSTRING(c.location, 0, 10)" },
+                    { label: "Devices needing attention", query: "SELECT * FROM c WHERE c.status IN ('offline', 'warning') OR c.batteryLevel < 20" }
+                ]
+            },
+            custom: {
+                name: "Custom Data",
+                description: "Experiment with your data.",
+                itemCount: 0,
+                data: [],
+                queries: []
+            }
+        };
+
+        let currentShareUrl = '';
+        let originalData = '';
+        let lastSelectedPreset = 'simple'; // Track last non-custom preset
+
+        // Load preset dataset
+        function loadPresetDataset() {
+            const selector = document.getElementById('dataset-picker');
+            const datasetKey = selector.value;
+            const dataset = presetDatasets[datasetKey];
+
+            // Update dataset info
+            const infoDiv = document.getElementById('dataset-info');
+            infoDiv.innerHTML = dataset.description;
+
+            // Show/hide file upload section
+            const fileSection = document.getElementById('file-upload-section');
+            const querySection = document.getElementById('query-suggestions');
+
+            if (datasetKey === 'custom') {
+                // Check if textarea has unsaved changes
+                const textarea = document.getElementById('data-textarea');
+                const currentData = textarea.value.trim();
+                const hasUnsavedChanges = currentData && currentData !== originalData.trim();
+
+                if (hasUnsavedChanges) {
+                    const confirmed = confirm('This will clear your current data. Continue?');
+                    if (!confirmed) {
+                        // Revert to last preset and reload it
+                        selector.value = lastSelectedPreset;
+                        loadPresetDataset(); // Recursively load the previous preset
+                        return;
+                    }
+                }
+
+                // Now safe to show custom data UI
+                fileSection.classList.remove('hidden');
+                querySection.classList.add('hidden');
+
+                // Clear textarea and update placeholder
+                textarea.value = '';
+                textarea.placeholder = 'Paste your JSON data here...\n\nOr use the file upload option above.';
+                textarea.classList.remove('modified');
+
+                // Update original data tracker
+                originalData = '';
+
+                // Disable apply button
+                const applyButton = document.getElementById('apply-button');
+                applyButton.disabled = true;
+
+                // Clear the hidden script tag
+                const scriptTag = document.getElementById('data.json');
+                if (scriptTag) {
+                    scriptTag.textContent = '';
+                }
+
+                showDataStatus('📋 Upload a JSON file or paste your data below', false);
+                return;
+            } else {
+                fileSection.classList.add('hidden');
+                lastSelectedPreset = datasetKey; // Remember this preset
+            }
+
+            // Load preset data
+            const prettyData = JSON.stringify(dataset.data, null, 2);
+
+            // Update hidden script tag (for codapi)
+            const scriptTag = document.getElementById('data.json');
+            if (scriptTag) {
+                scriptTag.textContent = prettyData;
+            }
+
+            // Update textarea
+            const textarea = document.getElementById('data-textarea');
+            if (textarea) {
+                textarea.value = prettyData;
+                textarea.placeholder = 'Paste or edit your JSON data here...';
+                textarea.classList.remove('modified');
+            }
+
+            // Update original data tracker
+            originalData = prettyData;
+
+            // Disable apply button
+            const applyButton = document.getElementById('apply-button');
+            if (applyButton) {
+                applyButton.disabled = true;
+            }
+
+            // Update query suggestions
+            if (dataset.queries && dataset.queries.length > 0) {
+                showQuerySuggestions(dataset.queries);
+            } else {
+                querySection.classList.add('hidden');
+            }
+
+            // Show success message
+            showDataStatus(`✓ Loaded ${dataset.name} dataset (${dataset.itemCount} items)`, false);
+
+            // Save preference to localStorage
+            try {
+                localStorage.setItem('selectedDataset', datasetKey);
+            } catch (e) {
+                // Ignore localStorage errors
+            }
+        }
+
+        // Show query suggestions
+        function showQuerySuggestions(queries) {
+            const querySection = document.getElementById('query-suggestions');
+            const container = document.getElementById('query-buttons-container');
+
+            // Clear existing buttons
+            container.innerHTML = '';
+
+            // Create buttons for each query
+            queries.forEach((q, index) => {
+                const button = document.createElement('button');
+                button.className = 'query-button';
+                button.textContent = q.label;
+                button.onclick = () => loadQuery(q.query);
+                container.appendChild(button);
+            });
+
+            querySection.classList.remove('hidden');
+        }
+
+        // Load a query into the editor
+        function loadQuery(queryText) {
+            const queryDisplay = document.getElementById('query-display');
+            if (queryDisplay) {
+                queryDisplay.textContent = queryText;
+            }
+
+            // Also update the codapi snippet if possible
+            const snippet = document.querySelector('codapi-snippet');
+            if (snippet) {
+                // Update the code in the editor
+                const editor = snippet.querySelector('.snippet-code');
+                if (editor) {
+                    editor.textContent = queryText;
+                }
+            }
+
+            showDataStatus('✓ Query loaded - click "Run" to execute', false);
+
+            // Smooth scroll to the SQL Query section
+            const sqlSection = queryDisplay?.closest('section') || queryDisplay?.parentElement;
+            if (sqlSection) {
+                sqlSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Handle textarea edits
+        function handleDataEdit() {
+            const textarea = document.getElementById('data-textarea');
+            const applyButton = document.getElementById('apply-button');
+
+            // Enable button if data has changed
+            const hasChanged = textarea.value.trim() !== originalData.trim();
+            applyButton.disabled = !hasChanged;
+
+            // Add visual indicator
+            if (hasChanged) {
+                textarea.classList.add('modified');
+            } else {
+                textarea.classList.remove('modified');
+            }
+        }
+
+        // Apply data changes from textarea to hidden script tag
+        function applyDataChanges() {
+            const textarea = document.getElementById('data-textarea');
+            const applyButton = document.getElementById('apply-button');
+            const data = textarea.value.trim();
+
+            if (!data) {
+                showDataStatus('Please enter JSON data', true);
+                return;
+            }
+
+            try {
+                // Validate JSON
+                const parsed = JSON.parse(data);
+                const prettyData = JSON.stringify(parsed, null, 2);
+
+                // Update the hidden script tag (used by codapi)
+                const scriptTag = document.getElementById('data.json');
+                if (scriptTag) {
+                    scriptTag.textContent = prettyData;
+                }
+
+                // Update textarea with formatted JSON
+                textarea.value = prettyData;
+
+                // Update original data tracker
+                originalData = prettyData;
+
+                // Disable button and remove visual indicator
+                applyButton.disabled = true;
+                textarea.classList.remove('modified');
+
+                showDataStatus('✓ Data updated successfully', false);
+            } catch (error) {
+                showDataStatus(`Invalid JSON: ${error.message}`, true);
+            }
+        }
+
+        function showDataStatus(message, isError = false) {
+            const statusDiv = document.getElementById('data-status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Check if URL params exist and pre-fill
+        function loadFromUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('query');
+            const data = urlParams.get('data');
+
+            if (query || data) {
+                document.getElementById('url-loaded-banner').classList.remove('hidden');
+
+                if (data) {
+                    try {
+                        const parsedData = JSON.parse(data);
+                        const prettyData = JSON.stringify(parsedData, null, 2);
+
+                        // Update hidden script tag (for codapi)
+                        document.getElementById('data.json').textContent = prettyData;
+                        // Update textarea (for display/editing)
+                        document.getElementById('data-textarea').value = prettyData;
+                        // Update original data tracker
+                        originalData = prettyData;
+                        // Set to custom dataset
+                        document.getElementById('dataset-picker').value = 'custom';
+                    } catch (e) {
+                        console.error('Invalid JSON in URL params:', e);
+                    }
+                }
+
+                if (query) {
+                    // Update query display
+                    document.getElementById('query-display').textContent = query;
+                }
+            }
+        }
+
+        function showStatus(message, isError = false) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.classList.remove('hidden');
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        function loadFromFile() {
+            const fileInput = document.getElementById('data-file-picker');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showStatus('Please select a JSON file first', true);
+                return;
+            }
+
+            // Validate file type
+            if (!file.name.endsWith('.json')) {
+                showStatus('Please select a valid JSON file (.json)', true);
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                try {
+                    const content = e.target.result;
+
+                    // Validate JSON
+                    const parsed = JSON.parse(content);
+                    const prettyData = JSON.stringify(parsed, null, 2);
+
+                    // Update the hidden script tag (used by codapi)
+                    const scriptTag = document.getElementById('data.json');
+                    if (scriptTag) {
+                        scriptTag.textContent = prettyData;
+                    }
+
+                    // Update the textarea (for display/editing)
+                    const textarea = document.getElementById('data-textarea');
+                    if (textarea) {
+                        textarea.value = prettyData;
+                        // Update original data tracker
+                        originalData = prettyData;
+                    }
+
+                    showStatus(`✓ Loaded ${file.name} successfully (${Math.round(file.size / 1024)} KB)`);
+
+                } catch (error) {
+                    showStatus(`Invalid JSON: ${error.message}`, true);
+                }
+            };
+
+            reader.onerror = function () {
+                showStatus('Error reading file', true);
+            };
+
+            reader.readAsText(file);
+        }
+
+        function generateShareLink() {
+            // Get current query and data
+            const queryElement = document.querySelector('codapi-snippet').previousElementSibling;
+            const query = queryElement ? queryElement.textContent.trim() : document.getElementById('query-display').textContent.trim();
+            const data = document.getElementById('data.json').textContent.trim();
+
+            // Validate
+            if (!query) {
+                showShareStatus('No query to share', true);
+                return;
+            }
+
+            if (!data) {
+                showShareStatus('No data to share', true);
+                return;
+            }
+
+            try {
+                JSON.parse(data);
+            } catch (e) {
+                showShareStatus('Invalid JSON data: ' + e.message, true);
+                return;
+            }
+
+            // Encode query and data as base64
+            const payload = JSON.stringify({ query, data });
+            const encoded = btoa(payload);
+            // URL-encode to prevent + and / characters from being misinterpreted
+            const urlSafeEncoded = encodeURIComponent(encoded);
+
+            // Handle both local file:// and http/https protocols
+            let baseUrl;
+            if (window.location.protocol === 'file:') {
+                const currentPath = window.location.pathname;
+                const runPath = currentPath.replace('/playground.html', '/run.html');
+                baseUrl = window.location.protocol + '//' + runPath;
+            } else {
+                baseUrl = window.location.origin + '/run.html';
+            }
+
+            currentShareUrl = baseUrl + '?c=' + urlSafeEncoded;
+
+            // Show buttons
+            document.getElementById('share-buttons').classList.remove('hidden');
+
+            // Show warning if URL is too long
+            if (currentShareUrl.length > 2000) {
+                const sizeKB = (currentShareUrl.length / 1024).toFixed(1);
+                showShareStatus(`⚠️ Share link generated but URL is very large (${sizeKB} KB) - may not work in all contexts`, true);
+            } else {
+                showShareStatus('✓ Share link generated and ready to use', false);
+            }
+        }
+
+        function copyShareLink() {
+            if (!currentShareUrl) return;
+
+            navigator.clipboard.writeText(currentShareUrl).then(() => {
+                showShareStatus('✓ Link copied to clipboard!', false);
+            }).catch(err => {
+                showShareStatus('Failed to copy: ' + err, true);
+            });
+        }
+
+        function openShareLink() {
+            if (currentShareUrl) {
+                window.open(currentShareUrl, '_blank');
+            }
+        }
+
+        function showShareStatus(message, isError = false) {
+            const statusDiv = document.getElementById('share-status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Enable drag & drop for custom file upload
+        const uploadSection = document.getElementById('file-upload-section');
+        if (uploadSection) {
+            uploadSection.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadSection.style.borderColor = '#0078d4';
+                uploadSection.style.background = '#e6f3ff';
+            });
+
+            uploadSection.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadSection.style.borderColor = '#ccc';
+                uploadSection.style.background = '#f9f9f9';
+            });
+
+            uploadSection.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadSection.style.borderColor = '#ccc';
+                uploadSection.style.background = '#f9f9f9';
+
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    const fileInput = document.getElementById('data-file-picker');
+                    fileInput.files = e.dataTransfer.files;
+                    loadFromFile();
+                }
+            });
+        }
+
+        // Initialize on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                loadFromUrlParams();
+
+                // Try to restore last selected dataset
+                try {
+                    const savedDataset = localStorage.getItem('selectedDataset');
+                    if (savedDataset && presetDatasets[savedDataset]) {
+                        document.getElementById('dataset-picker').value = savedDataset;
+                        loadPresetDataset(); // Load the dataset to sync description and data
+                    }
+                } catch (e) {
+                    // Ignore localStorage errors
+                }
+
+                // Initialize originalData after page load
+                originalData = document.getElementById('data-textarea').value.trim();
+            });
+        } else {
+            loadFromUrlParams();
+
+            // Try to restore last selected dataset
+            try {
+                const savedDataset = localStorage.getItem('selectedDataset');
+                if (savedDataset && presetDatasets[savedDataset]) {
+                    document.getElementById('dataset-picker').value = savedDataset;
+                    loadPresetDataset(); // Load the dataset to sync description and data
+                }
+            } catch (e) {
+                // Ignore localStorage errors
+            }
+
+            // Initialize originalData
+            originalData = document.getElementById('data-textarea').value.trim();
+        }
+    </script>
+
+</body>
+
+</html>

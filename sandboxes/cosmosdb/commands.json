@@ -1,0 +1,16 @@
+{
+    "run": {
+        "engine": "docker",
+        "entry": "main.sql",
+        "steps": [
+            {
+                "box": "cosmosdb",
+                "user": "cosmosdev",
+                "action": "run",
+                "command": [
+                    "/usr/local/bin/wrapper.sh"
+                ]
+            }
+        ]
+    }
+}

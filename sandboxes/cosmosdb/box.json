@@ -1,0 +1,7 @@
+{
+    "image": "codapi/cosmosdb-client",
+    "memory": 512,
+    "network": "codapi-net",
+    "volume": "%s:/workspace:rw",
+    "writable": true
+}

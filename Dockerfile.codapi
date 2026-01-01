@@ -1,0 +1,37 @@
+FROM ubuntu:22.04
+
+# Install dependencies including Docker CLI
+RUN apt-get update && \
+    apt-get install -y curl ca-certificates gnupg lsb-release && \
+    # Add Docker's official GPG key
+    install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
+    chmod a+r /etc/apt/keyrings/docker.asc && \
+    # Add Docker repository
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    # Install Docker CLI only (not the daemon)
+    apt-get update && \
+    apt-get install -y docker-ce-cli && \
+    rm -rf /var/lib/apt/lists/*
+
+# Download and install Codapi
+ARG CODAPI_VERSION=0.13.0
+WORKDIR /app
+RUN curl -L -o codapi.tar.gz "https://github.com/nalgeon/codapi/releases/download/v${CODAPI_VERSION}/codapi_${CODAPI_VERSION}_linux_amd64.tar.gz" && \
+    tar xvzf codapi.tar.gz -C /app && \
+    mv /app/codapi /usr/local/bin/codapi && \
+    chmod +x /usr/local/bin/codapi && \
+    rm codapi.tar.gz
+
+# Override with custom Cosmos DB sandbox
+COPY sandboxes/cosmosdb /app/sandboxes/cosmosdb
+
+# Create temp directory for code snippets
+RUN mkdir -p /tmp/codapi && chmod 777 /tmp/codapi
+
+# Expose Codapi port
+EXPOSE 1313
+
+# Run Codapi server
+CMD ["codapi", "serve"]

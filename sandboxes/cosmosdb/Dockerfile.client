@@ -1,0 +1,15 @@
+FROM python:3.12-alpine
+
+# Install Azure Cosmos SDK
+RUN pip install --no-cache-dir azure-cosmos
+
+# Create non-root user
+RUN adduser --home /workspace --disabled-password cosmosdev
+
+# Copy scripts
+COPY query.py /usr/local/bin/query.py
+COPY wrapper.sh /usr/local/bin/wrapper.sh
+RUN chmod +x /usr/local/bin/query.py && chmod +x /usr/local/bin/wrapper.sh
+
+USER cosmosdev
+WORKDIR /workspace
