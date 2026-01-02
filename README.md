@@ -10,6 +10,6 @@ Useful for prototyping, learning, teaching, and sharing:
 - Use pre-loaded datasets or load your own data
 - Generate shareable links to your code or embed interactive examples in documentation, blog posts, and tutorials.
 
-![playground](https://abhirockzz.github.io/videos/playground.gif)
+https://github.com/user-attachments/assets/f7cb0725-d15e-43c9-bdd0-e0a3c49cc233
 
 **Disclaimer:** This is an experimental project and not an official Microsoft or Azure offering. It’s designed for learning and sharing, not for production use.
