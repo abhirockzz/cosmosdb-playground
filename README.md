@@ -16,4 +16,4 @@ Useful for prototyping, learning, teaching, and sharing:
 
 ---
 
-**Disclaimer:** This is an experimental project and not an official Microsoft or Azure offering. Not intended for production use.
+**Disclaimer:** This is an experimental project and not an official Microsoft or Azure offering. It’s designed for learning and sharing, not for production use.
