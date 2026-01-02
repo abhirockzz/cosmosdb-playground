@@ -10,10 +10,6 @@ Useful for prototyping, learning, teaching, and sharing:
 - Use pre-loaded datasets or load your own data
 - Generate shareable links to your code or embed interactive examples in documentation, blog posts, and tutorials.
 
-<video controls width="720" muted playsinline>
-  <source src="https://abhirockzz.github.io/videos/playground.mp4" type="video/mp4">
-</video>
-
 ---
 
 **Disclaimer:** This is an experimental project and not an official Microsoft or Azure offering. It’s designed for learning and sharing, not for production use.
