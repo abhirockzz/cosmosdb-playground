@@ -10,7 +10,7 @@ Useful for prototyping, learning, teaching, and sharing:
 - Use pre-loaded datasets or load your own data
 - Generate shareable links to your code or embed interactive examples in documentation, blog posts, and tutorials.
 
-![](img_playground.png)
+https://abhirockzz.github.io/videos/playground.mp4
 
 ---
 
