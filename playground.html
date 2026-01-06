@@ -457,6 +457,7 @@
             <option value="simple">Simple Demo (3 items)</option>
             <option value="products">E-commerce Products (10 items)</option>
             <option value="iot">IoT Device Telemetry (15 items)</option>
+            <option value="movies">Movie Database (50 items)</option>
             <option value="custom">Custom Data</option>
         </select>
         <div id="dataset-info" class="dataset-info">
@@ -682,6 +683,1743 @@
                     { label: "Temp > 24°C", query: "SELECT c.deviceId, c.temperature FROM c WHERE c.temperature > 24" },
                     { label: "Avg temp by building", query: "SELECT SUBSTRING(c.location, 0, 10) as building, AVG(c.temperature) as avgTemp FROM c GROUP BY SUBSTRING(c.location, 0, 10)" },
                     { label: "Devices needing attention", query: "SELECT * FROM c WHERE c.status IN ('offline', 'warning') OR c.batteryLevel < 20" }
+                ]
+            },
+            movies: {
+                name: "Movie Database (50 Films)",
+                description: "Classic and contemporary films with genres, directors, actors, ratings, and awards.",
+                itemCount: 50,
+                data: [
+                    {
+                        "id": "1",
+                        "title": "The Shawshank Redemption",
+                        "year": 1994,
+                        "runtime": 142,
+                        "genres": [
+                            "Drama"
+                        ],
+                        "rating": 9.3,
+                        "director": {
+                            "name": "Frank Darabont"
+                        },
+                        "actors": [
+                            {
+                                "name": "Tim Robbins",
+                                "character": "Andy Dufresne"
+                            },
+                            {
+                                "name": "Morgan Freeman",
+                                "character": "Ellis Boyd 'Red' Redding"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar Nomination: Best Picture"
+                        ]
+                    },
+                    {
+                        "id": "2",
+                        "title": "The Godfather",
+                        "year": 1972,
+                        "runtime": 175,
+                        "genres": [
+                            "Crime",
+                            "Drama"
+                        ],
+                        "rating": 9.2,
+                        "director": {
+                            "name": "Francis Ford Coppola"
+                        },
+                        "actors": [
+                            {
+                                "name": "Marlon Brando",
+                                "character": "Don Vito Corleone"
+                            },
+                            {
+                                "name": "Al Pacino",
+                                "character": "Michael Corleone"
+                            },
+                            {
+                                "name": "James Caan",
+                                "character": "Sonny Corleone"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Italian"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Actor",
+                            "Oscar: Best Adapted Screenplay"
+                        ]
+                    },
+                    {
+                        "id": "3",
+                        "title": "The Dark Knight",
+                        "year": 2008,
+                        "runtime": 152,
+                        "genres": [
+                            "Action",
+                            "Crime",
+                            "Drama"
+                        ],
+                        "rating": 9.0,
+                        "director": {
+                            "name": "Christopher Nolan"
+                        },
+                        "actors": [
+                            {
+                                "name": "Christian Bale",
+                                "character": "Bruce Wayne / Batman"
+                            },
+                            {
+                                "name": "Heath Ledger",
+                                "character": "Joker"
+                            },
+                            {
+                                "name": "Aaron Eckhart",
+                                "character": "Harvey Dent"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Supporting Actor",
+                            "Oscar: Best Sound Editing"
+                        ]
+                    },
+                    {
+                        "id": "4",
+                        "title": "Schindler's List",
+                        "year": 1993,
+                        "runtime": 195,
+                        "genres": [
+                            "Biography",
+                            "Drama",
+                            "History"
+                        ],
+                        "rating": 9.0,
+                        "director": {
+                            "name": "Steven Spielberg"
+                        },
+                        "actors": [
+                            {
+                                "name": "Liam Neeson",
+                                "character": "Oskar Schindler"
+                            },
+                            {
+                                "name": "Ralph Fiennes",
+                                "character": "Amon Goeth"
+                            },
+                            {
+                                "name": "Ben Kingsley",
+                                "character": "Itzhak Stern"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "German",
+                            "Polish"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Director"
+                        ]
+                    },
+                    {
+                        "id": "5",
+                        "title": "Pulp Fiction",
+                        "year": 1994,
+                        "runtime": 154,
+                        "genres": [
+                            "Crime",
+                            "Drama"
+                        ],
+                        "rating": 8.9,
+                        "director": {
+                            "name": "Quentin Tarantino"
+                        },
+                        "actors": [
+                            {
+                                "name": "John Travolta",
+                                "character": "Vincent Vega"
+                            },
+                            {
+                                "name": "Samuel L. Jackson",
+                                "character": "Jules Winnfield"
+                            },
+                            {
+                                "name": "Uma Thurman",
+                                "character": "Mia Wallace"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Spanish",
+                            "French"
+                        ],
+                        "awards": [
+                            "Oscar: Best Original Screenplay",
+                            "Palme d'Or"
+                        ]
+                    },
+                    {
+                        "id": "6",
+                        "title": "Forrest Gump",
+                        "year": 1994,
+                        "runtime": 142,
+                        "genres": [
+                            "Drama",
+                            "Romance"
+                        ],
+                        "rating": 8.8,
+                        "director": {
+                            "name": "Robert Zemeckis"
+                        },
+                        "actors": [
+                            {
+                                "name": "Tom Hanks",
+                                "character": "Forrest Gump"
+                            },
+                            {
+                                "name": "Robin Wright",
+                                "character": "Jenny Curran"
+                            },
+                            {
+                                "name": "Gary Sinise",
+                                "character": "Lieutenant Dan Taylor"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Actor",
+                            "Oscar: Best Director"
+                        ]
+                    },
+                    {
+                        "id": "7",
+                        "title": "Inception",
+                        "year": 2010,
+                        "runtime": 148,
+                        "genres": [
+                            "Action",
+                            "Sci-Fi",
+                            "Thriller"
+                        ],
+                        "rating": 8.8,
+                        "director": {
+                            "name": "Christopher Nolan"
+                        },
+                        "actors": [
+                            {
+                                "name": "Leonardo DiCaprio",
+                                "character": "Dom Cobb"
+                            },
+                            {
+                                "name": "Joseph Gordon-Levitt",
+                                "character": "Arthur"
+                            },
+                            {
+                                "name": "Elliot Page",
+                                "character": "Ariadne"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Japanese",
+                            "French"
+                        ],
+                        "awards": [
+                            "Oscar: Best Cinematography",
+                            "Oscar: Best Visual Effects",
+                            "Oscar: Best Sound Editing",
+                            "Oscar: Best Sound Mixing"
+                        ]
+                    },
+                    {
+                        "id": "8",
+                        "title": "The Matrix",
+                        "year": 1999,
+                        "runtime": 136,
+                        "genres": [
+                            "Action",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.7,
+                        "director": {
+                            "name": "Lana Wachowski"
+                        },
+                        "actors": [
+                            {
+                                "name": "Keanu Reeves",
+                                "character": "Neo"
+                            },
+                            {
+                                "name": "Laurence Fishburne",
+                                "character": "Morpheus"
+                            },
+                            {
+                                "name": "Carrie-Anne Moss",
+                                "character": "Trinity"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Visual Effects",
+                            "Oscar: Best Film Editing"
+                        ]
+                    },
+                    {
+                        "id": "9",
+                        "title": "Goodfellas",
+                        "year": 1990,
+                        "runtime": 145,
+                        "genres": [
+                            "Biography",
+                            "Crime",
+                            "Drama"
+                        ],
+                        "rating": 8.7,
+                        "director": {
+                            "name": "Martin Scorsese"
+                        },
+                        "actors": [
+                            {
+                                "name": "Robert De Niro",
+                                "character": "James Conway"
+                            },
+                            {
+                                "name": "Ray Liotta",
+                                "character": "Henry Hill"
+                            },
+                            {
+                                "name": "Joe Pesci",
+                                "character": "Tommy DeVito"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Italian"
+                        ],
+                        "awards": [
+                            "Oscar: Best Supporting Actor"
+                        ]
+                    },
+                    {
+                        "id": "10",
+                        "title": "The Lord of the Rings: The Return of the King",
+                        "year": 2003,
+                        "runtime": 201,
+                        "genres": [
+                            "Adventure",
+                            "Drama",
+                            "Fantasy"
+                        ],
+                        "rating": 9.0,
+                        "director": {
+                            "name": "Peter Jackson"
+                        },
+                        "actors": [
+                            {
+                                "name": "Elijah Wood",
+                                "character": "Frodo Baggins"
+                            },
+                            {
+                                "name": "Viggo Mortensen",
+                                "character": "Aragorn"
+                            },
+                            {
+                                "name": "Ian McKellen",
+                                "character": "Gandalf"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Director",
+                            "Oscar: Best Adapted Screenplay"
+                        ]
+                    },
+                    {
+                        "id": "11",
+                        "title": "Fight Club",
+                        "year": 1999,
+                        "runtime": 139,
+                        "genres": [
+                            "Drama"
+                        ],
+                        "rating": 8.8,
+                        "director": {
+                            "name": "David Fincher"
+                        },
+                        "actors": [
+                            {
+                                "name": "Brad Pitt",
+                                "character": "Tyler Durden"
+                            },
+                            {
+                                "name": "Edward Norton",
+                                "character": "The Narrator"
+                            },
+                            {
+                                "name": "Helena Bonham Carter",
+                                "character": "Marla Singer"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": []
+                    },
+                    {
+                        "id": "12",
+                        "title": "Star Wars: Episode V - The Empire Strikes Back",
+                        "year": 1980,
+                        "runtime": 124,
+                        "genres": [
+                            "Action",
+                            "Adventure",
+                            "Fantasy"
+                        ],
+                        "rating": 8.7,
+                        "director": {
+                            "name": "Irvin Kershner"
+                        },
+                        "actors": [
+                            {
+                                "name": "Mark Hamill",
+                                "character": "Luke Skywalker"
+                            },
+                            {
+                                "name": "Harrison Ford",
+                                "character": "Han Solo"
+                            },
+                            {
+                                "name": "Carrie Fisher",
+                                "character": "Princess Leia"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Sound"
+                        ]
+                    },
+                    {
+                        "id": "13",
+                        "title": "One Flew Over the Cuckoo's Nest",
+                        "year": 1975,
+                        "runtime": 133,
+                        "genres": [
+                            "Drama"
+                        ],
+                        "rating": 8.7,
+                        "director": {
+                            "name": "Milos Forman"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jack Nicholson",
+                                "character": "Randle McMurphy"
+                            },
+                            {
+                                "name": "Louise Fletcher",
+                                "character": "Nurse Ratched"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Actor",
+                            "Oscar: Best Actress",
+                            "Oscar: Best Director"
+                        ]
+                    },
+                    {
+                        "id": "14",
+                        "title": "Interstellar",
+                        "year": 2014,
+                        "runtime": 169,
+                        "genres": [
+                            "Adventure",
+                            "Drama",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.7,
+                        "director": {
+                            "name": "Christopher Nolan"
+                        },
+                        "actors": [
+                            {
+                                "name": "Matthew McConaughey",
+                                "character": "Cooper"
+                            },
+                            {
+                                "name": "Anne Hathaway",
+                                "character": "Brand"
+                            },
+                            {
+                                "name": "Jessica Chastain",
+                                "character": "Murph"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Visual Effects"
+                        ]
+                    },
+                    {
+                        "id": "15",
+                        "title": "The Silence of the Lambs",
+                        "year": 1991,
+                        "runtime": 118,
+                        "genres": [
+                            "Crime",
+                            "Drama",
+                            "Thriller"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "Jonathan Demme"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jodie Foster",
+                                "character": "Clarice Starling"
+                            },
+                            {
+                                "name": "Anthony Hopkins",
+                                "character": "Hannibal Lecter"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Actor",
+                            "Oscar: Best Actress",
+                            "Oscar: Best Director"
+                        ]
+                    },
+                    {
+                        "id": "16",
+                        "title": "Saving Private Ryan",
+                        "year": 1998,
+                        "runtime": 169,
+                        "genres": [
+                            "Drama",
+                            "War"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "Steven Spielberg"
+                        },
+                        "actors": [
+                            {
+                                "name": "Tom Hanks",
+                                "character": "Captain Miller"
+                            },
+                            {
+                                "name": "Matt Damon",
+                                "character": "Private Ryan"
+                            },
+                            {
+                                "name": "Tom Sizemore",
+                                "character": "Sergeant Horvath"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "German",
+                            "French"
+                        ],
+                        "awards": [
+                            "Oscar: Best Director",
+                            "Oscar: Best Cinematography"
+                        ]
+                    },
+                    {
+                        "id": "17",
+                        "title": "The Green Mile",
+                        "year": 1999,
+                        "runtime": 189,
+                        "genres": [
+                            "Crime",
+                            "Drama",
+                            "Fantasy"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "Frank Darabont"
+                        },
+                        "actors": [
+                            {
+                                "name": "Tom Hanks",
+                                "character": "Paul Edgecomb"
+                            },
+                            {
+                                "name": "Michael Clarke Duncan",
+                                "character": "John Coffey"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "French"
+                        ],
+                        "awards": [
+                            "Oscar Nomination: Best Supporting Actor"
+                        ]
+                    },
+                    {
+                        "id": "18",
+                        "title": "Parasite",
+                        "year": 2019,
+                        "runtime": 132,
+                        "genres": [
+                            "Comedy",
+                            "Drama",
+                            "Thriller"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Bong Joon Ho"
+                        },
+                        "actors": [
+                            {
+                                "name": "Song Kang-ho",
+                                "character": "Kim Ki-taek"
+                            },
+                            {
+                                "name": "Lee Sun-kyun",
+                                "character": "Park Dong-ik"
+                            },
+                            {
+                                "name": "Cho Yeo-jeong",
+                                "character": "Choi Yeon-gyo"
+                            }
+                        ],
+                        "languages": [
+                            "Korean",
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Director",
+                            "Oscar: Best Original Screenplay",
+                            "Palme d'Or"
+                        ]
+                    },
+                    {
+                        "id": "19",
+                        "title": "The Departed",
+                        "year": 2006,
+                        "runtime": 151,
+                        "genres": [
+                            "Crime",
+                            "Drama",
+                            "Thriller"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Martin Scorsese"
+                        },
+                        "actors": [
+                            {
+                                "name": "Leonardo DiCaprio",
+                                "character": "Billy Costigan"
+                            },
+                            {
+                                "name": "Matt Damon",
+                                "character": "Colin Sullivan"
+                            },
+                            {
+                                "name": "Jack Nicholson",
+                                "character": "Frank Costello"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Cantonese"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Director"
+                        ]
+                    },
+                    {
+                        "id": "20",
+                        "title": "Gladiator",
+                        "year": 2000,
+                        "runtime": 155,
+                        "genres": [
+                            "Action",
+                            "Adventure",
+                            "Drama"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Ridley Scott"
+                        },
+                        "actors": [
+                            {
+                                "name": "Russell Crowe",
+                                "character": "Maximus"
+                            },
+                            {
+                                "name": "Joaquin Phoenix",
+                                "character": "Commodus"
+                            },
+                            {
+                                "name": "Connie Nielsen",
+                                "character": "Lucilla"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Actor"
+                        ]
+                    },
+                    {
+                        "id": "21",
+                        "title": "The Prestige",
+                        "year": 2006,
+                        "runtime": 130,
+                        "genres": [
+                            "Drama",
+                            "Mystery",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Christopher Nolan"
+                        },
+                        "actors": [
+                            {
+                                "name": "Christian Bale",
+                                "character": "Alfred Borden"
+                            },
+                            {
+                                "name": "Hugh Jackman",
+                                "character": "Robert Angier"
+                            },
+                            {
+                                "name": "Scarlett Johansson",
+                                "character": "Olivia Wenscombe"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar Nomination: Best Cinematography"
+                        ]
+                    },
+                    {
+                        "id": "22",
+                        "title": "Whiplash",
+                        "year": 2014,
+                        "runtime": 106,
+                        "genres": [
+                            "Drama",
+                            "Music"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Damien Chazelle"
+                        },
+                        "actors": [
+                            {
+                                "name": "Miles Teller",
+                                "character": "Andrew Neiman"
+                            },
+                            {
+                                "name": "J.K. Simmons",
+                                "character": "Terence Fletcher"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Supporting Actor",
+                            "Oscar: Best Film Editing",
+                            "Oscar: Best Sound Mixing"
+                        ]
+                    },
+                    {
+                        "id": "23",
+                        "title": "The Intouchables",
+                        "year": 2011,
+                        "runtime": 112,
+                        "genres": [
+                            "Biography",
+                            "Comedy",
+                            "Drama"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Olivier Nakache"
+                        },
+                        "actors": [
+                            {
+                                "name": "François Cluzet",
+                                "character": "Philippe"
+                            },
+                            {
+                                "name": "Omar Sy",
+                                "character": "Driss"
+                            }
+                        ],
+                        "languages": [
+                            "French",
+                            "English"
+                        ],
+                        "awards": []
+                    },
+                    {
+                        "id": "24",
+                        "title": "The Pianist",
+                        "year": 2002,
+                        "runtime": 150,
+                        "genres": [
+                            "Biography",
+                            "Drama",
+                            "Music"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Roman Polanski"
+                        },
+                        "actors": [
+                            {
+                                "name": "Adrien Brody",
+                                "character": "Wladyslaw Szpilman"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "German",
+                            "Polish"
+                        ],
+                        "awards": [
+                            "Oscar: Best Director",
+                            "Oscar: Best Actor",
+                            "Palme d'Or"
+                        ]
+                    },
+                    {
+                        "id": "25",
+                        "title": "Back to the Future",
+                        "year": 1985,
+                        "runtime": 116,
+                        "genres": [
+                            "Adventure",
+                            "Comedy",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Robert Zemeckis"
+                        },
+                        "actors": [
+                            {
+                                "name": "Michael J. Fox",
+                                "character": "Marty McFly"
+                            },
+                            {
+                                "name": "Christopher Lloyd",
+                                "character": "Dr. Emmett Brown"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Sound Effects Editing"
+                        ]
+                    },
+                    {
+                        "id": "26",
+                        "title": "Terminator 2: Judgment Day",
+                        "year": 1991,
+                        "runtime": 137,
+                        "genres": [
+                            "Action",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "James Cameron"
+                        },
+                        "actors": [
+                            {
+                                "name": "Arnold Schwarzenegger",
+                                "character": "The Terminator"
+                            },
+                            {
+                                "name": "Linda Hamilton",
+                                "character": "Sarah Connor"
+                            },
+                            {
+                                "name": "Edward Furlong",
+                                "character": "John Connor"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Spanish"
+                        ],
+                        "awards": [
+                            "Oscar: Best Visual Effects",
+                            "Oscar: Best Sound"
+                        ]
+                    },
+                    {
+                        "id": "27",
+                        "title": "American History X",
+                        "year": 1998,
+                        "runtime": 119,
+                        "genres": [
+                            "Crime",
+                            "Drama"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Tony Kaye"
+                        },
+                        "actors": [
+                            {
+                                "name": "Edward Norton",
+                                "character": "Derek Vinyard"
+                            },
+                            {
+                                "name": "Edward Furlong",
+                                "character": "Danny Vinyard"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar Nomination: Best Actor"
+                        ]
+                    },
+                    {
+                        "id": "28",
+                        "title": "Spirited Away",
+                        "year": 2001,
+                        "runtime": 125,
+                        "genres": [
+                            "Animation",
+                            "Adventure",
+                            "Family"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "Hayao Miyazaki"
+                        },
+                        "actors": [
+                            {
+                                "name": "Rumi Hiiragi",
+                                "character": "Chihiro (voice)"
+                            },
+                            {
+                                "name": "Miyu Irino",
+                                "character": "Haku (voice)"
+                            }
+                        ],
+                        "languages": [
+                            "Japanese"
+                        ],
+                        "awards": [
+                            "Oscar: Best Animated Feature"
+                        ]
+                    },
+                    {
+                        "id": "29",
+                        "title": "The Usual Suspects",
+                        "year": 1995,
+                        "runtime": 106,
+                        "genres": [
+                            "Crime",
+                            "Drama",
+                            "Mystery"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Bryan Singer"
+                        },
+                        "actors": [
+                            {
+                                "name": "Kevin Spacey",
+                                "character": "Roger 'Verbal' Kint"
+                            },
+                            {
+                                "name": "Gabriel Byrne",
+                                "character": "Dean Keaton"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Hungarian",
+                            "Spanish",
+                            "French"
+                        ],
+                        "awards": [
+                            "Oscar: Best Supporting Actor",
+                            "Oscar: Best Original Screenplay"
+                        ]
+                    },
+                    {
+                        "id": "30",
+                        "title": "The Lion King",
+                        "year": 1994,
+                        "runtime": 88,
+                        "genres": [
+                            "Animation",
+                            "Adventure",
+                            "Drama"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Roger Allers"
+                        },
+                        "actors": [
+                            {
+                                "name": "Matthew Broderick",
+                                "character": "Simba (voice)"
+                            },
+                            {
+                                "name": "Jeremy Irons",
+                                "character": "Scar (voice)"
+                            },
+                            {
+                                "name": "James Earl Jones",
+                                "character": "Mufasa (voice)"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Original Score",
+                            "Oscar: Best Original Song"
+                        ]
+                    },
+                    {
+                        "id": "31",
+                        "title": "Oppenheimer",
+                        "year": 2023,
+                        "runtime": 180,
+                        "genres": [
+                            "Biography",
+                            "Drama",
+                            "History"
+                        ],
+                        "rating": 8.3,
+                        "director": {
+                            "name": "Christopher Nolan"
+                        },
+                        "actors": [
+                            {
+                                "name": "Cillian Murphy",
+                                "character": "J. Robert Oppenheimer"
+                            },
+                            {
+                                "name": "Emily Blunt",
+                                "character": "Kitty Oppenheimer"
+                            },
+                            {
+                                "name": "Matt Damon",
+                                "character": "Leslie Groves"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Director",
+                            "Oscar: Best Actor"
+                        ]
+                    },
+                    {
+                        "id": "32",
+                        "title": "Avengers: Endgame",
+                        "year": 2019,
+                        "runtime": 181,
+                        "genres": [
+                            "Action",
+                            "Adventure",
+                            "Drama"
+                        ],
+                        "rating": 8.4,
+                        "director": {
+                            "name": "Anthony Russo"
+                        },
+                        "actors": [
+                            {
+                                "name": "Robert Downey Jr.",
+                                "character": "Tony Stark / Iron Man"
+                            },
+                            {
+                                "name": "Chris Evans",
+                                "character": "Steve Rogers / Captain America"
+                            },
+                            {
+                                "name": "Scarlett Johansson",
+                                "character": "Natasha Romanoff / Black Widow"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Japanese"
+                        ],
+                        "awards": []
+                    },
+                    {
+                        "id": "33",
+                        "title": "Spider-Man: Into the Spider-Verse",
+                        "year": 2018,
+                        "runtime": 117,
+                        "genres": [
+                            "Animation",
+                            "Action",
+                            "Adventure"
+                        ],
+                        "rating": 8.4,
+                        "director": {
+                            "name": "Bob Persichetti"
+                        },
+                        "actors": [
+                            {
+                                "name": "Shameik Moore",
+                                "character": "Miles Morales (voice)"
+                            },
+                            {
+                                "name": "Jake Johnson",
+                                "character": "Peter B. Parker (voice)"
+                            },
+                            {
+                                "name": "Hailee Steinfeld",
+                                "character": "Gwen Stacy (voice)"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "Spanish"
+                        ],
+                        "awards": [
+                            "Oscar: Best Animated Feature"
+                        ]
+                    },
+                    {
+                        "id": "34",
+                        "title": "The Shining",
+                        "year": 1980,
+                        "runtime": 146,
+                        "genres": [
+                            "Drama",
+                            "Horror"
+                        ],
+                        "rating": 8.4,
+                        "director": {
+                            "name": "Stanley Kubrick"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jack Nicholson",
+                                "character": "Jack Torrance"
+                            },
+                            {
+                                "name": "Shelley Duvall",
+                                "character": "Wendy Torrance"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": []
+                    },
+                    {
+                        "id": "35",
+                        "title": "Django Unchained",
+                        "year": 2012,
+                        "runtime": 165,
+                        "genres": [
+                            "Drama",
+                            "Western"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Quentin Tarantino"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jamie Foxx",
+                                "character": "Django"
+                            },
+                            {
+                                "name": "Christoph Waltz",
+                                "character": "Dr. King Schultz"
+                            },
+                            {
+                                "name": "Leonardo DiCaprio",
+                                "character": "Calvin Candie"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "German",
+                            "French",
+                            "Italian"
+                        ],
+                        "awards": [
+                            "Oscar: Best Supporting Actor",
+                            "Oscar: Best Original Screenplay"
+                        ]
+                    },
+                    {
+                        "id": "36",
+                        "title": "Joker",
+                        "year": 2019,
+                        "runtime": 122,
+                        "genres": [
+                            "Crime",
+                            "Drama",
+                            "Thriller"
+                        ],
+                        "rating": 8.4,
+                        "director": {
+                            "name": "Todd Phillips"
+                        },
+                        "actors": [
+                            {
+                                "name": "Joaquin Phoenix",
+                                "character": "Arthur Fleck / Joker"
+                            },
+                            {
+                                "name": "Robert De Niro",
+                                "character": "Murray Franklin"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Actor",
+                            "Oscar: Best Original Score"
+                        ]
+                    },
+                    {
+                        "id": "37",
+                        "title": "WALL·E",
+                        "year": 2008,
+                        "runtime": 98,
+                        "genres": [
+                            "Animation",
+                            "Adventure",
+                            "Family"
+                        ],
+                        "rating": 8.4,
+                        "director": {
+                            "name": "Andrew Stanton"
+                        },
+                        "actors": [
+                            {
+                                "name": "Ben Burtt",
+                                "character": "WALL·E (voice)"
+                            },
+                            {
+                                "name": "Elissa Knight",
+                                "character": "EVE (voice)"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Animated Feature"
+                        ]
+                    },
+                    {
+                        "id": "38",
+                        "title": "Inglourious Basterds",
+                        "year": 2009,
+                        "runtime": 153,
+                        "genres": [
+                            "Adventure",
+                            "Drama",
+                            "War"
+                        ],
+                        "rating": 8.4,
+                        "director": {
+                            "name": "Quentin Tarantino"
+                        },
+                        "actors": [
+                            {
+                                "name": "Brad Pitt",
+                                "character": "Lt. Aldo Raine"
+                            },
+                            {
+                                "name": "Christoph Waltz",
+                                "character": "Col. Hans Landa"
+                            },
+                            {
+                                "name": "Mélanie Laurent",
+                                "character": "Shosanna"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "German",
+                            "French",
+                            "Italian"
+                        ],
+                        "awards": [
+                            "Oscar: Best Supporting Actor"
+                        ]
+                    },
+                    {
+                        "id": "39",
+                        "title": "The Grand Budapest Hotel",
+                        "year": 2014,
+                        "runtime": 99,
+                        "genres": [
+                            "Adventure",
+                            "Comedy",
+                            "Crime"
+                        ],
+                        "rating": 8.1,
+                        "director": {
+                            "name": "Wes Anderson"
+                        },
+                        "actors": [
+                            {
+                                "name": "Ralph Fiennes",
+                                "character": "M. Gustave"
+                            },
+                            {
+                                "name": "Tony Revolori",
+                                "character": "Zero Moustafa"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "French"
+                        ],
+                        "awards": [
+                            "Oscar: Best Original Score",
+                            "Oscar: Best Production Design"
+                        ]
+                    },
+                    {
+                        "id": "40",
+                        "title": "Casablanca",
+                        "year": 1942,
+                        "runtime": 102,
+                        "genres": [
+                            "Drama",
+                            "Romance",
+                            "War"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Michael Curtiz"
+                        },
+                        "actors": [
+                            {
+                                "name": "Humphrey Bogart",
+                                "character": "Rick Blaine"
+                            },
+                            {
+                                "name": "Ingrid Bergman",
+                                "character": "Ilsa Lund"
+                            }
+                        ],
+                        "languages": [
+                            "English",
+                            "French",
+                            "German",
+                            "Italian"
+                        ],
+                        "awards": [
+                            "Oscar: Best Picture",
+                            "Oscar: Best Director",
+                            "Oscar: Best Adapted Screenplay"
+                        ]
+                    },
+                    {
+                        "id": "41",
+                        "title": "Cinema Paradiso",
+                        "year": 1988,
+                        "runtime": 155,
+                        "genres": [
+                            "Drama",
+                            "Romance"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Giuseppe Tornatore"
+                        },
+                        "actors": [
+                            {
+                                "name": "Philippe Noiret",
+                                "character": "Alfredo"
+                            },
+                            {
+                                "name": "Enzo Cannavale",
+                                "character": "Spaccafico"
+                            }
+                        ],
+                        "languages": [
+                            "Italian",
+                            "Latin"
+                        ],
+                        "awards": [
+                            "Oscar: Best Foreign Language Film"
+                        ]
+                    },
+                    {
+                        "id": "42",
+                        "title": "Life Is Beautiful",
+                        "year": 1997,
+                        "runtime": 116,
+                        "genres": [
+                            "Comedy",
+                            "Drama",
+                            "Romance"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "Roberto Benigni"
+                        },
+                        "actors": [
+                            {
+                                "name": "Roberto Benigni",
+                                "character": "Guido Orefice"
+                            },
+                            {
+                                "name": "Nicoletta Braschi",
+                                "character": "Dora"
+                            }
+                        ],
+                        "languages": [
+                            "Italian",
+                            "German",
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Actor",
+                            "Oscar: Best Foreign Language Film",
+                            "Oscar: Best Original Score"
+                        ]
+                    },
+                    {
+                        "id": "43",
+                        "title": "The Truman Show",
+                        "year": 1998,
+                        "runtime": 103,
+                        "genres": [
+                            "Comedy",
+                            "Drama",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.2,
+                        "director": {
+                            "name": "Peter Weir"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jim Carrey",
+                                "character": "Truman Burbank"
+                            },
+                            {
+                                "name": "Ed Harris",
+                                "character": "Christof"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": []
+                    },
+                    {
+                        "id": "44",
+                        "title": "Alien",
+                        "year": 1979,
+                        "runtime": 117,
+                        "genres": [
+                            "Horror",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.5,
+                        "director": {
+                            "name": "Ridley Scott"
+                        },
+                        "actors": [
+                            {
+                                "name": "Sigourney Weaver",
+                                "character": "Ellen Ripley"
+                            },
+                            {
+                                "name": "Tom Skerritt",
+                                "character": "Dallas"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Visual Effects"
+                        ]
+                    },
+                    {
+                        "id": "45",
+                        "title": "Toy Story",
+                        "year": 1995,
+                        "runtime": 81,
+                        "genres": [
+                            "Animation",
+                            "Adventure",
+                            "Comedy"
+                        ],
+                        "rating": 8.3,
+                        "director": {
+                            "name": "John Lasseter"
+                        },
+                        "actors": [
+                            {
+                                "name": "Tom Hanks",
+                                "character": "Woody (voice)"
+                            },
+                            {
+                                "name": "Tim Allen",
+                                "character": "Buzz Lightyear (voice)"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Special Achievement Award"
+                        ]
+                    },
+                    {
+                        "id": "46",
+                        "title": "Amélie",
+                        "year": 2001,
+                        "runtime": 122,
+                        "genres": [
+                            "Comedy",
+                            "Romance"
+                        ],
+                        "rating": 8.3,
+                        "director": {
+                            "name": "Jean-Pierre Jeunet"
+                        },
+                        "actors": [
+                            {
+                                "name": "Audrey Tautou",
+                                "character": "Amélie Poulain"
+                            },
+                            {
+                                "name": "Mathieu Kassovitz",
+                                "character": "Nino Quincampoix"
+                            }
+                        ],
+                        "languages": [
+                            "French",
+                            "Russian"
+                        ],
+                        "awards": [
+                            "Oscar Nomination: Best Foreign Language Film"
+                        ]
+                    },
+                    {
+                        "id": "47",
+                        "title": "Eternal Sunshine of the Spotless Mind",
+                        "year": 2004,
+                        "runtime": 108,
+                        "genres": [
+                            "Drama",
+                            "Romance",
+                            "Sci-Fi"
+                        ],
+                        "rating": 8.3,
+                        "director": {
+                            "name": "Michel Gondry"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jim Carrey",
+                                "character": "Joel Barish"
+                            },
+                            {
+                                "name": "Kate Winslet",
+                                "character": "Clementine Kruczynski"
+                            },
+                            {
+                                "name": "Kirsten Dunst",
+                                "character": "Mary Svevo"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Original Screenplay",
+                            "Oscar Nomination: Best Actress"
+                        ]
+                    },
+                    {
+                        "id": "48",
+                        "title": "Se7en",
+                        "year": 1995,
+                        "runtime": 127,
+                        "genres": [
+                            "Crime",
+                            "Drama",
+                            "Mystery"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "David Fincher"
+                        },
+                        "actors": [
+                            {
+                                "name": "Brad Pitt",
+                                "character": "Detective David Mills"
+                            },
+                            {
+                                "name": "Morgan Freeman",
+                                "character": "Detective William Somerset"
+                            },
+                            {
+                                "name": "Kevin Spacey",
+                                "character": "John Doe"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar Nomination: Best Film Editing"
+                        ]
+                    },
+                    {
+                        "id": "49",
+                        "title": "City of God",
+                        "year": 2002,
+                        "runtime": 130,
+                        "genres": [
+                            "Crime",
+                            "Drama"
+                        ],
+                        "rating": 8.6,
+                        "director": {
+                            "name": "Fernando Meirelles"
+                        },
+                        "actors": [
+                            {
+                                "name": "Alexandre Rodrigues",
+                                "character": "Buscapé (Rocket)"
+                            },
+                            {
+                                "name": "Leandro Firmino",
+                                "character": "Zé Pequeno (Lil' Zé)"
+                            },
+                            {
+                                "name": "Phellipe Haagensen",
+                                "character": "Bené"
+                            }
+                        ],
+                        "languages": [
+                            "Portuguese"
+                        ],
+                        "awards": [
+                            "Oscar Nominations: Best Director",
+                            "Oscar Nominations: Best Cinematography",
+                            "Oscar Nominations: Best Adapted Screenplay",
+                            "Oscar Nominations: Best Film Editing"
+                        ]
+                    },
+                    {
+                        "id": "50",
+                        "title": "The Social Network",
+                        "year": 2010,
+                        "runtime": 120,
+                        "genres": [
+                            "Biography",
+                            "Drama"
+                        ],
+                        "rating": 7.8,
+                        "director": {
+                            "name": "David Fincher"
+                        },
+                        "actors": [
+                            {
+                                "name": "Jesse Eisenberg",
+                                "character": "Mark Zuckerberg"
+                            },
+                            {
+                                "name": "Andrew Garfield",
+                                "character": "Eduardo Saverin"
+                            },
+                            {
+                                "name": "Justin Timberlake",
+                                "character": "Sean Parker"
+                            }
+                        ],
+                        "languages": [
+                            "English"
+                        ],
+                        "awards": [
+                            "Oscar: Best Adapted Screenplay",
+                            "Oscar: Best Original Score",
+                            "Oscar: Best Film Editing"
+                        ]
+                    }
+                ],
+                queries: [
+                    {
+                        label: "High rated movies", query: "SELECT c.title, c.rating FROM c WHERE c.rating >= 8.0 ORDER BY c.rating DESC"
+                    },
+                    {
+                        label: "Sci-Fi movies", query: "SELECT c.title, c.year FROM c WHERE ARRAY_CONTAINS(c.genres, 'Sci-Fi')"
+                    },
+                    {
+                        label: "Leonardo DiCaprio movies", query: "SELECT c.title, c.year FROM c WHERE EXISTS(SELECT VALUE a FROM a IN c.actors WHERE a.name = 'Leonardo DiCaprio')"
+                    },
+                    {
+                        label: "Recent movies", query: "SELECT c.title, c.year, c.genres FROM c WHERE c.year >= 2020 ORDER BY c.year DESC"
+                    },
+                    {
+                        label: "Long movies (runtime)", query: "SELECT c.title, c.runtime FROM c WHERE c.runtime > 150 ORDER BY c.runtime DESC"
+                    },
+                    {
+                        label: "Average rating by year", query: "SELECT c.year, AVG(c.rating) as avgRating FROM c GROUP BY c.year ORDER BY c.year DESC"
+                    }
                 ]
             },
             custom: {
