@@ -566,6 +566,8 @@
         let currentShareUrl = '';
         let originalData = '';
         let lastSelectedPreset = 'simple'; // Track last non-custom preset
+        let currentDatasetKey = 'simple'; // Track currently loaded dataset
+        let originalPresetData = null; // Store original preset data for comparison
 
         // Load preset dataset (from external JSON files)
         async function loadPresetDataset() {
@@ -622,6 +624,10 @@
             // Update dataset info
             const infoDiv = document.getElementById('dataset-info');
             infoDiv.innerHTML = dataset.description;
+
+            // Store current dataset info for smart URL sharing
+            currentDatasetKey = datasetKey;
+            originalPresetData = dataset.data;
 
             // Load preset data
             const prettyData = JSON.stringify(dataset.data, null, 2);
@@ -904,12 +910,6 @@
                 return;
             }
 
-            // Encode query and data as base64
-            const payload = JSON.stringify({ query, data });
-            const encoded = btoa(payload);
-            // URL-encode to prevent + and / characters from being misinterpreted
-            const urlSafeEncoded = encodeURIComponent(encoded);
-
             // Handle both local file:// and http/https protocols
             let baseUrl;
             if (window.location.protocol === 'file:') {
@@ -920,18 +920,36 @@
                 baseUrl = window.location.origin + '/run.html';
             }
 
-            currentShareUrl = baseUrl + '?c=' + urlSafeEncoded;
+            // Smart URL generation: use compact format for unmodified presets
+            const currentData = JSON.parse(data);
+            const dataUnchanged = currentDatasetKey !== 'custom' &&
+                originalPresetData &&
+                JSON.stringify(currentData) === JSON.stringify(originalPresetData);
+
+            if (dataUnchanged) {
+                // SMART: Compact URL with just dataset name + query
+                const encodedQuery = btoa(query);
+                const urlSafeQuery = encodeURIComponent(encodedQuery);
+                currentShareUrl = `${baseUrl}?dataset=${currentDatasetKey}&q=${urlSafeQuery}`;
+                showShareStatus('✓ Share link generated (compact format)', false);
+            } else {
+                // FULL: Include all data (for custom or modified datasets)
+                const payload = JSON.stringify({ query, data });
+                const encoded = btoa(payload);
+                const urlSafeEncoded = encodeURIComponent(encoded);
+                currentShareUrl = baseUrl + '?c=' + urlSafeEncoded;
+
+                // Show warning if URL is too long
+                if (currentShareUrl.length > 2000) {
+                    const sizeKB = (currentShareUrl.length / 1024).toFixed(1);
+                    showShareStatus(`⚠️ Share link generated but URL is very large (${sizeKB} KB) - may not work in all contexts`, true);
+                } else {
+                    showShareStatus('✓ Share link generated and ready to use', false);
+                }
+            }
 
             // Show buttons
             document.getElementById('share-buttons').classList.remove('hidden');
-
-            // Show warning if URL is too long
-            if (currentShareUrl.length > 2000) {
-                const sizeKB = (currentShareUrl.length / 1024).toFixed(1);
-                showShareStatus(`⚠️ Share link generated but URL is very large (${sizeKB} KB) - may not work in all contexts`, true);
-            } else {
-                showShareStatus('✓ Share link generated and ready to use', false);
-            }
         }
 
         function copyShareLink() {
