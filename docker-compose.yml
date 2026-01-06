@@ -59,6 +59,8 @@ services:
       # Static HTML files
       - ./playground.html:/usr/share/nginx/html/playground.html:ro
       - ./run.html:/usr/share/nginx/html/run.html:ro
+      # Dataset JSON files
+      - ./datasets:/usr/share/nginx/html/datasets:ro
       # nginx configuration
       - ./nginx-cosmosdb.conf:/etc/nginx/conf.d/default.conf:ro
     networks:

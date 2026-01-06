@@ -1,0 +1,179 @@
+{
+    "name": "IoT Device Telemetry",
+    "description": "Time-series data from IoT devices including temperature, humidity, and status metrics.",
+    "itemCount": 15,
+    "data": [
+        {
+            "id": "1",
+            "deviceId": "sensor-001",
+            "location": "Building-A-Floor-1",
+            "temperature": 22.5,
+            "humidity": 45,
+            "status": "online",
+            "batteryLevel": 85,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "2",
+            "deviceId": "sensor-002",
+            "location": "Building-A-Floor-1",
+            "temperature": 23.1,
+            "humidity": 42,
+            "status": "online",
+            "batteryLevel": 92,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "3",
+            "deviceId": "sensor-003",
+            "location": "Building-A-Floor-2",
+            "temperature": 21.8,
+            "humidity": 48,
+            "status": "online",
+            "batteryLevel": 78,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "4",
+            "deviceId": "sensor-004",
+            "location": "Building-B-Floor-1",
+            "temperature": 24.2,
+            "humidity": 38,
+            "status": "warning",
+            "batteryLevel": 15,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "5",
+            "deviceId": "sensor-005",
+            "location": "Building-B-Floor-2",
+            "temperature": 22.0,
+            "humidity": 50,
+            "status": "online",
+            "batteryLevel": 88,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "6",
+            "deviceId": "sensor-006",
+            "location": "Building-C-Floor-1",
+            "temperature": 19.5,
+            "humidity": 55,
+            "status": "offline",
+            "batteryLevel": 0,
+            "timestamp": "2024-01-15T09:15:00Z"
+        },
+        {
+            "id": "7",
+            "deviceId": "sensor-007",
+            "location": "Building-C-Floor-2",
+            "temperature": 23.8,
+            "humidity": 44,
+            "status": "online",
+            "batteryLevel": 95,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "8",
+            "deviceId": "sensor-008",
+            "location": "Building-A-Floor-3",
+            "temperature": 22.3,
+            "humidity": 46,
+            "status": "online",
+            "batteryLevel": 82,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "9",
+            "deviceId": "sensor-009",
+            "location": "Building-B-Floor-3",
+            "temperature": 25.1,
+            "humidity": 35,
+            "status": "warning",
+            "batteryLevel": 18,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "10",
+            "deviceId": "sensor-010",
+            "location": "Building-C-Floor-3",
+            "temperature": 21.2,
+            "humidity": 52,
+            "status": "online",
+            "batteryLevel": 90,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "11",
+            "deviceId": "sensor-011",
+            "location": "Building-A-Floor-2",
+            "temperature": 23.5,
+            "humidity": 40,
+            "status": "online",
+            "batteryLevel": 76,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "12",
+            "deviceId": "sensor-012",
+            "location": "Building-B-Floor-2",
+            "temperature": 22.7,
+            "humidity": 47,
+            "status": "online",
+            "batteryLevel": 84,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "13",
+            "deviceId": "sensor-013",
+            "location": "Building-C-Floor-1",
+            "temperature": 20.9,
+            "humidity": 53,
+            "status": "online",
+            "batteryLevel": 91,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "14",
+            "deviceId": "sensor-014",
+            "location": "Building-A-Floor-1",
+            "temperature": 24.8,
+            "humidity": 36,
+            "status": "online",
+            "batteryLevel": 87,
+            "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+            "id": "15",
+            "deviceId": "sensor-015",
+            "location": "Building-B-Floor-1",
+            "temperature": 21.6,
+            "humidity": 49,
+            "status": "offline",
+            "batteryLevel": 5,
+            "timestamp": "2024-01-15T08:45:00Z"
+        }
+    ],
+    "queries": [
+        {
+            "label": "All online devices",
+            "query": "SELECT * FROM c WHERE c.status = 'online'"
+        },
+        {
+            "label": "Low battery (<20%)",
+            "query": "SELECT c.deviceId, c.location, c.batteryLevel FROM c WHERE c.batteryLevel < 20"
+        },
+        {
+            "label": "Temp > 24°C",
+            "query": "SELECT c.deviceId, c.temperature FROM c WHERE c.temperature > 24"
+        },
+        {
+            "label": "Avg temp by building",
+            "query": "SELECT SUBSTRING(c.location, 0, 10) as building, AVG(c.temperature) as avgTemp FROM c GROUP BY SUBSTRING(c.location, 0, 10)"
+        },
+        {
+            "label": "Devices needing attention",
+            "query": "SELECT * FROM c WHERE c.status IN ('offline', 'warning') OR c.batteryLevel < 20"
+        }
+    ]
+}

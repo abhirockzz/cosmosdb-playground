@@ -1,0 +1,289 @@
+{
+    "name": "E-commerce Products",
+    "description": "Product catalog with nested objects, arrays, and complex queries. Includes inventory, specs, and reviews.",
+    "itemCount": 10,
+    "data": [
+        {
+            "id": "1",
+            "name": "Laptop Pro 15",
+            "category": "Electronics",
+            "price": 1299.99,
+            "inStock": true,
+            "inventory": 45,
+            "tags": [
+                "computers",
+                "productivity",
+                "premium"
+            ],
+            "specs": {
+                "cpu": "Intel i7",
+                "ram": "16GB",
+                "storage": "512GB SSD"
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Excellent performance"
+                },
+                {
+                    "rating": 4,
+                    "comment": "Great but pricey"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "name": "Wireless Mouse",
+            "category": "Electronics",
+            "price": 29.99,
+            "inStock": true,
+            "inventory": 150,
+            "tags": [
+                "accessories",
+                "wireless"
+            ],
+            "specs": {
+                "connectivity": "Bluetooth 5.0",
+                "battery": "AA"
+            },
+            "reviews": [
+                {
+                    "rating": 4,
+                    "comment": "Comfortable grip"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "name": "Office Chair Deluxe",
+            "category": "Furniture",
+            "price": 349.99,
+            "inStock": false,
+            "inventory": 0,
+            "tags": [
+                "office",
+                "ergonomic",
+                "premium"
+            ],
+            "specs": {
+                "material": "Leather",
+                "adjustable": true,
+                "warranty": "5 years"
+            },
+            "reviews": []
+        },
+        {
+            "id": "4",
+            "name": "USB-C Hub",
+            "category": "Electronics",
+            "price": 49.99,
+            "inStock": true,
+            "inventory": 200,
+            "tags": [
+                "accessories",
+                "connectivity"
+            ],
+            "specs": {
+                "ports": 7,
+                "hdmi": true
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Essential for my laptop"
+                },
+                {
+                    "rating": 5,
+                    "comment": "Works perfectly"
+                },
+                {
+                    "rating": 3,
+                    "comment": "Gets a bit warm"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "name": "Standing Desk",
+            "category": "Furniture",
+            "price": 599.99,
+            "inStock": true,
+            "inventory": 12,
+            "tags": [
+                "office",
+                "ergonomic",
+                "adjustable"
+            ],
+            "specs": {
+                "height_range": "29-49 inches",
+                "motor": "dual",
+                "weight_capacity": "275 lbs"
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Changed my work life!"
+                },
+                {
+                    "rating": 4,
+                    "comment": "Sturdy and quiet"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "name": "4K Monitor",
+            "category": "Electronics",
+            "price": 449.99,
+            "inStock": true,
+            "inventory": 30,
+            "tags": [
+                "display",
+                "premium"
+            ],
+            "specs": {
+                "resolution": "3840x2160",
+                "size": "27 inches",
+                "refresh_rate": "60Hz"
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Crystal clear display"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "name": "Mechanical Keyboard",
+            "category": "Electronics",
+            "price": 129.99,
+            "inStock": true,
+            "inventory": 75,
+            "tags": [
+                "accessories",
+                "gaming",
+                "productivity"
+            ],
+            "specs": {
+                "switches": "Cherry MX Blue",
+                "backlight": "RGB",
+                "wireless": false
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Best typing experience"
+                },
+                {
+                    "rating": 4,
+                    "comment": "A bit loud"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "name": "Desk Lamp LED",
+            "category": "Furniture",
+            "price": 39.99,
+            "inStock": true,
+            "inventory": 120,
+            "tags": [
+                "office",
+                "lighting"
+            ],
+            "specs": {
+                "brightness": "800 lumens",
+                "color_temp": "adjustable",
+                "usb_port": true
+            },
+            "reviews": [
+                {
+                    "rating": 4,
+                    "comment": "Great value"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "name": "Webcam HD",
+            "category": "Electronics",
+            "price": 79.99,
+            "inStock": true,
+            "inventory": 60,
+            "tags": [
+                "video",
+                "accessories"
+            ],
+            "specs": {
+                "resolution": "1080p",
+                "fps": 30,
+                "autofocus": true
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Clear video quality"
+                },
+                {
+                    "rating": 4,
+                    "comment": "Good for video calls"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "name": "Noise Cancelling Headphones",
+            "category": "Electronics",
+            "price": 299.99,
+            "inStock": true,
+            "inventory": 40,
+            "tags": [
+                "audio",
+                "wireless",
+                "premium"
+            ],
+            "specs": {
+                "battery": "30 hours",
+                "anc": true,
+                "bluetooth": "5.1"
+            },
+            "reviews": [
+                {
+                    "rating": 5,
+                    "comment": "Incredible sound quality"
+                },
+                {
+                    "rating": 5,
+                    "comment": "Best ANC I've tried"
+                },
+                {
+                    "rating": 4,
+                    "comment": "Expensive but worth it"
+                }
+            ]
+        }
+    ],
+    "queries": [
+        {
+            "label": "In stock items",
+            "query": "SELECT c.name, c.price FROM c WHERE c.inStock = true"
+        },
+        {
+            "label": "Electronics under $100",
+            "query": "SELECT * FROM c WHERE c.category = 'Electronics' AND c.price < 100"
+        },
+        {
+            "label": "Items with premium tag",
+            "query": "SELECT c.name, c.price FROM c WHERE ARRAY_CONTAINS(c.tags, 'premium')"
+        },
+        {
+            "label": "Avg price by category",
+            "query": "SELECT c.category, AVG(c.price) as avgPrice FROM c GROUP BY c.category"
+        },
+        {
+            "label": "Highly rated (>4 stars)",
+            "query": "SELECT c.name, c.reviews FROM c WHERE EXISTS(SELECT VALUE r FROM r IN c.reviews WHERE r.rating >= 5)"
+        }
+    ]
+}

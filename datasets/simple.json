@@ -1,0 +1,43 @@
+{
+    "name": "Simple Demo",
+    "description": "Basic user records with name, city, and age. Perfect for learning SQL query basics.",
+    "itemCount": 3,
+    "data": [
+        {
+            "id": "1",
+            "name": "Alice",
+            "city": "New York",
+            "age": 30
+        },
+        {
+            "id": "2",
+            "name": "Bob",
+            "city": "London",
+            "age": 25
+        },
+        {
+            "id": "3",
+            "name": "Charlie",
+            "city": "London",
+            "age": 35
+        }
+    ],
+    "queries": [
+        {
+            "label": "All users",
+            "query": "SELECT * FROM c"
+        },
+        {
+            "label": "Filter by city",
+            "query": "SELECT * FROM c WHERE c.city = 'London'"
+        },
+        {
+            "label": "Age > 25",
+            "query": "SELECT c.name, c.age FROM c WHERE c.age > 25"
+        },
+        {
+            "label": "Order by age",
+            "query": "SELECT * FROM c ORDER BY c.age DESC"
+        }
+    ]
+}
