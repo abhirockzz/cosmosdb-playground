@@ -11,6 +11,9 @@
     <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/settings.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.css" />
 
+    <!-- Pako for compression -->
+    <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -931,21 +934,28 @@
                 const encodedQuery = btoa(query);
                 const urlSafeQuery = encodeURIComponent(encodedQuery);
                 currentShareUrl = `${baseUrl}?dataset=${currentDatasetKey}&q=${urlSafeQuery}`;
-                showShareStatus('✓ Share link generated (compact format)', false);
+                //showShareStatus('✓ Share link generated (compact format)', false);
+                showShareStatus('✓ Share link generated', false);
             } else {
-                // FULL: Include all data (for custom or modified datasets)
+                // COMPRESSED: Use gzip compression + URL fragment for custom/modified datasets
                 const payload = JSON.stringify({ query, data });
-                const encoded = btoa(payload);
-                const urlSafeEncoded = encodeURIComponent(encoded);
-                currentShareUrl = baseUrl + '?c=' + urlSafeEncoded;
 
-                // Show warning if URL is too long
-                if (currentShareUrl.length > 2000) {
-                    const sizeKB = (currentShareUrl.length / 1024).toFixed(1);
-                    showShareStatus(`⚠️ Share link generated but URL is very large (${sizeKB} KB) - may not work in all contexts`, true);
-                } else {
-                    showShareStatus('✓ Share link generated and ready to use', false);
-                }
+                // Compress with pako
+                const compressed = pako.gzip(payload);
+
+                // Convert to base64
+                const base64 = btoa(String.fromCharCode.apply(null, compressed));
+                const urlSafe = encodeURIComponent(base64);
+
+                // Use fragment (#) instead of query (?) to avoid server URL limits
+                currentShareUrl = `${baseUrl}#c=${urlSafe}`;
+
+                const originalSize = (payload.length / 1024).toFixed(1);
+                const compressedSize = (currentShareUrl.length / 1024).toFixed(1);
+                const ratio = ((1 - compressed.length / payload.length) * 100).toFixed(0);
+
+                //showShareStatus(`✓ Share link generated (${originalSize} KB → ${compressedSize} KB, ${ratio}% compression)`, false);
+                showShareStatus(`✓ Share link generated`, false);
             }
 
             // Show buttons

@@ -11,6 +11,9 @@
     <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/settings.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.css" />
 
+    <!-- Pako for decompression -->
+    <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -491,12 +494,14 @@
         // Parse URL and load data asynchronously
         (async function () {
             const urlParams = new URLSearchParams(window.location.search);
+            const fragment = window.location.hash.substring(1); // Remove the # character
+            const fragmentParams = new URLSearchParams(fragment);
 
             const dataset = urlParams.get('dataset');
             const queryParam = urlParams.get('q');
 
             if (dataset && queryParam) {
-                // New smart format - load dataset from external file
+                // Smart format - load dataset from external file
                 try {
                     // Decode query
                     const urlDecoded = decodeURIComponent(queryParam);
@@ -524,24 +529,63 @@
                     return; // Don't proceed to loadCode
                 }
             } else {
-                // Try base64 format (?c=...)
-                const encoded = urlParams.get('c');
-                if (encoded) {
-                    // New base64 format
+                // Check for compressed format in fragment (#c=...)
+                const compressedFragment = fragmentParams.get('c');
+
+                if (compressedFragment) {
+                    // New compressed format with URL fragment
                     try {
-                        // URL-decode first to restore + and / characters
-                        const urlDecoded = decodeURIComponent(encoded);
-                        const decoded = atob(urlDecoded);
-                        const payload = JSON.parse(decoded);
+                        // URL-decode
+                        const urlDecoded = decodeURIComponent(compressedFragment);
+
+                        // Base64 decode
+                        const binaryString = atob(urlDecoded);
+                        const bytes = new Uint8Array(binaryString.length);
+                        for (let i = 0; i < binaryString.length; i++) {
+                            bytes[i] = binaryString.charCodeAt(i);
+                        }
+
+                        // Decompress with pako
+                        const decompressed = pako.ungzip(bytes, { to: 'string' });
+
+                        // Parse payload
+                        const payload = JSON.parse(decompressed);
                         query = payload.query;
                         data = payload.data;
                     } catch (e) {
-                        console.error('Failed to decode base64 parameter:', e);
+                        console.error('Failed to decompress fragment data:', e);
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', () => {
+                                document.getElementById('loading').style.display = 'none';
+                                document.getElementById('content').style.display = 'block';
+                                showError('⚠️ Failed to load shared link. The link may be corrupted or invalid.');
+                            });
+                        } else {
+                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('content').style.display = 'block';
+                            showError('⚠️ Failed to load shared link. The link may be corrupted or invalid.');
+                        }
+                        return;
                     }
                 } else {
-                    // Old format (backward compatibility)
-                    query = urlParams.get('query');
-                    data = urlParams.get('data');
+                    // Try base64 format (?c=...) - backward compatibility
+                    const encoded = urlParams.get('c');
+                    if (encoded) {
+                        try {
+                            // URL-decode first to restore + and / characters
+                            const urlDecoded = decodeURIComponent(encoded);
+                            const decoded = atob(urlDecoded);
+                            const payload = JSON.parse(decoded);
+                            query = payload.query;
+                            data = payload.data;
+                        } catch (e) {
+                            console.error('Failed to decode base64 parameter:', e);
+                        }
+                    } else {
+                        // Old format (backward compatibility)
+                        query = urlParams.get('query');
+                        data = urlParams.get('data');
+                    }
                 }
             }
 
