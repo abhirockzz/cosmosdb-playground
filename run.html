@@ -14,111 +14,235 @@
     <!-- Pako for decompression -->
     <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js"></script>
 
+    <!-- Prism.js for SQL syntax highlighting -->
+    <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism.min.css" />
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-sql.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8f9fa;
+            --color-border: #e1e4e8;
+            --color-border-hover: #c4c8cc;
+            --color-text: #24292e;
+            --color-text-secondary: #586069;
+            --color-text-muted: #6a737d;
+            --color-accent: #0366d6;
+            --color-accent-hover: #0255b3;
+            --color-success: #28a745;
+            --color-success-bg: #d4edda;
+            --color-error: #d73a49;
+            --color-error-bg: #ffeef0;
+            --color-warning: #f9c513;
+            --color-warning-bg: #fff8dd;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --transition: all 0.2s ease;
+        }
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 900px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: var(--color-bg-alt);
+            max-width: 960px;
             margin: 0 auto;
-            padding: 0 20px;
-            background: #f5f7fa;
+            padding: 0 24px 48px;
+            font-size: 15px;
         }
 
         .top-nav {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 16px 0;
-            margin-bottom: 20px;
+            padding: 20px 0;
+            margin-bottom: 32px;
         }
 
         .github-button {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            color: #2d3748;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            color: var(--color-text);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
         }
 
         .github-button:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: var(--color-bg);
+            border-color: var(--color-border-hover);
+            box-shadow: var(--shadow-md);
         }
 
         .github-icon {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: var(--color-bg);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
         h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
+            color: var(--color-text);
+            margin-bottom: 12px;
+            font-size: 28px;
+            font-weight: 700;
             text-align: center;
+            letter-spacing: -0.02em;
         }
 
         h2 {
-            color: #4a5568;
+            color: var(--color-text);
             margin-top: 40px;
             margin-bottom: 16px;
             font-size: 20px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--color-accent-hover);
         }
 
         .subtitle {
-            color: #666;
-            margin-bottom: 30px;
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
             font-size: 14px;
         }
 
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 32px;
         }
 
         pre {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 4px;
+            background: var(--color-bg-alt);
+            padding: 16px;
+            border-radius: var(--radius-md);
             overflow-x: auto;
+            margin: 16px 0;
+            border: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        /* Copy button for code blocks */
+        .code-block-wrapper {
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .code-block-wrapper pre {
             margin: 0;
         }
 
+        .copy-code-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.7;
+            font-family: inherit;
+            z-index: 10;
+        }
+
+        .copy-code-button:hover {
+            opacity: 1;
+            background: var(--color-bg-alt);
+            border-color: var(--color-border-hover);
+        }
+
+        .copy-code-button.copied {
+            color: var(--color-success);
+            border-color: var(--color-success);
+        }
+
+        .copy-code-button svg {
+            width: 14px;
+            height: 14px;
+        }
+
         code {
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             font-size: 13px;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+        }
+
+        code:not(pre code) {
+            background: var(--color-bg-alt);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            font-size: 0.9em;
         }
 
         .data-display {
-            max-height: 300px;
+            max-height: 320px;
             overflow-y: auto;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
         }
 
         .error-message {
-            background: #fef0f0;
-            border: 1px solid #dc3545;
-            padding: 15px;
-            border-radius: 4px;
-            color: #721c24;
-            margin-bottom: 20px;
+            background: var(--color-error-bg);
+            border: 1px solid var(--color-error);
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            color: var(--color-error);
+            margin-bottom: 24px;
+            line-height: 1.5;
         }
 
         .header-actions {
@@ -129,148 +253,205 @@
         }
 
         .create-link {
-            color: #0078d4;
-            text-decoration: none;
+            color: var(--color-accent);
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .create-link:hover {
-            text-decoration: underline;
+            color: var(--color-accent-hover);
         }
 
         .powered-by {
             text-align: center;
-            font-size: 14px;
-            color: #64748b;
-            margin-top: 8px;
-            margin-bottom: 24px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+            margin-top: 12px;
+            margin-bottom: 32px;
+            line-height: 1.6;
         }
 
         .powered-by a {
-            color: #0078d4;
-            text-decoration: none;
             font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .powered-by a:hover {
-            color: #005a9e;
-            text-decoration: underline;
         }
 
         .info-box {
-            background: #f0f9ff;
-            border-left: 3px solid #0078d4;
-            padding: 12px 15px;
+            background: rgba(3, 102, 214, 0.05);
+            border-left: 3px solid var(--color-accent);
+            padding: 12px 16px;
             margin-bottom: 20px;
             font-size: 14px;
-            color: #014361;
+            color: var(--color-text-secondary);
+            border-radius: var(--radius-md);
+            line-height: 1.6;
         }
 
         .loading {
             text-align: center;
-            padding: 40px;
-            color: #666;
+            padding: 48px;
+            color: var(--color-text-secondary);
         }
 
         .data-editor-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin: 24px 0;
+            padding: 0;
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
         }
 
         .data-textarea {
             width: 100%;
-            min-height: 200px;
-            font-family: 'Monaco', 'Menlo', monospace;
+            min-height: 240px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             font-size: 13px;
+            line-height: 1.6;
             padding: 16px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            background: #f7fafc;
+            border: none;
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-bg);
+            color: var(--color-text);
             resize: vertical;
             box-sizing: border-box;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
 
         .data-textarea:focus {
             outline: none;
-            border-color: #0078d4;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+            background: var(--color-bg);
         }
 
         .apply-button {
-            background: #0078d4;
+            background: var(--color-accent);
             color: white;
             border: none;
             padding: 10px 20px;
-            border-radius: 6px;
+            margin: 16px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
-            margin-top: 12px;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .apply-button:hover {
-            background: #005a9e;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+        .apply-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .apply-button:hover:not(:disabled) {
+            background: var(--color-accent-hover);
         }
 
         .apply-button:disabled {
-            background: #ccc;
+            background: var(--color-border);
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .data-textarea.modified {
-            border-color: #ffb900;
-            border-width: 2px;
+            border-left: 3px solid var(--color-warning);
+            padding-left: 13px;
         }
 
         .status-message {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 4px;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
             font-size: 14px;
+            line-height: 1.5;
+            border: 1px solid transparent;
         }
 
         .status-message.success {
-            background: #d4edda;
-            color: #155724;
+            background: var(--color-success-bg);
+            color: var(--color-success);
+            border-color: var(--color-success);
         }
 
         .status-message.error {
-            background: #f8d7da;
-            color: #721c24;
+            background: var(--color-error-bg);
+            color: var(--color-error);
+            border-color: var(--color-error);
         }
 
         .hidden {
             display: none;
         }
 
-        footer {
-            margin-top: 60px;
-            padding: 30px 0;
-            border-top: 1px solid #e2e8f0;
-            text-align: center;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-message:not(.hidden) {
+            animation: fadeIn 0.2s ease;
+        }
+
+        details {
+            margin: 16px 0;
+            padding: 16px;
+            background: var(--color-bg-alt);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-text);
+            user-select: none;
+        }
+
+        details summary:hover {
+            color: var(--color-accent);
+        }
+
+        details p {
+            margin-top: 12px;
+            margin-bottom: 8px;
             font-size: 14px;
-            color: #64748b;
         }
 
-        footer a {
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
+        footer {
+            margin-top: 64px;
+            padding: 32px 0;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            font-size: 13px;
+            color: var(--color-text-muted);
         }
 
-        footer a:hover {
-            text-decoration: underline;
+        @media (max-width: 768px) {
+            body {
+                padding: 0 16px 32px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 18px;
+                margin-top: 32px;
+            }
         }
     </style>
 </head>
@@ -349,8 +530,10 @@
             <div class="data-editor-section">
                 <textarea id="data-textarea" class="data-textarea" placeholder="JSON data will load here..."
                     oninput="handleDataEdit()"></textarea>
-                <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>Apply
-                    Changes</button>
+                <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>
+                    <i data-lucide="check"></i>
+                    Apply Changes
+                </button>
                 <div id="data-status" class="status-message hidden"></div>
             </div>
         </div>
@@ -491,6 +674,36 @@
             }, 3000);
         }
 
+        // Copy code from code block
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const code = codeElement.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                // Find the button and show feedback
+                const button = event.target.closest('.copy-code-button');
+                const originalHTML = button.innerHTML;
+
+                button.innerHTML = '<i data-lucide="check"></i> Copied!';
+                button.classList.add('copied');
+
+                // Re-initialize Lucide icons for the new icon
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+            });
+        }
+
         // Parse URL and load data asynchronously
         (async function () {
             const urlParams = new URLSearchParams(window.location.search);
@@ -596,6 +809,18 @@
                 loadCode();
             }
         })();
+
+        // Apply syntax highlighting after code is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
     </script>
 
 </body>

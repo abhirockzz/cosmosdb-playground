@@ -14,396 +14,592 @@
     <!-- Pako for compression -->
     <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js"></script>
 
+    <!-- Prism.js for SQL syntax highlighting -->
+    <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism.min.css" />
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.29.0/components/prism-sql.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8f9fa;
+            --color-border: #e1e4e8;
+            --color-border-hover: #c4c8cc;
+            --color-text: #24292e;
+            --color-text-secondary: #586069;
+            --color-text-muted: #6a737d;
+            --color-accent: #0366d6;
+            --color-accent-hover: #0255b3;
+            --color-success: #28a745;
+            --color-success-bg: #d4edda;
+            --color-error: #d73a49;
+            --color-error-bg: #ffeef0;
+            --color-warning: #f9c513;
+            --color-warning-bg: #fff8dd;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --transition: all 0.2s ease;
+        }
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 900px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: var(--color-bg-alt);
+            max-width: 960px;
             margin: 0 auto;
-            padding: 0 20px;
-            background: #fafbfc;
+            padding: 0 24px 48px;
+            font-size: 15px;
         }
 
         .top-nav {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 16px 0;
-            margin-bottom: 20px;
+            padding: 20px 0;
+            margin-bottom: 32px;
         }
 
         .github-button {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            color: #2d3748;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            color: var(--color-text);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
         }
 
         .github-button:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: var(--color-bg);
+            border-color: var(--color-border-hover);
+            box-shadow: var(--shadow-md);
         }
 
         .github-icon {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
         h1 {
-            color: #2d3748;
+            color: var(--color-text);
             text-align: center;
-            font-size: 32px;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
             margin-bottom: 8px;
+            line-height: 1.2;
         }
 
         h2 {
-            color: #4a5568;
-            margin-top: 40px;
+            color: var(--color-text);
+            margin-top: 48px;
             margin-bottom: 16px;
-            font-size: 20px;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            color: var(--color-text);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--color-accent-hover);
         }
 
         pre {
-            background: white;
+            background: var(--color-bg);
             padding: 16px;
-            border-radius: 6px;
+            border-radius: var(--radius-md);
             overflow-x: auto;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            margin: 16px 0;
+            position: relative;
         }
 
         code {
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+        }
+
+        code:not(pre code) {
+            background: var(--color-bg-alt);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            font-size: 0.9em;
         }
 
         .dataset-selector-section {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
             padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.2s ease;
+            margin: 24px 0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
 
         .dataset-selector-section:hover {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
         }
 
         .dataset-selector-section label {
             display: block;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 15px;
+            color: var(--color-text);
+            margin-bottom: 10px;
+            font-size: 14px;
         }
 
         .dataset-selector-section select {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 12px;
             font-size: 14px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            background: #f7fafc;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
             cursor: pointer;
-            font-family: system-ui, -apple-system, sans-serif;
-            transition: all 0.2s ease;
+            font-family: inherit;
+            transition: var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23586069' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
         }
 
         .dataset-selector-section select:hover {
-            border-color: #0078d4;
-            background: white;
+            border-color: var(--color-border-hover);
         }
 
         .dataset-selector-section select:focus {
             outline: none;
-            border-color: #0078d4;
-            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
-            background: white;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
         }
 
         .dataset-info {
-            margin-top: 14px;
-            padding: 14px;
-            background: #f7fafc;
-            border-radius: 6px;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--color-bg-alt);
+            border-radius: var(--radius-md);
             font-size: 13px;
             line-height: 1.6;
-            color: #4a5568;
-            border: 1px solid #e2e8f0;
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
         }
 
         .dataset-info strong {
-            color: #0078d4;
+            color: var(--color-accent);
+            font-weight: 600;
         }
 
         .file-upload-section {
-            background: white;
-            border: 2px dashed #cbd5e0;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
+            background: var(--color-bg);
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .file-upload-section:hover {
+            border-color: var(--color-border-hover);
+            background: var(--color-bg-alt);
+        }
+
+        .file-upload-section.drag-over {
+            border-color: var(--color-accent);
+            background: rgba(3, 102, 214, 0.05);
         }
 
         .file-upload-section input[type="file"] {
-            margin-right: 10px;
+            margin-right: 12px;
+            font-size: 14px;
         }
 
         .file-upload-section button {
-            background: #0078d4;
+            background: var(--color-accent);
             color: white;
             border: none;
-            padding: 10px 18px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.2s ease;
             font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-upload-section button svg {
+            width: 16px;
+            height: 16px;
         }
 
         .file-upload-section button:hover {
-            background: #005a9e;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+            background: var(--color-accent-hover);
         }
 
         .file-upload-section button:disabled {
-            background: #ccc;
+            background: var(--color-border);
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .status-message {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 4px;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
             font-size: 14px;
+            line-height: 1.5;
+            border: 1px solid transparent;
         }
 
         .status-message.success {
-            background: #d4edda;
-            color: #155724;
+            background: var(--color-success-bg);
+            color: var(--color-success);
+            border-color: var(--color-success);
         }
 
         .status-message.error {
-            background: #f8d7da;
-            color: #721c24;
+            background: var(--color-error-bg);
+            color: var(--color-error);
+            border-color: var(--color-error);
         }
 
         .hidden {
             display: none;
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-message:not(.hidden) {
+            animation: fadeIn 0.2s ease;
+        }
+
         .share-section {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
             padding: 24px;
-            margin: 30px 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin: 32px 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .share-section h3 {
             margin-top: 0;
-            color: #0078d4;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .share-section p {
+            margin-bottom: 16px;
         }
 
         .share-button {
-            background: #0078d4;
+            background: var(--color-accent);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
-            font-weight: 600;
-            margin-right: 10px;
-            transition: all 0.2s ease;
+            font-weight: 500;
+            margin-right: 8px;
+            transition: var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .share-button svg {
+            width: 16px;
+            height: 16px;
         }
 
         .share-button:hover {
-            background: #005a9e;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+            background: var(--color-accent-hover);
         }
 
         .copy-button {
-            background: #f7fafc;
-            color: #2d3748;
-            border: 1px solid #e2e8f0;
-            padding: 8px 16px;
-            border-radius: 6px;
+            background: var(--color-bg);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             font-weight: 500;
+            font-family: inherit;
+            margin-right: 8px;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-button svg {
+            width: 16px;
+            height: 16px;
         }
 
         .copy-button:hover {
-            background: #edf2f7;
-            border-color: #cbd5e0;
-            transform: translateY(-1px);
+            background: var(--color-bg-alt);
+            border-color: var(--color-border-hover);
         }
 
         .info-banner {
-            background: #fff4e5;
-            border-left: 4px solid #ffb900;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
+            background: var(--color-warning-bg);
+            border-left: 3px solid var(--color-warning);
+            padding: 14px 16px;
+            margin-bottom: 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .data-editor-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin: 24px 0;
+            padding: 0;
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
         }
 
         .data-textarea {
             width: 100%;
-            min-height: 200px;
-            font-family: 'Monaco', 'Menlo', monospace;
+            min-height: 240px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             font-size: 13px;
+            line-height: 1.6;
             padding: 16px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            background: #f7fafc;
+            border: none;
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-bg);
+            color: var(--color-text);
             resize: vertical;
             box-sizing: border-box;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
 
         .data-textarea:focus {
             outline: none;
-            border-color: #0078d4;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+            background: var(--color-bg);
         }
 
         .apply-button {
-            background: #0078d4;
+            background: var(--color-accent);
             color: white;
             border: none;
             padding: 10px 20px;
-            border-radius: 6px;
+            margin: 16px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
-            margin-top: 12px;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .apply-button:hover {
-            background: #005a9e;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.3);
+        .apply-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .apply-button:hover:not(:disabled) {
+            background: var(--color-accent-hover);
         }
 
         .apply-button:disabled {
-            background: #ccc;
+            background: var(--color-border);
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .data-textarea.modified {
-            border-color: #ffb900;
-            border-width: 2px;
+            border-left: 3px solid var(--color-warning);
+            padding-left: 13px;
         }
 
         .query-suggestions {
             margin-top: 20px;
             padding: 20px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid #0078d4;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            border-left: 3px solid var(--color-accent);
+            box-shadow: var(--shadow-sm);
         }
 
         .query-suggestions h4 {
             margin-top: 0;
-            margin-bottom: 10px;
-            color: #333;
+            margin-bottom: 12px;
+            color: var(--color-text);
             font-size: 14px;
+            font-weight: 600;
         }
 
         .query-button {
-            background: #f7fafc;
-            color: #0078d4;
-            border: 1px solid #cbd5e0;
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: var(--color-bg-alt);
+            color: var(--color-accent);
+            border: 1px solid var(--color-border);
+            padding: 7px 14px;
+            border-radius: 16px;
             cursor: pointer;
             font-size: 13px;
             margin-right: 8px;
             margin-bottom: 8px;
             display: inline-block;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             font-weight: 500;
+            font-family: inherit;
         }
 
         .query-button:hover {
-            background: #0078d4;
+            background: var(--color-accent);
             color: white;
-            border-color: #0078d4;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.2);
+            border-color: var(--color-accent);
         }
 
         .powered-by {
             text-align: center;
-            font-size: 14px;
-            color: #64748b;
-            margin-top: 8px;
-            margin-bottom: 24px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+            margin-top: 12px;
+            margin-bottom: 32px;
+            line-height: 1.6;
         }
 
         .powered-by a {
-            color: #0078d4;
-            text-decoration: none;
             font-weight: 500;
-            transition: color 0.2s ease;
         }
 
-        .powered-by a:hover {
-            color: #005a9e;
-            text-decoration: underline;
+        details {
+            margin: 16px 0;
+            padding: 16px;
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-text);
+            user-select: none;
+        }
+
+        details summary:hover {
+            color: var(--color-accent);
+        }
+
+        details p {
+            margin-top: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
 
         footer {
-            margin-top: 60px;
-            padding: 30px 0;
-            border-top: 1px solid #e2e8f0;
+            margin-top: 64px;
+            padding: 32px 0;
+            border-top: 1px solid var(--color-border);
             text-align: center;
-            font-size: 14px;
-            color: #64748b;
+            font-size: 13px;
+            color: var(--color-text-muted);
         }
 
-        footer a {
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
-        }
+        @media (max-width: 768px) {
+            body {
+                padding: 0 16px 32px;
+            }
 
-        footer a:hover {
-            text-decoration: underline;
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+                margin-top: 32px;
+            }
+
+            .dataset-selector-section,
+            .data-editor-section,
+            .share-section {
+                padding: 16px;
+            }
+
+            .query-button,
+            .copy-button {
+                margin-bottom: 8px;
+            }
         }
     </style>
 </head>
@@ -501,7 +697,10 @@
     <div id="file-upload-section" class="file-upload-section hidden">
         <div>
             <input type="file" id="data-file-picker" accept=".json,application/json">
-            <button id="load-file-btn" onclick="loadFromFile()">Load from File</button>
+            <button id="load-file-btn" onclick="loadFromFile()">
+                <i data-lucide="upload"></i>
+                Load from File
+            </button>
         </div>
         <div id="status-message" class="status-message hidden"></div>
     </div>
@@ -523,7 +722,10 @@
   {"id": "2", "name": "Bob", "city": "London", "age": 25},
   {"id": "3", "name": "Charlie", "city": "London", "age": 35}
 ]</textarea>
-        <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>Apply Changes</button>
+        <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>
+            <i data-lucide="check"></i>
+            Apply Changes
+        </button>
         <div id="data-status" class="status-message hidden"></div>
     </div>
 
@@ -538,10 +740,19 @@
     <div class="share-section">
         <h3>🔗 Share Your Code</h3>
         <p>Generate a shareable link to this query and data. Perfect for blog posts, articles, or newsletters!</p>
-        <button class="share-button" onclick="generateShareLink()">Generate Share Link</button>
+        <button class="share-button" onclick="generateShareLink()">
+            <i data-lucide="link"></i>
+            Generate Share Link
+        </button>
         <div id="share-buttons" class="hidden" style="margin-top: 10px;">
-            <button class="copy-button" onclick="copyShareLink()">📋 Copy Link</button>
-            <button class="copy-button" onclick="openShareLink()">🚀 Open Link</button>
+            <button class="copy-button" onclick="copyShareLink()">
+                <i data-lucide="copy"></i>
+                Copy Link
+            </button>
+            <button class="copy-button" onclick="openShareLink()">
+                <i data-lucide="external-link"></i>
+                Open Link
+            </button>
         </div>
         <div id="share-status" class="status-message hidden"></div>
     </div>
@@ -989,25 +1200,52 @@
             }, 3000);
         }
 
+        // Copy code from code block
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const code = codeElement.textContent;
+
+            navigator.clipboard.writeText(code).then(() => {
+                // Find the button and show feedback
+                const button = event.target.closest('.copy-code-button');
+                const originalHTML = button.innerHTML;
+
+                button.innerHTML = '<i data-lucide="check"></i> Copied!';
+                button.classList.add('copied');
+
+                // Re-initialize Lucide icons for the new icon
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+            });
+        }
+
         // Enable drag & drop for custom file upload
         const uploadSection = document.getElementById('file-upload-section');
         if (uploadSection) {
             uploadSection.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                uploadSection.style.borderColor = '#0078d4';
-                uploadSection.style.background = '#e6f3ff';
+                uploadSection.classList.add('drag-over');
             });
 
             uploadSection.addEventListener('dragleave', (e) => {
                 e.preventDefault();
-                uploadSection.style.borderColor = '#ccc';
-                uploadSection.style.background = '#f9f9f9';
+                uploadSection.classList.remove('drag-over');
             });
 
             uploadSection.addEventListener('drop', (e) => {
                 e.preventDefault();
-                uploadSection.style.borderColor = '#ccc';
-                uploadSection.style.background = '#f9f9f9';
+                uploadSection.classList.remove('drag-over');
 
                 const file = e.dataTransfer.files[0];
                 if (file) {
@@ -1016,6 +1254,16 @@
                     loadFromFile();
                 }
             });
+        }
+
+        // Apply syntax highlighting to SQL code blocks
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
 
         // Initialize on page load
