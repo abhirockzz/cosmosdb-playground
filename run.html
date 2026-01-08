@@ -6,6 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmos DB Interactive Code</title>
 
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: {
+                            DEFAULT: '#0078d4',
+                            hover: '#106ebe',
+                            light: '#deecf9'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Consolas', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
     <!-- Codapi Widget -->
     <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.js"></script>
     <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/settings.js"></script>
@@ -24,439 +45,27 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        :root {
-            --color-bg: #ffffff;
-            --color-bg-alt: #f8f9fa;
-            --color-border: #e1e4e8;
-            --color-border-hover: #c4c8cc;
-            --color-text: #24292e;
-            --color-text-secondary: #586069;
-            --color-text-muted: #6a737d;
-            --color-accent: #0366d6;
-            --color-accent-hover: #0255b3;
-            --color-success: #28a745;
-            --color-success-bg: #d4edda;
-            --color-error: #d73a49;
-            --color-error-bg: #ffeef0;
-            --color-warning: #f9c513;
-            --color-warning-bg: #fff8dd;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
-            --radius-sm: 4px;
-            --radius-md: 6px;
-            --radius-lg: 8px;
-            --transition: all 0.2s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--color-text);
-            background: var(--color-bg-alt);
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 0 24px 48px;
-            font-size: 15px;
-        }
-
-        .top-nav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 32px;
-        }
-
-        .github-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            color: var(--color-text);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .github-button:hover {
-            background: var(--color-bg);
-            border-color: var(--color-border-hover);
-            box-shadow: var(--shadow-md);
-        }
-
-        .github-icon {
-            width: 16px;
-            height: 16px;
-        }
-
-        .container {
-            background: var(--color-bg);
-            padding: 32px;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-        }
-
-        h1 {
-            color: var(--color-text);
-            margin-bottom: 12px;
-            font-size: 28px;
-            font-weight: 700;
-            text-align: center;
-            letter-spacing: -0.02em;
-        }
-
-        h2 {
-            color: var(--color-text);
-            margin-top: 40px;
-            margin-bottom: 16px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        p {
-            margin-bottom: 16px;
-            line-height: 1.7;
-            color: var(--color-text-secondary);
-        }
-
-        a {
-            color: var(--color-accent);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        a:hover {
-            color: var(--color-accent-hover);
-        }
-
-        .subtitle {
-            color: var(--color-text-secondary);
-            margin-bottom: 24px;
-            font-size: 14px;
-        }
-
-        .section {
-            margin-bottom: 32px;
-        }
-
-        pre {
-            background: var(--color-bg-alt);
-            padding: 16px;
-            border-radius: var(--radius-md);
-            overflow-x: auto;
-            margin: 16px 0;
-            border: 1px solid var(--color-border);
-            position: relative;
-        }
-
-        /* Copy button for code blocks */
-        .code-block-wrapper {
-            position: relative;
-            margin: 16px 0;
-        }
-
-        .code-block-wrapper pre {
-            margin: 0;
-        }
-
-        .copy-code-button {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-sm);
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--color-text-secondary);
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            opacity: 0.7;
-            font-family: inherit;
-            z-index: 10;
-        }
-
-        .copy-code-button:hover {
-            opacity: 1;
-            background: var(--color-bg-alt);
-            border-color: var(--color-border-hover);
-        }
-
-        .copy-code-button.copied {
-            color: var(--color-success);
-            border-color: var(--color-success);
-        }
-
-        .copy-code-button svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        code {
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            border: none;
-        }
-
-        code:not(pre code) {
-            background: var(--color-bg-alt);
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--color-border);
-            font-size: 0.9em;
-        }
-
-        .data-display {
-            max-height: 320px;
-            overflow-y: auto;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-        }
-
-        .error-message {
-            background: var(--color-error-bg);
-            border: 1px solid var(--color-error);
-            padding: 14px 16px;
-            border-radius: var(--radius-md);
-            color: var(--color-error);
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-
-        .header-actions {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .create-link {
-            color: var(--color-accent);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .create-link:hover {
-            color: var(--color-accent-hover);
-        }
-
-        .powered-by {
-            text-align: center;
-            font-size: 13px;
-            color: var(--color-text-muted);
-            margin-top: 12px;
-            margin-bottom: 32px;
-            line-height: 1.6;
-        }
-
-        .powered-by a {
-            font-weight: 500;
-        }
-
-        .info-box {
-            background: rgba(3, 102, 214, 0.05);
-            border-left: 3px solid var(--color-accent);
-            padding: 12px 16px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: var(--color-text-secondary);
-            border-radius: var(--radius-md);
-            line-height: 1.6;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 48px;
-            color: var(--color-text-secondary);
-        }
-
-        .data-editor-section {
-            margin: 24px 0;
-            padding: 0;
-            background: var(--color-bg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-
-        .data-textarea {
-            width: 100%;
-            min-height: 240px;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            padding: 16px;
-            border: none;
-            border-bottom: 1px solid var(--color-border);
-            background: var(--color-bg);
-            color: var(--color-text);
-            resize: vertical;
-            box-sizing: border-box;
-            transition: var(--transition);
-        }
-
-        .data-textarea:focus {
-            outline: none;
-            background: var(--color-bg);
-        }
-
-        .apply-button {
-            background: var(--color-accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 16px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: var(--transition);
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .apply-button svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .apply-button:hover:not(:disabled) {
-            background: var(--color-accent-hover);
-        }
-
-        .apply-button:disabled {
-            background: var(--color-border);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .data-textarea.modified {
-            border-left: 3px solid var(--color-warning);
-            padding-left: 13px;
-        }
-
-        .status-message {
-            margin-top: 12px;
-            padding: 10px 14px;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            line-height: 1.5;
-            border: 1px solid transparent;
-        }
-
-        .status-message.success {
-            background: var(--color-success-bg);
-            color: var(--color-success);
-            border-color: var(--color-success);
-        }
-
-        .status-message.error {
-            background: var(--color-error-bg);
-            color: var(--color-error);
-            border-color: var(--color-error);
-        }
-
-        .hidden {
-            display: none;
-        }
-
+        /* Minimal custom styles */
+        .hidden { display: none !important; }
+        
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-4px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-in { animation: fadeIn 0.2s ease; }
 
-        .status-message:not(.hidden) {
-            animation: fadeIn 0.2s ease;
-        }
+        /* Custom scrollbar for textareas */
+        .data-textarea::-webkit-scrollbar { width: 8px; }
+        .data-textarea::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .data-textarea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .data-textarea::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        details {
-            margin: 16px 0;
-            padding: 16px;
-            background: var(--color-bg-alt);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-border);
-        }
-
-        details summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--color-text);
-            user-select: none;
-        }
-
-        details summary:hover {
-            color: var(--color-accent);
-        }
-
-        details p {
-            margin-top: 12px;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        footer {
-            margin-top: 64px;
-            padding: 32px 0;
-            border-top: 1px solid var(--color-border);
-            text-align: center;
-            font-size: 13px;
-            color: var(--color-text-muted);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 0 16px 32px;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            h2 {
-                font-size: 18px;
-                margin-top: 32px;
-            }
-        }
+        /* Modified indicator for textarea */
+        .data-textarea.modified { border-left: 3px solid #f59e0b; padding-left: 13px; }
     </style>
 </head>
 
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased">
     <script>
         // Auto-detect environment and write codapi-settings element with correct URL
         const isLocal = window.location.hostname === 'localhost' ||
@@ -464,91 +73,131 @@
             window.location.protocol === 'file:';
 
         const codapiUrl = isLocal
-            ? 'http://localhost/v1'  // Use nginx proxy on localhost
+            ? 'http://localhost/v1'
             : `${window.location.protocol}//${window.location.host}/v1`;
 
         document.write('<codapi-settings url="' + codapiUrl + '"></codapi-settings>');
     </script>
 
-    <nav class="top-nav">
-        <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" class="github-button">
-            <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor">
-                <path
-                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
-                </path>
-            </svg>
-            Give a ★
-        </a>
-    </nav>
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- Top Navigation -->
+        <nav class="flex justify-end items-center mb-8">
+            <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" 
+               class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                Star on GitHub
+            </a>
+        </nav>
 
-    <div id="loading" class="loading">
-        <p>Loading code...</p>
-    </div>
-
-    <div id="content" class="container" style="display: none;">
-        <div class="powered-by">
-            <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
-                alt="Azure Cosmos DB" style="height: 20px; vertical-align: middle; margin-right: 8px;">
-            Powered by <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank">Azure Cosmos
-                DB vNext Emulator</a> and <a href="https://codapi.org/" target="_blank">Codapi</a>
-        </div>
-
-        <p style="text-align: center; margin-bottom: 30px; line-height: 1.6; color: #4a5568;">This was generated from
-            the <a href="playground.html" style="color: #0078d4; text-decoration: none; font-weight: 500;">Azure Cosmos
-                DB Playground</a> and is ready to execute. Feel free to
-            modify and test different variations.</p>
-
-        <div id="error-message" class="error-message" style="display: none;"></div>
-
-        <!-- Partition Key Info -->
-        <details
-            style="margin: 0 0 25px 0; padding: 15px; background: #f9f9f9; border-radius: 4px; border: 1px solid #e0e0e0;">
-            <summary style="cursor: pointer; font-weight: 600; color: #555;">
-                About Partition Keys in this Playground
-            </summary>
-            <p style="margin-top: 10px; margin-bottom: 10px; line-height: 1.6;">
-                This playground uses <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/id</code>
-                as
-                the partition key for all queries.
-                This works with any JSON data you upload since the script auto-generates
-                an <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">id</code> field if needed.
-            </p>
-            <p style="margin-bottom: 0; line-height: 1.6;">
-                <strong>In production Cosmos DB:</strong> Choose partition keys based on your
-                query patterns (e.g., <code
-                    style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/tenantId</code>,
-                <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/userId</code>,
-                <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/category</code>).
-                <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank">
-                    Learn more about partition key selection →
-                </a>
-            </p>
-        </details>
-
-        <div class="section">
-            <h2>Sample Data</h2>
-            <div class="data-editor-section">
-                <textarea id="data-textarea" class="data-textarea" placeholder="JSON data will load here..."
-                    oninput="handleDataEdit()"></textarea>
-                <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>
-                    <i data-lucide="check"></i>
-                    Apply Changes
-                </button>
-                <div id="data-status" class="status-message hidden"></div>
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-16">
+            <div class="inline-flex items-center gap-3 text-slate-500">
+                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Loading code...</span>
             </div>
         </div>
 
-        <div class="section">
-            <h2>SQL Query</h2>
-            <!-- Hidden script tag for codapi to reference -->
-            <script id="data.json" type="text/plain"></script>
+        <!-- Main Content (hidden until loaded) -->
+        <div id="content" class="hidden">
+            
+            <!-- Header -->
+            <header class="text-center mb-8">
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
+                         alt="Azure Cosmos DB" class="h-6 w-6">
+                    <p class="text-sm text-slate-500">
+                        Powered by 
+                        <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank" class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a> 
+                        and 
+                        <a href="https://codapi.org/" target="_blank" class="text-accent hover:underline">Codapi</a>
+                    </p>
+                </div>
+                <p class="text-slate-600 text-sm">
+                    This was generated from the 
+                    <a href="playground.html" class="text-accent hover:underline font-medium">Azure Cosmos DB Playground</a> 
+                    and is ready to execute. Feel free to modify and test different variations.
+                </p>
+            </header>
 
-            <!-- Query pre element that codapi will attach to -->
-            <pre><code id="query-code" class="language-sql"></code></pre>
+            <!-- Error Message -->
+            <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm"></div>
 
-            <!-- Codapi Widget -->
-            <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
-            </codapi-snippet>
+            <!-- Main Content Card -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+
+                <!-- Partition Key Info -->
+                <details class="border-b border-slate-100">
+                    <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
+                        ℹ️ About Partition Keys in this Playground
+                    </summary>
+                    <div class="px-6 pb-4 text-sm text-slate-500 space-y-2">
+                        <p>
+                            This playground uses <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
+                            the partition key for all queries. This works with any JSON data since the script auto-generates
+                            an <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field if needed.
+                        </p>
+                        <p>
+                            <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on your
+                            query patterns (e.g., <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
+                            <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/userId</code>).
+                            <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank" class="text-accent hover:underline">
+                                Learn more →
+                            </a>
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Sample Data Section -->
+                <div class="p-6 border-b border-slate-100">
+                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="text-xl">📊</span> Sample Data
+                    </h2>
+                    
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <textarea id="data-textarea" 
+                                  class="data-textarea w-full min-h-[200px] p-4 font-mono text-sm text-slate-700 bg-white border-0 focus:outline-none focus:ring-0 resize-y"
+                                  placeholder="JSON data will load here..."
+                                  oninput="handleDataEdit()"></textarea>
+                        <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
+                            <button id="apply-button" onclick="applyDataChanges()" disabled
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                                Apply Changes
+                            </button>
+                            <div id="data-status" class="hidden text-sm px-3 py-1.5 rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SQL Query Section -->
+                <div class="p-6">
+                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="text-xl">⚡</span> SQL Query
+                    </h2>
+                    
+                    <!-- Hidden script tag for codapi to reference -->
+                    <script id="data.json" type="text/plain"></script>
+
+                    <!-- Query pre element that codapi will attach to -->
+                    <pre class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-code" class="language-sql text-sm"></code></pre>
+
+                    <!-- Codapi Widget -->
+                    <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
+                    </codapi-snippet>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-12 pt-6 border-t border-slate-200 text-center text-sm text-slate-400">
+                <p>Built with ❤️ for the Azure Cosmos DB community</p>
+            </footer>
         </div>
     </div>
 
@@ -560,13 +209,13 @@
         function showError(message) {
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
+            errorDiv.classList.remove('hidden');
         }
 
         function loadCode() {
             // Hide loading, show content
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
 
             // Validate parameters
             if (!query || !data) {
@@ -666,7 +315,8 @@
         function showDataStatus(message, isError = false) {
             const statusDiv = document.getElementById('data-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' + 
+                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
             setTimeout(() => {
@@ -730,13 +380,13 @@
                     // Show error but don't proceed to loadCode
                     if (document.readyState === 'loading') {
                         document.addEventListener('DOMContentLoaded', () => {
-                            document.getElementById('loading').style.display = 'none';
-                            document.getElementById('content').style.display = 'block';
+                            document.getElementById('loading').classList.add('hidden');
+                            document.getElementById('content').classList.remove('hidden');
                             showError(`⚠️ Failed to load dataset "${dataset}". The dataset file may not exist or the link is invalid.`);
                         });
                     } else {
-                        document.getElementById('loading').style.display = 'none';
-                        document.getElementById('content').style.display = 'block';
+                        document.getElementById('loading').classList.add('hidden');
+                        document.getElementById('content').classList.remove('hidden');
                         showError(`⚠️ Failed to load dataset "${dataset}". The dataset file may not exist or the link is invalid.`);
                     }
                     return; // Don't proceed to loadCode
@@ -769,13 +419,13 @@
                         console.error('Failed to decompress fragment data:', e);
                         if (document.readyState === 'loading') {
                             document.addEventListener('DOMContentLoaded', () => {
-                                document.getElementById('loading').style.display = 'none';
-                                document.getElementById('content').style.display = 'block';
+                                document.getElementById('loading').classList.add('hidden');
+                                document.getElementById('content').classList.remove('hidden');
                                 showError('⚠️ Failed to load shared link. The link may be corrupted or invalid.');
                             });
                         } else {
-                            document.getElementById('loading').style.display = 'none';
-                            document.getElementById('content').style.display = 'block';
+                            document.getElementById('loading').classList.add('hidden');
+                            document.getElementById('content').classList.remove('hidden');
                             showError('⚠️ Failed to load shared link. The link may be corrupted or invalid.');
                         }
                         return;

@@ -4,7 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azure Cosmos DB Playground - Preset Datasets</title>
+    <title>Azure Cosmos DB Playground</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: {
+                            DEFAULT: '#0078d4',
+                            hover: '#106ebe',
+                            light: '#deecf9'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Consolas', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Codapi Widget -->
     <script src="https://unpkg.com/@antonz/codapi@0.20.0/dist/snippet.js"></script>
@@ -24,587 +45,33 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        :root {
-            --color-bg: #ffffff;
-            --color-bg-alt: #f8f9fa;
-            --color-border: #e1e4e8;
-            --color-border-hover: #c4c8cc;
-            --color-text: #24292e;
-            --color-text-secondary: #586069;
-            --color-text-muted: #6a737d;
-            --color-accent: #0366d6;
-            --color-accent-hover: #0255b3;
-            --color-success: #28a745;
-            --color-success-bg: #d4edda;
-            --color-error: #d73a49;
-            --color-error-bg: #ffeef0;
-            --color-warning: #f9c513;
-            --color-warning-bg: #fff8dd;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
-            --radius-sm: 4px;
-            --radius-md: 6px;
-            --radius-lg: 8px;
-            --transition: all 0.2s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--color-text);
-            background: var(--color-bg-alt);
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 0 24px 48px;
-            font-size: 15px;
-        }
-
-        .top-nav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 32px;
-        }
-
-        .github-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            color: var(--color-text);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .github-button:hover {
-            background: var(--color-bg);
-            border-color: var(--color-border-hover);
-            box-shadow: var(--shadow-md);
-        }
-
-        .github-icon {
-            width: 16px;
-            height: 16px;
-        }
-
-        h1 {
-            color: var(--color-text);
-            text-align: center;
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-            line-height: 1.2;
-        }
-
-        h2 {
-            color: var(--color-text);
-            margin-top: 48px;
-            margin-bottom: 16px;
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        h3 {
-            color: var(--color-text);
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            line-height: 1.7;
-            color: var(--color-text-secondary);
-        }
-
-        a {
-            color: var(--color-accent);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        a:hover {
-            color: var(--color-accent-hover);
-        }
-
-        pre {
-            background: var(--color-bg);
-            padding: 16px;
-            border-radius: var(--radius-md);
-            overflow-x: auto;
-            border: 1px solid var(--color-border);
-            box-shadow: var(--shadow-sm);
-            margin: 16px 0;
-            position: relative;
-        }
-
-        code {
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            border: none;
-        }
-
-        code:not(pre code) {
-            background: var(--color-bg-alt);
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--color-border);
-            font-size: 0.9em;
-        }
-
-        .dataset-selector-section {
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin: 24px 0;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .dataset-selector-section:hover {
-            box-shadow: var(--shadow-md);
-        }
-
-        .dataset-selector-section label {
-            display: block;
-            font-weight: 600;
-            color: var(--color-text);
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .dataset-selector-section select {
-            width: 100%;
-            padding: 10px 12px;
-            font-size: 14px;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            background: var(--color-bg);
-            color: var(--color-text);
-            cursor: pointer;
-            font-family: inherit;
-            transition: var(--transition);
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23586069' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
-        }
-
-        .dataset-selector-section select:hover {
-            border-color: var(--color-border-hover);
-        }
-
-        .dataset-selector-section select:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
-        }
-
-        .dataset-info {
-            margin-top: 12px;
-            padding: 12px;
-            background: var(--color-bg-alt);
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            line-height: 1.6;
-            color: var(--color-text-secondary);
-            border: 1px solid var(--color-border);
-        }
-
-        .dataset-info strong {
-            color: var(--color-accent);
-            font-weight: 600;
-        }
-
-        .file-upload-section {
-            background: var(--color-bg);
-            border: 2px dashed var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin: 24px 0;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .file-upload-section:hover {
-            border-color: var(--color-border-hover);
-            background: var(--color-bg-alt);
-        }
-
-        .file-upload-section.drag-over {
-            border-color: var(--color-accent);
-            background: rgba(3, 102, 214, 0.05);
-        }
-
-        .file-upload-section input[type="file"] {
-            margin-right: 12px;
-            font-size: 14px;
-        }
-
-        .file-upload-section button {
-            background: var(--color-accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: var(--transition);
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .file-upload-section button svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .file-upload-section button:hover {
-            background: var(--color-accent-hover);
-        }
-
-        .file-upload-section button:disabled {
-            background: var(--color-border);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .status-message {
-            margin-top: 12px;
-            padding: 10px 14px;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            line-height: 1.5;
-            border: 1px solid transparent;
-        }
-
-        .status-message.success {
-            background: var(--color-success-bg);
-            color: var(--color-success);
-            border-color: var(--color-success);
-        }
-
-        .status-message.error {
-            background: var(--color-error-bg);
-            color: var(--color-error);
-            border-color: var(--color-error);
-        }
-
-        .hidden {
-            display: none;
-        }
-
+        /* Minimal custom styles */
+        .hidden { display: none !important; }
+        
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-4px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-in { animation: fadeIn 0.2s ease; }
 
-        .status-message:not(.hidden) {
-            animation: fadeIn 0.2s ease;
-        }
+        /* Custom scrollbar for textareas */
+        .data-textarea::-webkit-scrollbar { width: 8px; }
+        .data-textarea::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .data-textarea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .data-textarea::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        .share-section {
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin: 32px 0;
-            box-shadow: var(--shadow-sm);
-        }
+        /* Modified indicator for textarea */
+        .data-textarea.modified { border-left: 3px solid #f59e0b; padding-left: 13px; }
 
-        .share-section h3 {
-            margin-top: 0;
-            margin-bottom: 8px;
-            color: var(--color-text);
-        }
-
-        .share-section p {
-            margin-bottom: 16px;
-        }
-
-        .share-button {
-            background: var(--color-accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            margin-right: 8px;
-            transition: var(--transition);
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .share-button svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .share-button:hover {
-            background: var(--color-accent-hover);
-        }
-
-        .copy-button {
-            background: var(--color-bg);
-            color: var(--color-text);
-            border: 1px solid var(--color-border);
-            padding: 10px 16px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-size: 14px;
-            transition: var(--transition);
-            font-weight: 500;
-            font-family: inherit;
-            margin-right: 8px;
-            margin-top: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .copy-button svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .copy-button:hover {
-            background: var(--color-bg-alt);
-            border-color: var(--color-border-hover);
-        }
-
-        .info-banner {
-            background: var(--color-warning-bg);
-            border-left: 3px solid var(--color-warning);
-            padding: 14px 16px;
-            margin-bottom: 24px;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .data-editor-section {
-            margin: 24px 0;
-            padding: 0;
-            background: var(--color-bg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-
-        .data-textarea {
-            width: 100%;
-            min-height: 240px;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            padding: 16px;
-            border: none;
-            border-bottom: 1px solid var(--color-border);
-            background: var(--color-bg);
-            color: var(--color-text);
-            resize: vertical;
-            box-sizing: border-box;
-            transition: var(--transition);
-        }
-
-        .data-textarea:focus {
-            outline: none;
-            background: var(--color-bg);
-        }
-
-        .apply-button {
-            background: var(--color-accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 16px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: var(--transition);
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .apply-button svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .apply-button:hover:not(:disabled) {
-            background: var(--color-accent-hover);
-        }
-
-        .apply-button:disabled {
-            background: var(--color-border);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .data-textarea.modified {
-            border-left: 3px solid var(--color-warning);
-            padding-left: 13px;
-        }
-
-        .query-suggestions {
-            margin-top: 20px;
-            padding: 20px;
-            background: var(--color-bg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            border-left: 3px solid var(--color-accent);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .query-suggestions h4 {
-            margin-top: 0;
-            margin-bottom: 12px;
-            color: var(--color-text);
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .query-button {
-            background: var(--color-bg-alt);
-            color: var(--color-accent);
-            border: 1px solid var(--color-border);
-            padding: 7px 14px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 13px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            display: inline-block;
-            transition: var(--transition);
-            font-weight: 500;
-            font-family: inherit;
-        }
-
-        .query-button:hover {
-            background: var(--color-accent);
-            color: white;
-            border-color: var(--color-accent);
-        }
-
-        .powered-by {
-            text-align: center;
-            font-size: 13px;
-            color: var(--color-text-muted);
-            margin-top: 12px;
-            margin-bottom: 32px;
-            line-height: 1.6;
-        }
-
-        .powered-by a {
-            font-weight: 500;
-        }
-
-        details {
-            margin: 16px 0;
-            padding: 16px;
-            background: var(--color-bg);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-border);
-        }
-
-        details summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--color-text);
-            user-select: none;
-        }
-
-        details summary:hover {
-            color: var(--color-accent);
-        }
-
-        details p {
-            margin-top: 12px;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        footer {
-            margin-top: 64px;
-            padding: 32px 0;
-            border-top: 1px solid var(--color-border);
-            text-align: center;
-            font-size: 13px;
-            color: var(--color-text-muted);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 0 16px 32px;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-
-            h2 {
-                font-size: 20px;
-                margin-top: 32px;
-            }
-
-            .dataset-selector-section,
-            .data-editor-section,
-            .share-section {
-                padding: 16px;
-            }
-
-            .query-button,
-            .copy-button {
-                margin-bottom: 8px;
-            }
+        /* Drag over state for file upload */
+        .file-upload-section.drag-over { 
+            border-color: #0078d4 !important; 
+            background-color: rgba(0, 120, 212, 0.05) !important; 
         }
     </style>
 </head>
 
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased">
     <script>
         // Auto-detect environment and write codapi-settings element with correct URL
         const isLocal = window.location.hostname === 'localhost' ||
@@ -612,149 +79,208 @@
             window.location.protocol === 'file:';
 
         const codapiUrl = isLocal
-            ? 'http://localhost/v1'  // Use nginx proxy on localhost
+            ? 'http://localhost/v1'
             : `${window.location.protocol}//${window.location.host}/v1`;
 
         document.write('<codapi-settings url="' + codapiUrl + '"></codapi-settings>');
     </script>
 
-    <nav class="top-nav">
-        <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" class="github-button">
-            <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor">
-                <path
-                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
-                </path>
-            </svg>
-            Give a ★
-        </a>
-    </nav>
-
-    <h1>
-        <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
-            alt="Azure Cosmos DB" style="height: 40px; vertical-align: middle; margin-right: 12px;">
-        Azure Cosmos DB Playground
-    </h1>
-
-    <div class="powered-by">
-        Powered by <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank">Azure Cosmos DB
-            vNext Emulator</a> and <a href="https://codapi.org/" target="_blank">Codapi</a>
-    </div>
-
-    <div id="url-loaded-banner" class="info-banner hidden">
-        ✨ Code loaded from shared link. You can edit and experiment freely!
-    </div>
-
-    <p>Experiment with <a href="https://learn.microsoft.com/en-us/cosmos-db/query/overview" target="_blank">Cosmos DB
-            SQL queries</a> interactively. Choose a preset dataset or load your own data.</p>
-
-    <h2>Sample Data</h2>
-
-    <!-- Dataset Selector -->
-    <div class="dataset-selector-section">
-        <label for="dataset-picker">📚 Choose a Dataset:</label>
-        <select id="dataset-picker" onchange="loadPresetDataset()">
-            <option value="simple">Simple Demo (3 items)</option>
-            <option value="products">E-commerce Products (10 items)</option>
-            <option value="iot">IoT Device Telemetry (15 items)</option>
-            <option value="movies">Movie Database (50 items)</option>
-            <option value="custom">Custom Data</option>
-        </select>
-        <div id="dataset-info" class="dataset-info">
-            Basic user records with name, city, and age. Perfect for learning SQL query basics.
-        </div>
-    </div>
-
-    <!-- Query Suggestions (shown when preset is selected) -->
-    <div id="query-suggestions" class="query-suggestions hidden">
-        <h4>💡 Try these queries:</h4>
-        <div id="query-buttons-container"></div>
-    </div>
-
-    <!-- Partition Key Info -->
-    <details style="margin: 15px 0; padding: 15px; background: #f9f9f9; border-radius: 4px; border: 1px solid #e0e0e0;">
-        <summary style="cursor: pointer; font-weight: 600; color: #555;">
-            About Partition Keys in this Playground
-        </summary>
-        <p style="margin-top: 10px; margin-bottom: 10px; line-height: 1.6;">
-            This playground uses <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/id</code> as
-            the partition key for all queries.
-            This works with any JSON data you upload since the script auto-generates
-            an <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">id</code> field if needed.
-        </p>
-        <p style="margin-bottom: 0; line-height: 1.6;">
-            <strong>In production Cosmos DB:</strong> Choose partition keys based on your
-            query patterns (e.g., <code
-                style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/tenantId</code>,
-            <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/userId</code>,
-            <code style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">/category</code>).
-            <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank">
-                Learn more about partition key selection →
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- Top Navigation -->
+        <nav class="flex justify-end items-center mb-8">
+            <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" 
+               class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                Star on GitHub
             </a>
-        </p>
-    </details>
+        </nav>
 
-    <!-- File Upload Section (only shown when "Custom Data" is selected) -->
-    <div id="file-upload-section" class="file-upload-section hidden">
-        <div>
-            <input type="file" id="data-file-picker" accept=".json,application/json">
-            <button id="load-file-btn" onclick="loadFromFile()">
-                <i data-lucide="upload"></i>
-                Load from File
-            </button>
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="flex items-center justify-center gap-3 mb-3">
+                <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
+                     alt="Azure Cosmos DB" class="h-10 w-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+                    Azure Cosmos DB Playground
+                </h1>
+            </div>
+            <p class="text-sm text-slate-500">
+                Powered by 
+                <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank" class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a> 
+                and 
+                <a href="https://codapi.org/" target="_blank" class="text-accent hover:underline">Codapi</a>
+            </p>
+        </header>
+
+        <!-- URL Loaded Banner -->
+        <div id="url-loaded-banner" class="hidden bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg mb-6">
+            <p class="text-sm text-amber-800">
+                ✨ Code loaded from shared link. You can edit and experiment freely!
+            </p>
         </div>
-        <div id="status-message" class="status-message hidden"></div>
-    </div>
 
-    <!-- Hidden script tag for codapi to reference -->
-    <script id="data.json" type="text/plain">
+        <!-- Intro Text -->
+        <p class="text-slate-600 mb-8 text-center max-w-2xl mx-auto">
+            Experiment with 
+            <a href="https://learn.microsoft.com/en-us/cosmos-db/query/overview" target="_blank" class="text-accent hover:underline font-medium">Cosmos DB SQL queries</a> 
+            interactively. Choose a preset dataset or load your own data.
+        </p>
+
+        <!-- Main Content Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            
+            <!-- Dataset Section -->
+            <div class="p-6 border-b border-slate-100">
+                <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <span class="text-xl">📊</span> Sample Data
+                </h2>
+
+                <!-- Dataset Selector -->
+                <div class="mb-4">
+                    <label for="dataset-picker" class="block text-sm font-medium text-slate-700 mb-2">
+                        Choose a Dataset
+                    </label>
+                    <select id="dataset-picker" onchange="loadPresetDataset()"
+                            class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all cursor-pointer appearance-none"
+                            style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;">
+                        <option value="simple">Simple Demo (3 items)</option>
+                        <option value="products">E-commerce Products (10 items)</option>
+                        <option value="iot">IoT Device Telemetry (15 items)</option>
+                        <option value="movies">Movie Database (50 items)</option>
+                        <option value="custom">Custom Data</option>
+                    </select>
+                </div>
+
+                <!-- Dataset Info -->
+                <div id="dataset-info" class="text-sm text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-100">
+                    Basic user records with name, city, and age. Perfect for learning SQL query basics.
+                </div>
+            </div>
+
+            <!-- Query Suggestions -->
+            <div id="query-suggestions" class="hidden p-6 border-b border-slate-100 bg-gradient-to-r from-accent/5 to-transparent">
+                <h4 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                    <span>💡</span> Try these queries:
+                </h4>
+                <div id="query-buttons-container" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Partition Key Info -->
+            <details class="border-b border-slate-100">
+                <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
+                    ℹ️ About Partition Keys in this Playground
+                </summary>
+                <div class="px-6 pb-4 text-sm text-slate-500 space-y-2">
+                    <p>
+                        This playground uses <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
+                        the partition key for all queries. This works with any JSON data since the script auto-generates
+                        an <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field if needed.
+                    </p>
+                    <p>
+                        <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on your
+                        query patterns (e.g., <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
+                        <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/userId</code>).
+                        <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank" class="text-accent hover:underline">
+                            Learn more →
+                        </a>
+                    </p>
+                </div>
+            </details>
+
+            <!-- File Upload Section (hidden by default) -->
+            <div id="file-upload-section" class="hidden p-6 border-b border-slate-100 file-upload-section">
+                <div class="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-300 transition-colors">
+                    <input type="file" id="data-file-picker" accept=".json,application/json" class="text-sm text-slate-500 mb-3">
+                    <button id="load-file-btn" onclick="loadFromFile()"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+                        <i data-lucide="upload" class="w-4 h-4"></i>
+                        Load from File
+                    </button>
+                </div>
+                <div id="status-message" class="hidden mt-3 px-4 py-2 rounded-lg text-sm"></div>
+            </div>
+
+            <!-- Hidden script tag for codapi to reference -->
+            <script id="data.json" type="text/plain">
 [
   {"id": "1", "name": "Alice", "city": "New York", "age": 30},
   {"id": "2", "name": "Bob", "city": "London", "age": 25},
   {"id": "3", "name": "Charlie", "city": "London", "age": 35}
 ]
-    </script>
+            </script>
 
-    <!-- Editable data section -->
-    <div class="data-editor-section">
-        <textarea id="data-textarea" class="data-textarea" placeholder="Paste or edit your JSON data here..."
-            oninput="handleDataEdit()">[
+            <!-- Data Editor -->
+            <div class="border-b border-slate-100">
+                <textarea id="data-textarea" 
+                          class="data-textarea w-full min-h-[200px] p-4 font-mono text-sm text-slate-700 bg-white border-0 focus:outline-none focus:ring-0 resize-y"
+                          placeholder="Paste or edit your JSON data here..."
+                          oninput="handleDataEdit()">[
   {"id": "1", "name": "Alice", "city": "New York", "age": 30},
   {"id": "2", "name": "Bob", "city": "London", "age": 25},
   {"id": "3", "name": "Charlie", "city": "London", "age": 35}
 ]</textarea>
-        <button id="apply-button" class="apply-button" onclick="applyDataChanges()" disabled>
-            <i data-lucide="check"></i>
-            Apply Changes
-        </button>
-        <div id="data-status" class="status-message hidden"></div>
-    </div>
+                <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
+                    <button id="apply-button" onclick="applyDataChanges()" disabled
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        Apply Changes
+                    </button>
+                    <div id="data-status" class="hidden text-sm px-3 py-1.5 rounded-lg"></div>
+                </div>
+            </div>
 
-    <h2>SQL Query</h2>
-    <pre><code id="query-display" class="language-sql">SELECT * FROM c WHERE c.city = 'London'</code></pre>
+            <!-- SQL Query Section -->
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <span class="text-xl">⚡</span> SQL Query
+                </h2>
+                
+                <pre class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-display" class="language-sql text-sm">SELECT * FROM c WHERE c.city = 'London'</code></pre>
 
-    <!-- Codapi Widget with multiple files -->
-    <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
-    </codapi-snippet>
+                <!-- Codapi Widget -->
+                <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
+                </codapi-snippet>
+            </div>
 
-    <!-- Share Section -->
-    <div class="share-section">
-        <h3>🔗 Share Your Code</h3>
-        <p>Generate a shareable link to this query and data. Perfect for blog posts, articles, or newsletters!</p>
-        <button class="share-button" onclick="generateShareLink()">
-            <i data-lucide="link"></i>
-            Generate Share Link
-        </button>
-        <div id="share-buttons" class="hidden" style="margin-top: 10px;">
-            <button class="copy-button" onclick="copyShareLink()">
-                <i data-lucide="copy"></i>
-                Copy Link
-            </button>
-            <button class="copy-button" onclick="openShareLink()">
-                <i data-lucide="external-link"></i>
-                Open Link
-            </button>
+            <!-- Share Section -->
+            <div class="p-6 bg-slate-50 border-t border-slate-100">
+                <h3 class="text-base font-semibold text-slate-900 mb-2 flex items-center gap-2">
+                    <span>🔗</span> Share Your Code
+                </h3>
+                <p class="text-sm text-slate-500 mb-4">
+                    Generate a shareable link to this query and data. Perfect for blog posts, articles, or newsletters!
+                </p>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button onclick="generateShareLink()"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+                        <i data-lucide="link" class="w-4 h-4"></i>
+                        Generate Share Link
+                    </button>
+                    <div id="share-buttons" class="hidden flex items-center gap-2">
+                        <button onclick="copyShareLink()"
+                                class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            Copy Link
+                        </button>
+                        <button onclick="openShareLink()"
+                                class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                            Open Link
+                        </button>
+                    </div>
+                </div>
+                <div id="share-status" class="hidden mt-3 text-sm px-3 py-1.5 rounded-lg"></div>
+            </div>
         </div>
-        <div id="share-status" class="status-message hidden"></div>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-6 border-t border-slate-200 text-center text-sm text-slate-400">
+            <p>Built with ❤️ for the Azure Cosmos DB community</p>
+        </footer>
     </div>
 
     <script>
@@ -779,9 +305,9 @@
 
         let currentShareUrl = '';
         let originalData = '';
-        let lastSelectedPreset = 'simple'; // Track last non-custom preset
-        let currentDatasetKey = 'simple'; // Track currently loaded dataset
-        let originalPresetData = null; // Store original preset data for comparison
+        let lastSelectedPreset = 'simple';
+        let currentDatasetKey = 'simple';
+        let originalPresetData = null;
 
         // Load preset dataset (from external JSON files)
         async function loadPresetDataset() {
@@ -791,7 +317,6 @@
             const querySection = document.getElementById('query-suggestions');
 
             if (datasetKey === 'custom') {
-                // Check if textarea has unsaved changes
                 const textarea = document.getElementById('data-textarea');
                 const currentData = textarea.value.trim();
                 const hasUnsavedChanges = currentData && currentData !== originalData.trim();
@@ -822,7 +347,6 @@
                 lastSelectedPreset = datasetKey;
             }
 
-            // Try to load dataset from external JSON file
             let dataset;
             try {
                 showDataStatus('Loading dataset...', false);
@@ -835,24 +359,19 @@
                 return;
             }
 
-            // Update dataset info
             const infoDiv = document.getElementById('dataset-info');
             infoDiv.innerHTML = dataset.description;
 
-            // Store current dataset info for smart URL sharing
             currentDatasetKey = datasetKey;
             originalPresetData = dataset.data;
 
-            // Load preset data
             const prettyData = JSON.stringify(dataset.data, null, 2);
 
-            // Update hidden script tag (for codapi)
             const scriptTag = document.getElementById('data.json');
             if (scriptTag) {
                 scriptTag.textContent = prettyData;
             }
 
-            // Update textarea
             const textarea = document.getElementById('data-textarea');
             if (textarea) {
                 textarea.value = prettyData;
@@ -860,47 +379,37 @@
                 textarea.classList.remove('modified');
             }
 
-            // Update original data tracker
             originalData = prettyData;
 
-            // Disable apply button
             const applyButton = document.getElementById('apply-button');
             if (applyButton) {
                 applyButton.disabled = true;
             }
 
-            // Update query suggestions
             if (dataset.queries && dataset.queries.length > 0) {
                 showQuerySuggestions(dataset.queries);
             } else {
                 querySection.classList.add('hidden');
             }
 
-            // Show success message
             const datasetName = dataset.name || presetDatasets[datasetKey]?.name || datasetKey;
             const itemCount = dataset.itemCount || dataset.data?.length || 0;
             showDataStatus(`✓ Loaded ${datasetName} (${itemCount} items)`, false);
 
-            // Save preference to localStorage
             try {
                 localStorage.setItem('selectedDataset', datasetKey);
-            } catch (e) {
-                // Ignore localStorage errors
-            }
+            } catch (e) { }
         }
 
-        // Show query suggestions
         function showQuerySuggestions(queries) {
             const querySection = document.getElementById('query-suggestions');
             const container = document.getElementById('query-buttons-container');
 
-            // Clear existing buttons
             container.innerHTML = '';
 
-            // Create buttons for each query
             queries.forEach((q, index) => {
                 const button = document.createElement('button');
-                button.className = 'query-button';
+                button.className = 'px-3 py-1.5 bg-white border border-slate-200 rounded-full text-sm text-accent font-medium hover:bg-accent hover:text-white hover:border-accent transition-all cursor-pointer';
                 button.textContent = q.label;
                 button.onclick = () => loadQuery(q.query);
                 container.appendChild(button);
@@ -909,17 +418,14 @@
             querySection.classList.remove('hidden');
         }
 
-        // Load a query into the editor
         function loadQuery(queryText) {
             const queryDisplay = document.getElementById('query-display');
             if (queryDisplay) {
                 queryDisplay.textContent = queryText;
             }
 
-            // Also update the codapi snippet if possible
             const snippet = document.querySelector('codapi-snippet');
             if (snippet) {
-                // Update the code in the editor
                 const editor = snippet.querySelector('.snippet-code');
                 if (editor) {
                     editor.textContent = queryText;
@@ -928,23 +434,19 @@
 
             showDataStatus('✓ Query loaded - click "Run" to execute', false);
 
-            // Smooth scroll to the SQL Query section
             const sqlSection = queryDisplay?.closest('section') || queryDisplay?.parentElement;
             if (sqlSection) {
                 sqlSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
-        // Handle textarea edits
         function handleDataEdit() {
             const textarea = document.getElementById('data-textarea');
             const applyButton = document.getElementById('apply-button');
 
-            // Enable button if data has changed
             const hasChanged = textarea.value.trim() !== originalData.trim();
             applyButton.disabled = !hasChanged;
 
-            // Add visual indicator
             if (hasChanged) {
                 textarea.classList.add('modified');
             } else {
@@ -952,7 +454,6 @@
             }
         }
 
-        // Apply data changes from textarea to hidden script tag
         function applyDataChanges() {
             const textarea = document.getElementById('data-textarea');
             const applyButton = document.getElementById('apply-button');
@@ -964,23 +465,17 @@
             }
 
             try {
-                // Validate JSON
                 const parsed = JSON.parse(data);
                 const prettyData = JSON.stringify(parsed, null, 2);
 
-                // Update the hidden script tag (used by codapi)
                 const scriptTag = document.getElementById('data.json');
                 if (scriptTag) {
                     scriptTag.textContent = prettyData;
                 }
 
-                // Update textarea with formatted JSON
                 textarea.value = prettyData;
-
-                // Update original data tracker
                 originalData = prettyData;
 
-                // Disable button and remove visual indicator
                 applyButton.disabled = true;
                 textarea.classList.remove('modified');
 
@@ -993,7 +488,8 @@
         function showDataStatus(message, isError = false) {
             const statusDiv = document.getElementById('data-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' + 
+                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
             setTimeout(() => {
@@ -1001,7 +497,6 @@
             }, 3000);
         }
 
-        // Check if URL params exist and pre-fill
         function loadFromUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('query');
@@ -1015,13 +510,9 @@
                         const parsedData = JSON.parse(data);
                         const prettyData = JSON.stringify(parsedData, null, 2);
 
-                        // Update hidden script tag (for codapi)
                         document.getElementById('data.json').textContent = prettyData;
-                        // Update textarea (for display/editing)
                         document.getElementById('data-textarea').value = prettyData;
-                        // Update original data tracker
                         originalData = prettyData;
-                        // Set to custom dataset
                         document.getElementById('dataset-picker').value = 'custom';
                     } catch (e) {
                         console.error('Invalid JSON in URL params:', e);
@@ -1029,7 +520,6 @@
                 }
 
                 if (query) {
-                    // Update query display
                     document.getElementById('query-display').textContent = query;
                 }
             }
@@ -1038,10 +528,10 @@
         function showStatus(message, isError = false) {
             const statusDiv = document.getElementById('status-message');
             statusDiv.textContent = message;
-            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.className = 'mt-3 px-4 py-2 rounded-lg text-sm animate-fade-in ' + 
+                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
-            // Auto-hide after 3 seconds
             setTimeout(() => {
                 statusDiv.classList.add('hidden');
             }, 3000);
@@ -1056,7 +546,6 @@
                 return;
             }
 
-            // Validate file type
             if (!file.name.endsWith('.json')) {
                 showStatus('Please select a valid JSON file (.json)', true);
                 return;
@@ -1067,22 +556,17 @@
             reader.onload = function (e) {
                 try {
                     const content = e.target.result;
-
-                    // Validate JSON
                     const parsed = JSON.parse(content);
                     const prettyData = JSON.stringify(parsed, null, 2);
 
-                    // Update the hidden script tag (used by codapi)
                     const scriptTag = document.getElementById('data.json');
                     if (scriptTag) {
                         scriptTag.textContent = prettyData;
                     }
 
-                    // Update the textarea (for display/editing)
                     const textarea = document.getElementById('data-textarea');
                     if (textarea) {
                         textarea.value = prettyData;
-                        // Update original data tracker
                         originalData = prettyData;
                     }
 
@@ -1101,12 +585,10 @@
         }
 
         function generateShareLink() {
-            // Get current query and data
             const queryElement = document.querySelector('codapi-snippet').previousElementSibling;
             const query = queryElement ? queryElement.textContent.trim() : document.getElementById('query-display').textContent.trim();
             const data = document.getElementById('data.json').textContent.trim();
 
-            // Validate
             if (!query) {
                 showShareStatus('No query to share', true);
                 return;
@@ -1124,7 +606,6 @@
                 return;
             }
 
-            // Handle both local file:// and http/https protocols
             let baseUrl;
             if (window.location.protocol === 'file:') {
                 const currentPath = window.location.pathname;
@@ -1134,42 +615,25 @@
                 baseUrl = window.location.origin + '/run.html';
             }
 
-            // Smart URL generation: use compact format for unmodified presets
             const currentData = JSON.parse(data);
             const dataUnchanged = currentDatasetKey !== 'custom' &&
                 originalPresetData &&
                 JSON.stringify(currentData) === JSON.stringify(originalPresetData);
 
             if (dataUnchanged) {
-                // SMART: Compact URL with just dataset name + query
                 const encodedQuery = btoa(query);
                 const urlSafeQuery = encodeURIComponent(encodedQuery);
                 currentShareUrl = `${baseUrl}?dataset=${currentDatasetKey}&q=${urlSafeQuery}`;
-                //showShareStatus('✓ Share link generated (compact format)', false);
                 showShareStatus('✓ Share link generated', false);
             } else {
-                // COMPRESSED: Use gzip compression + URL fragment for custom/modified datasets
                 const payload = JSON.stringify({ query, data });
-
-                // Compress with pako
                 const compressed = pako.gzip(payload);
-
-                // Convert to base64
                 const base64 = btoa(String.fromCharCode.apply(null, compressed));
                 const urlSafe = encodeURIComponent(base64);
-
-                // Use fragment (#) instead of query (?) to avoid server URL limits
                 currentShareUrl = `${baseUrl}#c=${urlSafe}`;
-
-                const originalSize = (payload.length / 1024).toFixed(1);
-                const compressedSize = (currentShareUrl.length / 1024).toFixed(1);
-                const ratio = ((1 - compressed.length / payload.length) * 100).toFixed(0);
-
-                //showShareStatus(`✓ Share link generated (${originalSize} KB → ${compressedSize} KB, ${ratio}% compression)`, false);
                 showShareStatus(`✓ Share link generated`, false);
             }
 
-            // Show buttons
             document.getElementById('share-buttons').classList.remove('hidden');
         }
 
@@ -1192,7 +656,8 @@
         function showShareStatus(message, isError = false) {
             const statusDiv = document.getElementById('share-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'status-message ' + (isError ? 'error' : 'success');
+            statusDiv.className = 'mt-3 text-sm px-3 py-1.5 rounded-lg animate-fade-in ' + 
+                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
             setTimeout(() => {
@@ -1200,20 +665,17 @@
             }, 3000);
         }
 
-        // Copy code from code block
         function copyCode(elementId) {
             const codeElement = document.getElementById(elementId);
             const code = codeElement.textContent;
 
             navigator.clipboard.writeText(code).then(() => {
-                // Find the button and show feedback
                 const button = event.target.closest('.copy-code-button');
                 const originalHTML = button.innerHTML;
 
                 button.innerHTML = '<i data-lucide="check"></i> Copied!';
                 button.classList.add('copied');
 
-                // Re-initialize Lucide icons for the new icon
                 if (typeof lucide !== 'undefined') {
                     lucide.createIcons();
                 }
@@ -1271,35 +733,27 @@
             document.addEventListener('DOMContentLoaded', () => {
                 loadFromUrlParams();
 
-                // Try to restore last selected dataset
                 try {
                     const savedDataset = localStorage.getItem('selectedDataset');
                     if (savedDataset && presetDatasets[savedDataset]) {
                         document.getElementById('dataset-picker').value = savedDataset;
-                        loadPresetDataset(); // Load the dataset to sync description and data
+                        loadPresetDataset();
                     }
-                } catch (e) {
-                    // Ignore localStorage errors
-                }
+                } catch (e) { }
 
-                // Initialize originalData after page load
                 originalData = document.getElementById('data-textarea').value.trim();
             });
         } else {
             loadFromUrlParams();
 
-            // Try to restore last selected dataset
             try {
                 const savedDataset = localStorage.getItem('selectedDataset');
                 if (savedDataset && presetDatasets[savedDataset]) {
                     document.getElementById('dataset-picker').value = savedDataset;
-                    loadPresetDataset(); // Load the dataset to sync description and data
+                    loadPresetDataset();
                 }
-            } catch (e) {
-                // Ignore localStorage errors
-            }
+            } catch (e) { }
 
-            // Initialize originalData
             originalData = document.getElementById('data-textarea').value.trim();
         }
     </script>
