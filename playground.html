@@ -377,6 +377,12 @@
         const SESSION_STORAGE_KEY = 'cosmosdb-playground-session';
         const SESSION_TTL_DAYS = 7;
 
+        // Reset share link when content changes (prevents sharing stale links)
+        function resetShareLink() {
+            currentShareUrl = '';
+            document.getElementById('share-buttons').classList.add('hidden');
+        }
+
         // Session management functions
         function saveSession() {
             try {
@@ -545,8 +551,17 @@
             // Save when query changes (observe codapi snippet)
             const snippet = document.querySelector('codapi-snippet');
             if (snippet) {
-                const observer = new MutationObserver(debouncedSave);
+                const observer = new MutationObserver(() => {
+                    debouncedSave();
+                    resetShareLink(); // Hide share buttons when query is modified
+                });
                 observer.observe(snippet, { childList: true, subtree: true, characterData: true });
+
+                // Also listen for input events on the editor (MutationObserver doesn't catch typing)
+                snippet.addEventListener('input', () => {
+                    debouncedSave();
+                    resetShareLink();
+                }, true); // Use capture to catch events from child elements
             }
 
             // Save on page unload as a safety net
@@ -693,6 +708,7 @@
 
             if (hasChanged) {
                 textarea.classList.add('modified');
+                resetShareLink(); // Hide share buttons when data is modified
             } else {
                 textarea.classList.remove('modified');
             }
@@ -722,6 +738,7 @@
 
                 applyButton.disabled = true;
                 textarea.classList.remove('modified');
+                resetShareLink(); // Hide share buttons since data changed
 
                 showDataStatus('✓ Data updated successfully', false);
             } catch (error) {
