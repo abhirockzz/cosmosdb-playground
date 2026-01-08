@@ -309,15 +309,16 @@
                 </codapi-snippet>
             </div>
 
-            <!-- Share Section -->
+            <!-- Share & Export Section -->
             <div class="p-6 bg-slate-50 border-t border-slate-100">
                 <h3 class="text-base font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                    <span>🔗</span> Share Your Code
+                    <span>🔗</span> Share & Export
                 </h3>
                 <p class="text-sm text-slate-500 mb-4">
-                    Generate a shareable link to this query and data. Perfect for blog posts, articles, or newsletters!
+                    Generate a shareable link or export your session to a file for backup.
                 </p>
-                <div class="flex flex-wrap items-center gap-3">
+                <!-- Share row -->
+                <div class="flex flex-wrap items-center gap-3 mb-3">
                     <button onclick="generateShareLink()"
                         class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
                         <i data-lucide="link" class="w-4 h-4"></i>
@@ -335,6 +336,21 @@
                             Open Link
                         </button>
                     </div>
+                </div>
+                <!-- Export/Import row -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <button onclick="exportSession()"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-colors">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        Export to File
+                    </button>
+                    <button onclick="document.getElementById('import-file-picker').click()"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-colors">
+                        <i data-lucide="upload" class="w-4 h-4"></i>
+                        Import from File
+                    </button>
+                    <input type="file" id="import-file-picker" accept=".json,application/json" class="hidden"
+                        onchange="importSession()">
                 </div>
                 <div id="share-status" class="hidden mt-3 text-sm px-3 py-1.5 rounded-lg"></div>
             </div>
@@ -818,7 +834,149 @@
                 try {
                     const content = e.target.result;
                     const parsed = JSON.parse(content);
-                    const prettyData = JSON.stringify(parsed, null, 2);
+
+                    // Check if this is a session export file
+                    if (parsed._playgroundSession === true && parsed.data) {
+                        // Session file - extract data and query
+                        const sessionData = typeof parsed.data === 'string' ? parsed.data : JSON.stringify(parsed.data, null, 2);
+                        const prettyData = JSON.stringify(JSON.parse(sessionData), null, 2);
+
+                        const scriptTag = document.getElementById('data.json');
+                        if (scriptTag) {
+                            scriptTag.textContent = prettyData;
+                        }
+
+                        const textarea = document.getElementById('data-textarea');
+                        if (textarea) {
+                            textarea.value = prettyData;
+                            originalData = prettyData;
+                        }
+
+                        // Restore query if present
+                        if (parsed.query) {
+                            const queryDisplay = document.getElementById('query-display');
+                            if (queryDisplay) {
+                                queryDisplay.textContent = parsed.query;
+                            }
+                            const snippet = document.querySelector('codapi-snippet');
+                            if (snippet) {
+                                const editor = snippet.querySelector('.snippet-code');
+                                if (editor) {
+                                    editor.textContent = parsed.query;
+                                }
+                            }
+                        }
+
+                        currentDatasetKey = 'custom';
+                        saveSession();
+
+                        showStatus(`✓ Imported session from ${file.name}`, false);
+                    } else {
+                        // Raw data file - existing behavior
+                        const prettyData = JSON.stringify(parsed, null, 2);
+
+                        const scriptTag = document.getElementById('data.json');
+                        if (scriptTag) {
+                            scriptTag.textContent = prettyData;
+                        }
+
+                        const textarea = document.getElementById('data-textarea');
+                        if (textarea) {
+                            textarea.value = prettyData;
+                            originalData = prettyData;
+                        }
+
+                        // Update dataset key to custom and save session
+                        currentDatasetKey = 'custom';
+                        saveSession();
+
+                        showStatus(`✓ Loaded ${file.name} successfully (${Math.round(file.size / 1024)} KB)`);
+                    }
+
+                } catch (error) {
+                    showStatus(`Invalid JSON: ${error.message}`, true);
+                }
+            };
+
+            reader.onerror = function () {
+                showStatus('Error reading file', true);
+            };
+
+            reader.readAsText(file);
+        }
+
+        function exportSession() {
+            const queryElement = document.querySelector('codapi-snippet').previousElementSibling;
+            const query = queryElement ? queryElement.textContent.trim() : document.getElementById('query-display').textContent.trim();
+            const data = document.getElementById('data.json').textContent.trim();
+
+            if (!data) {
+                showShareStatus('No data to export', true);
+                return;
+            }
+
+            try {
+                JSON.parse(data);
+            } catch (e) {
+                showShareStatus('Invalid JSON data: ' + e.message, true);
+                return;
+            }
+
+            const session = {
+                _playgroundSession: true,
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                datasetKey: currentDatasetKey,
+                data: data,
+                query: query || ''
+            };
+
+            const blob = new Blob([JSON.stringify(session, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cosmosdb-playground-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showShareStatus('✓ Session exported successfully', false);
+        }
+
+        function importSession() {
+            const fileInput = document.getElementById('import-file-picker');
+            const file = fileInput.files[0];
+
+            if (!file) return;
+
+            if (!file.name.endsWith('.json')) {
+                showShareStatus('Please select a valid JSON file (.json)', true);
+                fileInput.value = ''; // Reset for next selection
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                try {
+                    const content = e.target.result;
+                    const parsed = JSON.parse(content);
+
+                    let dataToLoad, queryToLoad;
+
+                    // Check if this is a session export file
+                    if (parsed._playgroundSession === true && parsed.data) {
+                        // Session file - extract data and query
+                        dataToLoad = typeof parsed.data === 'string' ? parsed.data : JSON.stringify(parsed.data, null, 2);
+                        queryToLoad = parsed.query || null;
+                    } else {
+                        // Raw data file
+                        dataToLoad = JSON.stringify(parsed, null, 2);
+                        queryToLoad = null;
+                    }
+
+                    const prettyData = JSON.stringify(JSON.parse(dataToLoad), null, 2);
 
                     const scriptTag = document.getElementById('data.json');
                     if (scriptTag) {
@@ -831,19 +989,41 @@
                         originalData = prettyData;
                     }
 
-                    // Update dataset key to custom and save session
+                    // Restore query if present
+                    if (queryToLoad) {
+                        const queryDisplay = document.getElementById('query-display');
+                        if (queryDisplay) {
+                            queryDisplay.textContent = queryToLoad;
+                        }
+                        const snippet = document.querySelector('codapi-snippet');
+                        if (snippet) {
+                            const editor = snippet.querySelector('.snippet-code');
+                            if (editor) {
+                                editor.textContent = queryToLoad;
+                            }
+                        }
+                    }
+
+                    // Update UI state
                     currentDatasetKey = 'custom';
+                    document.getElementById('dataset-picker').value = 'custom';
+                    // Don't show file-upload-section - import was done via Import button
+                    document.getElementById('query-suggestions')?.classList.add('hidden');
                     saveSession();
 
-                    showStatus(`✓ Loaded ${file.name} successfully (${Math.round(file.size / 1024)} KB)`);
+                    const isSessionFile = parsed._playgroundSession === true;
+                    showShareStatus(`✓ ${isSessionFile ? 'Session imported' : 'Data loaded'} from ${file.name}`, false);
 
                 } catch (error) {
-                    showStatus(`Invalid JSON: ${error.message}`, true);
+                    showShareStatus(`Invalid JSON: ${error.message}`, true);
                 }
+
+                fileInput.value = ''; // Reset for next selection
             };
 
             reader.onerror = function () {
-                showStatus('Error reading file', true);
+                showShareStatus('Error reading file', true);
+                fileInput.value = '';
             };
 
             reader.readAsText(file);
