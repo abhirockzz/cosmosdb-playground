@@ -46,27 +46,55 @@
 
     <style>
         /* Minimal custom styles */
-        .hidden { display: none !important; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
+        .hidden {
+            display: none !important;
         }
-        .animate-fade-in { animation: fadeIn 0.2s ease; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease;
+        }
 
         /* Custom scrollbar for textareas */
-        .data-textarea::-webkit-scrollbar { width: 8px; }
-        .data-textarea::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        .data-textarea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .data-textarea::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .data-textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .data-textarea::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .data-textarea::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .data-textarea::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
 
         /* Modified indicator for textarea */
-        .data-textarea.modified { border-left: 3px solid #f59e0b; padding-left: 13px; }
+        .data-textarea.modified {
+            border-left: 3px solid #f59e0b;
+            padding-left: 13px;
+        }
 
         /* Drag over state for file upload */
-        .file-upload-section.drag-over { 
-            border-color: #0078d4 !important; 
-            background-color: rgba(0, 120, 212, 0.05) !important; 
+        .file-upload-section.drag-over {
+            border-color: #0078d4 !important;
+            background-color: rgba(0, 120, 212, 0.05) !important;
         }
     </style>
 </head>
@@ -87,13 +115,15 @@
 
     <!-- Main Container -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        
+
         <!-- Top Navigation -->
         <nav class="flex justify-end items-center mb-8">
-            <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" 
-               class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all">
+            <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all">
                 <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                    </path>
                 </svg>
                 Star on GitHub
             </a>
@@ -103,15 +133,16 @@
         <header class="text-center mb-10">
             <div class="flex items-center justify-center gap-3 mb-3">
                 <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
-                     alt="Azure Cosmos DB" class="h-10 w-10">
+                    alt="Azure Cosmos DB" class="h-10 w-10">
                 <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
                     Azure Cosmos DB Playground
                 </h1>
             </div>
             <p class="text-sm text-slate-500">
-                Powered by 
-                <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank" class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a> 
-                and 
+                Powered by
+                <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank"
+                    class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a>
+                and
                 <a href="https://codapi.org/" target="_blank" class="text-accent hover:underline">Codapi</a>
             </p>
         </header>
@@ -123,16 +154,39 @@
             </p>
         </div>
 
+        <!-- Session Restore Banner -->
+        <div id="session-restore-banner" class="hidden bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-6">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <p class="text-sm font-medium text-blue-800 mb-1">
+                        📝 Welcome back! You have a previous session.
+                    </p>
+                    <p id="session-restore-details" class="text-xs text-blue-600"></p>
+                </div>
+                <div class="flex gap-2 flex-shrink-0">
+                    <button onclick="restoreSession()"
+                        class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                        Restore
+                    </button>
+                    <button onclick="dismissSessionRestore()"
+                        class="px-3 py-1.5 bg-white border border-blue-200 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-50 transition-colors">
+                        Start Fresh
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Intro Text -->
         <p class="text-slate-600 mb-8 text-center max-w-2xl mx-auto">
-            Experiment with 
-            <a href="https://learn.microsoft.com/en-us/cosmos-db/query/overview" target="_blank" class="text-accent hover:underline font-medium">Cosmos DB SQL queries</a> 
+            Experiment with
+            <a href="https://learn.microsoft.com/en-us/cosmos-db/query/overview" target="_blank"
+                class="text-accent hover:underline font-medium">Cosmos DB SQL queries</a>
             interactively. Choose a preset dataset or load your own data.
         </p>
 
         <!-- Main Content Card -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            
+
             <!-- Dataset Section -->
             <div class="p-6 border-b border-slate-100">
                 <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
@@ -145,8 +199,8 @@
                         Choose a Dataset
                     </label>
                     <select id="dataset-picker" onchange="loadPresetDataset()"
-                            class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all cursor-pointer appearance-none"
-                            style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;">
+                        class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all cursor-pointer appearance-none"
+                        style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;">
                         <option value="simple">Simple Demo (3 items)</option>
                         <option value="products">E-commerce Products (10 items)</option>
                         <option value="iot">IoT Device Telemetry (15 items)</option>
@@ -156,13 +210,15 @@
                 </div>
 
                 <!-- Dataset Info -->
-                <div id="dataset-info" class="text-sm text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-100">
+                <div id="dataset-info"
+                    class="text-sm text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-100">
                     Basic user records with name, city, and age. Perfect for learning SQL query basics.
                 </div>
             </div>
 
             <!-- Query Suggestions -->
-            <div id="query-suggestions" class="hidden p-6 border-b border-slate-100 bg-gradient-to-r from-accent/5 to-transparent">
+            <div id="query-suggestions"
+                class="hidden p-6 border-b border-slate-100 bg-gradient-to-r from-accent/5 to-transparent">
                 <h4 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
                     <span>💡</span> Try these queries:
                 </h4>
@@ -171,20 +227,25 @@
 
             <!-- Partition Key Info -->
             <details class="border-b border-slate-100">
-                <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
+                <summary
+                    class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
                     ℹ️ About Partition Keys in this Playground
                 </summary>
                 <div class="px-6 pb-4 text-sm text-slate-500 space-y-2">
                     <p>
-                        This playground uses <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
+                        This playground uses <code
+                            class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
                         the partition key for all queries. This works with any JSON data since the script auto-generates
                         an <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field if needed.
                     </p>
                     <p>
-                        <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on your
-                        query patterns (e.g., <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
+                        <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on
+                        your
+                        query patterns (e.g., <code
+                            class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
                         <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/userId</code>).
-                        <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank" class="text-accent hover:underline">
+                        <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank"
+                            class="text-accent hover:underline">
                             Learn more →
                         </a>
                     </p>
@@ -193,10 +254,12 @@
 
             <!-- File Upload Section (hidden by default) -->
             <div id="file-upload-section" class="hidden p-6 border-b border-slate-100 file-upload-section">
-                <div class="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-300 transition-colors">
-                    <input type="file" id="data-file-picker" accept=".json,application/json" class="text-sm text-slate-500 mb-3">
+                <div
+                    class="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-300 transition-colors">
+                    <input type="file" id="data-file-picker" accept=".json,application/json"
+                        class="text-sm text-slate-500 mb-3">
                     <button id="load-file-btn" onclick="loadFromFile()"
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
                         <i data-lucide="upload" class="w-4 h-4"></i>
                         Load from File
                     </button>
@@ -215,17 +278,16 @@
 
             <!-- Data Editor -->
             <div class="border-b border-slate-100">
-                <textarea id="data-textarea" 
-                          class="data-textarea w-full min-h-[200px] p-4 font-mono text-sm text-slate-700 bg-white border-0 focus:outline-none focus:ring-0 resize-y"
-                          placeholder="Paste or edit your JSON data here..."
-                          oninput="handleDataEdit()">[
+                <textarea id="data-textarea"
+                    class="data-textarea w-full min-h-[200px] p-4 font-mono text-sm text-slate-700 bg-white border-0 focus:outline-none focus:ring-0 resize-y"
+                    placeholder="Paste or edit your JSON data here..." oninput="handleDataEdit()">[
   {"id": "1", "name": "Alice", "city": "New York", "age": 30},
   {"id": "2", "name": "Bob", "city": "London", "age": 25},
   {"id": "3", "name": "Charlie", "city": "London", "age": 35}
 ]</textarea>
                 <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
                     <button id="apply-button" onclick="applyDataChanges()" disabled
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
                         <i data-lucide="check" class="w-4 h-4"></i>
                         Apply Changes
                     </button>
@@ -238,8 +300,9 @@
                 <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                     <span class="text-xl">⚡</span> SQL Query
                 </h2>
-                
-                <pre class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-display" class="language-sql text-sm">SELECT * FROM c WHERE c.city = 'London'</code></pre>
+
+                <pre
+                    class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-display" class="language-sql text-sm">SELECT * FROM c WHERE c.city = 'London'</code></pre>
 
                 <!-- Codapi Widget -->
                 <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
@@ -256,18 +319,18 @@
                 </p>
                 <div class="flex flex-wrap items-center gap-3">
                     <button onclick="generateShareLink()"
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover transition-colors">
                         <i data-lucide="link" class="w-4 h-4"></i>
                         Generate Share Link
                     </button>
                     <div id="share-buttons" class="hidden flex items-center gap-2">
                         <button onclick="copyShareLink()"
-                                class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+                            class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
                             <i data-lucide="copy" class="w-4 h-4"></i>
                             Copy Link
                         </button>
                         <button onclick="openShareLink()"
-                                class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+                            class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                             Open Link
                         </button>
@@ -308,6 +371,187 @@
         let lastSelectedPreset = 'simple';
         let currentDatasetKey = 'simple';
         let originalPresetData = null;
+        let pendingSessionRestore = null;
+
+        // Session storage constants
+        const SESSION_STORAGE_KEY = 'cosmosdb-playground-session';
+        const SESSION_TTL_DAYS = 7;
+
+        // Session management functions
+        function saveSession() {
+            try {
+                const textarea = document.getElementById('data-textarea');
+                const queryDisplay = document.getElementById('query-display');
+                const snippet = document.querySelector('codapi-snippet');
+
+                const currentData = textarea ? textarea.value.trim() : '';
+                const currentQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
+                    queryDisplay?.textContent?.trim() || '';
+
+                // Only save if there's meaningful custom data (not just default preset unchanged)
+                const isCustomOrModified = currentDatasetKey === 'custom' ||
+                    (originalPresetData && currentData !== JSON.stringify(originalPresetData, null, 2));
+
+                if (!isCustomOrModified && currentQuery === "SELECT * FROM c WHERE c.city = 'London'") {
+                    // Default state, no need to save
+                    clearSession();
+                    return;
+                }
+
+                const session = {
+                    datasetKey: currentDatasetKey,
+                    data: currentData,
+                    query: currentQuery,
+                    timestamp: Date.now(),
+                    expiresAt: Date.now() + (SESSION_TTL_DAYS * 24 * 60 * 60 * 1000)
+                };
+
+                localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+            } catch (e) {
+                // Silently fail - quota exceeded or other localStorage issues
+                if (e.name === 'QuotaExceededError') {
+                    console.warn('Session auto-save failed: localStorage quota exceeded');
+                }
+            }
+        }
+
+        function loadSession() {
+            try {
+                const stored = localStorage.getItem(SESSION_STORAGE_KEY);
+                if (!stored) return null;
+
+                const session = JSON.parse(stored);
+
+                // Check if session has expired
+                if (session.expiresAt && Date.now() > session.expiresAt) {
+                    clearSession();
+                    return null;
+                }
+
+                return session;
+            } catch (e) {
+                clearSession();
+                return null;
+            }
+        }
+
+        function clearSession() {
+            try {
+                localStorage.removeItem(SESSION_STORAGE_KEY);
+            } catch (e) { }
+        }
+
+        function showSessionRestoreBanner(session) {
+            const banner = document.getElementById('session-restore-banner');
+            const details = document.getElementById('session-restore-details');
+
+            if (!banner || !session) return;
+
+            // Calculate time ago
+            const minutesAgo = Math.floor((Date.now() - session.timestamp) / (1000 * 60));
+            let timeAgo;
+            if (minutesAgo < 1) {
+                timeAgo = 'just now';
+            } else if (minutesAgo < 60) {
+                timeAgo = `${minutesAgo} minute${minutesAgo === 1 ? '' : 's'} ago`;
+            } else if (minutesAgo < 1440) {
+                const hours = Math.floor(minutesAgo / 60);
+                timeAgo = `${hours} hour${hours === 1 ? '' : 's'} ago`;
+            } else {
+                const days = Math.floor(minutesAgo / 1440);
+                timeAgo = `${days} day${days === 1 ? '' : 's'} ago`;
+            }
+
+            const datasetLabel = session.datasetKey === 'custom' ? 'custom data' : `${session.datasetKey} dataset (modified)`;
+            details.textContent = `Last saved ${timeAgo} with ${datasetLabel}`;
+
+            pendingSessionRestore = session;
+            banner.classList.remove('hidden');
+        }
+
+        function restoreSession() {
+            if (!pendingSessionRestore) return;
+
+            const session = pendingSessionRestore;
+            const textarea = document.getElementById('data-textarea');
+            const scriptTag = document.getElementById('data.json');
+            const queryDisplay = document.getElementById('query-display');
+            const snippet = document.querySelector('codapi-snippet');
+            const datasetPicker = document.getElementById('dataset-picker');
+
+            // Restore data
+            if (session.data) {
+                if (textarea) textarea.value = session.data;
+                if (scriptTag) scriptTag.textContent = session.data;
+                originalData = session.data;
+            }
+
+            // Restore query
+            if (session.query) {
+                if (queryDisplay) queryDisplay.textContent = session.query;
+                if (snippet) {
+                    const editor = snippet.querySelector('.snippet-code');
+                    if (editor) editor.textContent = session.query;
+                }
+            }
+
+            // Restore dataset picker
+            if (session.datasetKey) {
+                currentDatasetKey = session.datasetKey;
+                if (datasetPicker) {
+                    datasetPicker.value = session.datasetKey;
+                    if (session.datasetKey === 'custom') {
+                        document.getElementById('file-upload-section')?.classList.remove('hidden');
+                        document.getElementById('query-suggestions')?.classList.add('hidden');
+                    }
+                }
+            }
+
+            dismissSessionRestore();
+            showDataStatus('✓ Previous session restored', false);
+        }
+
+        function dismissSessionRestore() {
+            const banner = document.getElementById('session-restore-banner');
+            if (banner) banner.classList.add('hidden');
+            pendingSessionRestore = null;
+            // Clear the saved session when user chooses "Start Fresh"
+            if (!arguments[0]) { // Called from "Start Fresh" button
+                // Don't clear here - only clear if explicitly starting fresh
+            }
+        }
+
+        function setupAutoSave() {
+            // Debounced save function
+            let saveTimeout = null;
+            const debouncedSave = () => {
+                if (saveTimeout) clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(saveSession, 2000); // Save 2 seconds after last change
+            };
+
+            // Save on data textarea changes
+            const textarea = document.getElementById('data-textarea');
+            if (textarea) {
+                textarea.addEventListener('input', debouncedSave);
+            }
+
+            // Save on apply changes
+            const originalApplyDataChanges = window.applyDataChanges;
+            window.applyDataChanges = function () {
+                originalApplyDataChanges.apply(this, arguments);
+                saveSession();
+            };
+
+            // Save when query changes (observe codapi snippet)
+            const snippet = document.querySelector('codapi-snippet');
+            if (snippet) {
+                const observer = new MutationObserver(debouncedSave);
+                observer.observe(snippet, { childList: true, subtree: true, characterData: true });
+            }
+
+            // Save on page unload as a safety net
+            window.addEventListener('beforeunload', saveSession);
+        }
 
         // Load preset dataset (from external JSON files)
         async function loadPresetDataset() {
@@ -488,7 +732,7 @@
         function showDataStatus(message, isError = false) {
             const statusDiv = document.getElementById('data-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' + 
+            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' +
                 (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
@@ -528,7 +772,7 @@
         function showStatus(message, isError = false) {
             const statusDiv = document.getElementById('status-message');
             statusDiv.textContent = message;
-            statusDiv.className = 'mt-3 px-4 py-2 rounded-lg text-sm animate-fade-in ' + 
+            statusDiv.className = 'mt-3 px-4 py-2 rounded-lg text-sm animate-fade-in ' +
                 (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
@@ -569,6 +813,10 @@
                         textarea.value = prettyData;
                         originalData = prettyData;
                     }
+
+                    // Update dataset key to custom and save session
+                    currentDatasetKey = 'custom';
+                    saveSession();
 
                     showStatus(`✓ Loaded ${file.name} successfully (${Math.round(file.size / 1024)} KB)`);
 
@@ -656,7 +904,7 @@
         function showShareStatus(message, isError = false) {
             const statusDiv = document.getElementById('share-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'mt-3 text-sm px-3 py-1.5 rounded-lg animate-fade-in ' + 
+            statusDiv.className = 'mt-3 text-sm px-3 py-1.5 rounded-lg animate-fade-in ' +
                 (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 
@@ -728,24 +976,29 @@
             lucide.createIcons();
         }
 
-        // Initialize on page load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
+        // Main initialization function
+        function initializePlayground() {
+            // Check for URL params first (share links take priority)
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasUrlParams = urlParams.get('query') || urlParams.get('data');
+
+            if (hasUrlParams) {
+                // URL params exist - use them and clear any saved session
                 loadFromUrlParams();
-
-                try {
-                    const savedDataset = localStorage.getItem('selectedDataset');
-                    if (savedDataset && presetDatasets[savedDataset]) {
-                        document.getElementById('dataset-picker').value = savedDataset;
-                        loadPresetDataset();
-                    }
-                } catch (e) { }
-
+                clearSession();
                 originalData = document.getElementById('data-textarea').value.trim();
-            });
-        } else {
-            loadFromUrlParams();
+                setupAutoSave();
+                return;
+            }
 
+            // Check for saved session
+            const savedSession = loadSession();
+            if (savedSession && savedSession.data) {
+                // Show restore banner - don't auto-restore
+                showSessionRestoreBanner(savedSession);
+            }
+
+            // Load default/last selected preset dataset
             try {
                 const savedDataset = localStorage.getItem('selectedDataset');
                 if (savedDataset && presetDatasets[savedDataset]) {
@@ -755,6 +1008,16 @@
             } catch (e) { }
 
             originalData = document.getElementById('data-textarea').value.trim();
+
+            // Setup auto-save for future changes
+            setupAutoSave();
+        }
+
+        // Initialize on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePlayground);
+        } else {
+            initializePlayground();
         }
     </script>
 
