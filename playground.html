@@ -384,9 +384,11 @@
 
         let currentShareUrl = '';
         let originalData = '';
+        let originalQuery = ''; // Query state when dataset was loaded
         let lastSelectedPreset = 'simple';
         let currentDatasetKey = 'simple';
         let originalPresetData = null;
+        let originalPresetQueries = []; // Array of valid queries for current preset
         let pendingSessionRestore = null;
 
         // Session storage constants
@@ -411,11 +413,15 @@
                     queryDisplay?.textContent?.trim() || '';
 
                 // Only save if there's meaningful custom data (not just default preset unchanged)
-                const isCustomOrModified = currentDatasetKey === 'custom' ||
+                const isDataModified = currentDatasetKey === 'custom' ||
                     (originalPresetData && currentData !== JSON.stringify(originalPresetData, null, 2));
 
-                if (!isCustomOrModified && currentQuery === "SELECT * FROM c WHERE c.city = 'London'") {
-                    // Default state, no need to save
+                // Check if query has changed from original state OR is a preset query (user clicked suggestion)
+                const isQueryUnchanged = currentQuery === originalQuery ||
+                    (originalPresetQueries.length > 0 && originalPresetQueries.some(q => q === currentQuery));
+
+                if (!isDataModified && isQueryUnchanged) {
+                    // Unmodified preset state, no need to save
                     clearSession();
                     return;
                 }
@@ -522,8 +528,8 @@
                 currentDatasetKey = session.datasetKey;
                 if (datasetPicker) {
                     datasetPicker.value = session.datasetKey;
+                    // Hide query suggestions for custom data (no presets)
                     if (session.datasetKey === 'custom') {
-                        document.getElementById('file-upload-section')?.classList.remove('hidden');
                         document.getElementById('query-suggestions')?.classList.add('hidden');
                     }
                 }
@@ -611,6 +617,14 @@
                 textarea.placeholder = 'Paste your JSON data here...\n\nOr use the file upload option above.';
                 textarea.classList.remove('modified');
                 originalData = '';
+                currentDatasetKey = 'custom';
+                originalPresetData = null;
+                originalPresetQueries = []; // No preset queries for custom data
+                // Capture current query state for custom data
+                const snippet = document.querySelector('codapi-snippet');
+                const queryDisplay = document.getElementById('query-display');
+                originalQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
+                    queryDisplay?.textContent?.trim() || '';
                 const applyButton = document.getElementById('apply-button');
                 applyButton.disabled = true;
                 const scriptTag = document.getElementById('data.json');
@@ -639,6 +653,8 @@
 
             currentDatasetKey = datasetKey;
             originalPresetData = dataset.data;
+            // Store the preset's default queries for session save comparison
+            originalPresetQueries = dataset.queries ? dataset.queries.map(q => q.query) : [];
 
             const prettyData = JSON.stringify(dataset.data, null, 2);
 
@@ -656,6 +672,10 @@
 
             originalData = prettyData;
 
+            // Capture current query state when loading preset
+            const snippet = document.querySelector('codapi-snippet');
+            const queryDisplay = document.getElementById('query-display');
+
             const applyButton = document.getElementById('apply-button');
             if (applyButton) {
                 applyButton.disabled = true;
@@ -663,8 +683,17 @@
 
             if (dataset.queries && dataset.queries.length > 0) {
                 showQuerySuggestions(dataset.queries);
+                // Auto-load first query to match the dataset (no scroll)
+                const firstQuery = dataset.queries[0].query;
+                if (queryDisplay) queryDisplay.textContent = firstQuery;
+                const editor = snippet?.querySelector('.snippet-code');
+                if (editor) editor.textContent = firstQuery;
+                originalQuery = firstQuery;
             } else {
                 querySection.classList.add('hidden');
+                // No preset queries, capture current query state
+                originalQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
+                    queryDisplay?.textContent?.trim() || '';
             }
 
             const datasetName = dataset.name || presetDatasets[datasetKey]?.name || datasetKey;
@@ -706,6 +735,9 @@
                     editor.textContent = queryText;
                 }
             }
+
+            // Update originalQuery since user selected a preset query (not a custom edit)
+            originalQuery = queryText;
 
             showDataStatus('✓ Query loaded - click "Run" to execute', false);
 
@@ -1205,6 +1237,14 @@
             } catch (e) { }
 
             originalData = document.getElementById('data-textarea').value.trim();
+
+            // Capture initial query state if not already set by loadPresetDataset
+            if (!originalQuery) {
+                const snippet = document.querySelector('codapi-snippet');
+                const queryDisplay = document.getElementById('query-display');
+                originalQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
+                    queryDisplay?.textContent?.trim() || '';
+            }
 
             // Setup auto-save for future changes
             setupAutoSave();
