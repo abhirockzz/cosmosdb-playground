@@ -39,7 +39,7 @@ Both capture the same state — they’re just optimized for different workflows
 
 ## Is my data sent anywhere when I use the playground?
 
-No. All data stays in your browser. The playground does not upload or store your datasets or queries on a server.
+Yes and No. The playground **does** send the datasets or queries to a server (for execution), but **does not** store them permanently.
 
 ## Can I use this for production workloads or benchmarking?
 

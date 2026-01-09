@@ -4,6 +4,8 @@ Built with [Azure Cosmos DB vNext emulator](https://learn.microsoft.com/en-us/az
 
 **Access a hosted version on https://aka.ms/cosmosdb-playground**, or deploy your own instance on an Azure VM by following the [deployment instructions](./docs/azure-deployment.md).
 
+Checkout the [features](./docs/features.md) and [FAQ](./docs/faq.md) sections in the docs to learn more about what the playground offers.
+
 Useful for prototyping, learning, teaching, and sharing:
 
 - Experiment with queries, and see results instantly
