@@ -623,6 +623,9 @@
                 currentDatasetKey = 'custom';
                 originalPresetData = null;
                 originalPresetQueries = []; // No preset queries for custom data
+                // Update the dataset description for custom data
+                const infoDiv = document.getElementById('dataset-info');
+                if (infoDiv) infoDiv.innerHTML = presetDatasets.custom.description;
                 // Capture current query state for custom data
                 const snippet = document.querySelector('codapi-snippet');
                 const queryDisplay = document.getElementById('query-display');
