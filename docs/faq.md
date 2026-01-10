@@ -16,6 +16,10 @@ The playground supports [Azure Cosmos DB SQL (Core API) queries](https://learn.m
 
 No. All data exists only in your browser session. Queries run against the in-memory dataset you’re working with and do not affect any external systems.
 
+## What happens if my data doesn’t have an `id` field?
+
+The playground automatically generates a unique `id` for each item if it’s missing. Since each query/session runs in an ephemeral environment, these IDs may change between sessions. This ensures queries work smoothly, but you should not rely on IDs being stable or persistent across sessions.
+
 ## What happens when I refresh the page?
 
 If you’ve modified the dataset or query, the playground will detect a saved session.
