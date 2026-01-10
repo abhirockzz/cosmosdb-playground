@@ -4,8 +4,6 @@ The Azure Cosmos DB Playground offers an interactive environment to learn, proto
 
 > Check out the FAQ section in the [docs](faq.md) if you have other questions.
 
-Key features include:
-
 ## Explore with Pre-Loaded Datasets and Queries
 
 Choose from built-in datasets, each paired with ready-to-run query examples. You can run these queries immediately to see how the data is structured and queried. You can modify these datasets or the queries - this lets you explore and observe how those changes affect query behavior and results.

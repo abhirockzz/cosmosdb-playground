@@ -2,11 +2,11 @@
 
 Here are answers to some common questions about the Azure Cosmos DB Playground.
 
-> Check out the features section in the [docs](features.md) to learn more about what the playground offers.
+> Check out the features section in the [docs](features.md) to learn more.
 
 ## Is this connected to a real Azure Cosmos DB account?
 
-No. This is an in-browser playground which connects to a backend component that uses the [Azure Cosmos DB vNext emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux). You don’t need an Azure subscription, account, or credentials to use it.
+No. This is an in-browser playground. It also has a backend component which uses the [Azure Cosmos DB vNext emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux). You don’t need an Azure subscription, account, or credentials to use it.
 
 ## What query language does the playground support?
 
@@ -15,11 +15,6 @@ The playground supports [Azure Cosmos DB SQL (Core API) queries](https://learn.m
 ## Do queries modify or persist data anywhere?
 
 No. All data exists only in your browser session. Queries run against the in-memory dataset you’re working with and do not affect any external systems.
-
-## When I edit data, why don’t my changes apply immediately?
-
-After editing data, you need to explicitly **apply** the changes before running queries.
-This makes it clear which version of the data your queries are running against and avoids accidental confusion while experimenting.
 
 ## What happens when I refresh the page?
 
@@ -39,7 +34,7 @@ Both capture the same state — they’re just optimized for different workflows
 
 ## Is my data sent anywhere when I use the playground?
 
-Yes and No. The playground **does** send the datasets or queries to a server (for execution), but **does not** store them permanently.
+Yes and No. The playground **does** send the datasets or queries to the backend server component (for execution), but **does not** store them permanently.
 
 ## Can I use this for production workloads or benchmarking?
 
