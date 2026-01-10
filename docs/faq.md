@@ -25,13 +25,6 @@ You’ll be prompted to **restore** your previous state or start fresh.
 
 A **shareable link** captures the dataset **and** query currently active in the playground. Opening the link restores that exact state so others can access, run, and modify the same example immediately.
 
-## What’s the difference between Share Links and Export/Import?
-
-- **Share links** are great for quick sharing in blogs, docs, or chats.
-- **Export/Import** is better for saving experiments locally, sharing offline, or revisiting them later.
-
-Both capture the same state — they’re just optimized for different workflows.
-
 ## Is my data sent anywhere when I use the playground?
 
 Yes and No. The playground **does** send the datasets or queries to the backend server component (for execution), but **does not** store them permanently.
