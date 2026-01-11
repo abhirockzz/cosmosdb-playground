@@ -46,22 +46,50 @@
 
     <style>
         /* Minimal custom styles */
-        .hidden { display: none !important; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
+        .hidden {
+            display: none !important;
         }
-        .animate-fade-in { animation: fadeIn 0.2s ease; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.2s ease;
+        }
 
         /* Custom scrollbar for textareas */
-        .data-textarea::-webkit-scrollbar { width: 8px; }
-        .data-textarea::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        .data-textarea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .data-textarea::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .data-textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .data-textarea::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .data-textarea::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .data-textarea::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
 
         /* Modified indicator for textarea */
-        .data-textarea.modified { border-left: 3px solid #f59e0b; padding-left: 13px; }
+        .data-textarea.modified {
+            border-left: 3px solid #f59e0b;
+            padding-left: 13px;
+        }
     </style>
 </head>
 
@@ -81,13 +109,15 @@
 
     <!-- Main Container -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        
+
         <!-- Top Navigation -->
         <nav class="flex justify-end items-center mb-8">
-            <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" 
-               class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all">
+            <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all">
                 <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                    </path>
                 </svg>
                 Star on GitHub
             </a>
@@ -98,7 +128,9 @@
             <div class="inline-flex items-center gap-3 text-slate-500">
                 <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
                 </svg>
                 <span>Loading code...</span>
             </div>
@@ -106,48 +138,57 @@
 
         <!-- Main Content (hidden until loaded) -->
         <div id="content" class="hidden">
-            
+
             <!-- Header -->
             <header class="text-center mb-8">
                 <div class="flex items-center justify-center gap-2 mb-2">
                     <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
-                         alt="Azure Cosmos DB" class="h-6 w-6">
+                        alt="Azure Cosmos DB" class="h-6 w-6">
                     <p class="text-sm text-slate-500">
-                        Powered by 
-                        <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank" class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a> 
-                        and 
+                        Powered by
+                        <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank"
+                            class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a>
+                        and
                         <a href="https://codapi.org/" target="_blank" class="text-accent hover:underline">Codapi</a>
                     </p>
                 </div>
                 <p class="text-slate-600 text-sm">
-                    This was generated from the 
-                    <a href="playground.html" class="text-accent hover:underline font-medium">Azure Cosmos DB Playground</a> 
+                    This was generated from the
+                    <a href="playground.html" class="text-accent hover:underline font-medium">Azure Cosmos DB
+                        Playground</a>
                     and is ready to execute. Feel free to modify and test different variations.
                 </p>
             </header>
 
             <!-- Error Message -->
-            <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm"></div>
+            <div id="error-message"
+                class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm"></div>
 
             <!-- Main Content Card -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
 
                 <!-- Partition Key Info -->
                 <details class="border-b border-slate-100">
-                    <summary class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
+                    <summary
+                        class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
                         ℹ️ About Partition Keys in this Playground
                     </summary>
                     <div class="px-6 pb-4 text-sm text-slate-500 space-y-2">
                         <p>
-                            This playground uses <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
-                            the partition key for all queries. This works with any JSON data since the script auto-generates
-                            an <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field if needed.
+                            This playground uses <code
+                                class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
+                            the partition key for all queries. This works with any JSON data since the
+                            <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field is
+                            auto-generated if missing.
                         </p>
                         <p>
-                            <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on your
-                            query patterns (e.g., <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
+                            <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based
+                            on your
+                            query patterns (e.g., <code
+                                class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
                             <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/userId</code>).
-                            <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank" class="text-accent hover:underline">
+                            <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank"
+                                class="text-accent hover:underline">
                                 Learn more →
                             </a>
                         </p>
@@ -159,15 +200,14 @@
                     <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                         <span class="text-xl">📊</span> Sample Data
                     </h2>
-                    
+
                     <div class="border border-slate-200 rounded-lg overflow-hidden">
-                        <textarea id="data-textarea" 
-                                  class="data-textarea w-full min-h-[200px] p-4 font-mono text-sm text-slate-700 bg-white border-0 focus:outline-none focus:ring-0 resize-y"
-                                  placeholder="JSON data will load here..."
-                                  oninput="handleDataEdit()"></textarea>
+                        <textarea id="data-textarea"
+                            class="data-textarea w-full min-h-[200px] p-4 font-mono text-sm text-slate-700 bg-white border-0 focus:outline-none focus:ring-0 resize-y"
+                            placeholder="JSON data will load here..." oninput="handleDataEdit()"></textarea>
                         <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
                             <button id="apply-button" onclick="applyDataChanges()" disabled
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:bg-accent-hover disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
                                 <i data-lucide="check" class="w-4 h-4"></i>
                                 Apply Changes
                             </button>
@@ -181,12 +221,13 @@
                     <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                         <span class="text-xl">⚡</span> SQL Query
                     </h2>
-                    
+
                     <!-- Hidden script tag for codapi to reference -->
                     <script id="data.json" type="text/plain"></script>
 
                     <!-- Query pre element that codapi will attach to -->
-                    <pre class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-code" class="language-sql text-sm"></code></pre>
+                    <pre
+                        class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-code" class="language-sql text-sm"></code></pre>
 
                     <!-- Codapi Widget -->
                     <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
@@ -315,7 +356,7 @@
         function showDataStatus(message, isError = false) {
             const statusDiv = document.getElementById('data-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' + 
+            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' +
                 (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
             statusDiv.classList.remove('hidden');
 

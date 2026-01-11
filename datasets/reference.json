@@ -1,0 +1,290 @@
+{
+    "name": "Order System (Referenced Data Model)",
+    "description": "Demonstrates referenced data modeling pattern where related data is stored in separate documents and linked via IDs. Orders reference customers and products rather than embedding them. This pattern is ideal when data changes frequently, is accessed independently, or could grow unbounded. Avoids data duplication and enables independent updates. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#reference-data",
+    "itemCount": 17,
+    "data": [
+        {
+            "id": "customer-001",
+            "type": "customer",
+            "name": "Alice Johnson",
+            "email": "alice.johnson@example.com",
+            "phone": "+1-555-0101",
+            "address": {
+                "street": "123 Main St",
+                "city": "Seattle",
+                "state": "WA",
+                "zip": "98101",
+                "country": "USA"
+            },
+            "memberSince": "2022-03-15",
+            "loyaltyTier": "gold"
+        },
+        {
+            "id": "customer-002",
+            "type": "customer",
+            "name": "Bob Martinez",
+            "email": "bob.martinez@example.com",
+            "phone": "+1-555-0102",
+            "address": {
+                "street": "456 Oak Ave",
+                "city": "Portland",
+                "state": "OR",
+                "zip": "97201",
+                "country": "USA"
+            },
+            "memberSince": "2023-01-20",
+            "loyaltyTier": "silver"
+        },
+        {
+            "id": "customer-003",
+            "type": "customer",
+            "name": "Carol Davis",
+            "email": "carol.davis@example.com",
+            "phone": "+1-555-0103",
+            "address": {
+                "street": "789 Pine Rd",
+                "city": "San Francisco",
+                "state": "CA",
+                "zip": "94102",
+                "country": "USA"
+            },
+            "memberSince": "2021-11-08",
+            "loyaltyTier": "platinum"
+        },
+        {
+            "id": "customer-004",
+            "type": "customer",
+            "name": "David Chen",
+            "email": "david.chen@example.com",
+            "phone": "+1-555-0104",
+            "address": {
+                "street": "321 Elm St",
+                "city": "Austin",
+                "state": "TX",
+                "zip": "78701",
+                "country": "USA"
+            },
+            "memberSince": "2023-05-12",
+            "loyaltyTier": "bronze"
+        },
+        {
+            "id": "customer-005",
+            "type": "customer",
+            "name": "Emma Wilson",
+            "email": "emma.wilson@example.com",
+            "phone": "+1-555-0105",
+            "address": {
+                "street": "654 Maple Dr",
+                "city": "Boston",
+                "state": "MA",
+                "zip": "02101",
+                "country": "USA"
+            },
+            "memberSince": "2022-09-30",
+            "loyaltyTier": "gold"
+        },
+        {
+            "id": "product-001",
+            "type": "product",
+            "name": "UltraBook Pro 15",
+            "category": "Electronics",
+            "brand": "TechCorp",
+            "price": 1299.99,
+            "inStock": true,
+            "sku": "TECH-LAPTOP-001"
+        },
+        {
+            "id": "product-002",
+            "type": "product",
+            "name": "Wireless Noise-Canceling Headphones",
+            "category": "Electronics",
+            "brand": "AudioMax",
+            "price": 249.99,
+            "inStock": true,
+            "sku": "AUDIO-HP-002"
+        },
+        {
+            "id": "product-003",
+            "type": "product",
+            "name": "Ergonomic Office Chair",
+            "category": "Furniture",
+            "brand": "ComfortSeating",
+            "price": 449.99,
+            "inStock": true,
+            "sku": "FURN-CHAIR-003"
+        },
+        {
+            "id": "product-004",
+            "type": "product",
+            "name": "4K Webcam",
+            "category": "Electronics",
+            "brand": "VisionTech",
+            "price": 129.99,
+            "inStock": false,
+            "sku": "TECH-CAM-004"
+        },
+        {
+            "id": "product-005",
+            "type": "product",
+            "name": "Standing Desk Converter",
+            "category": "Furniture",
+            "brand": "ErgoDesk",
+            "price": 299.99,
+            "inStock": true,
+            "sku": "FURN-DESK-005"
+        },
+        {
+            "id": "order-001",
+            "type": "order",
+            "customerId": "customer-001",
+            "productId": "product-001",
+            "orderDate": "2024-01-15T10:30:00Z",
+            "quantity": 1,
+            "unitPrice": 1299.99,
+            "totalAmount": 1299.99,
+            "status": "delivered",
+            "shippingAddress": {
+                "street": "123 Main St",
+                "city": "Seattle",
+                "state": "WA",
+                "zip": "98101"
+            }
+        },
+        {
+            "id": "order-002",
+            "type": "order",
+            "customerId": "customer-002",
+            "productId": "product-002",
+            "orderDate": "2024-01-20T14:15:00Z",
+            "quantity": 2,
+            "unitPrice": 249.99,
+            "totalAmount": 499.98,
+            "status": "delivered",
+            "shippingAddress": {
+                "street": "456 Oak Ave",
+                "city": "Portland",
+                "state": "OR",
+                "zip": "97201"
+            }
+        },
+        {
+            "id": "order-003",
+            "type": "order",
+            "customerId": "customer-003",
+            "productId": "product-003",
+            "orderDate": "2024-02-05T09:00:00Z",
+            "quantity": 1,
+            "unitPrice": 449.99,
+            "totalAmount": 449.99,
+            "status": "delivered",
+            "shippingAddress": {
+                "street": "789 Pine Rd",
+                "city": "San Francisco",
+                "state": "CA",
+                "zip": "94102"
+            }
+        },
+        {
+            "id": "order-004",
+            "type": "order",
+            "customerId": "customer-001",
+            "productId": "product-002",
+            "orderDate": "2024-02-10T16:45:00Z",
+            "quantity": 1,
+            "unitPrice": 249.99,
+            "totalAmount": 249.99,
+            "status": "shipped",
+            "shippingAddress": {
+                "street": "123 Main St",
+                "city": "Seattle",
+                "state": "WA",
+                "zip": "98101"
+            }
+        },
+        {
+            "id": "order-005",
+            "type": "order",
+            "customerId": "customer-004",
+            "productId": "product-005",
+            "orderDate": "2024-02-18T11:20:00Z",
+            "quantity": 1,
+            "unitPrice": 299.99,
+            "totalAmount": 299.99,
+            "status": "processing",
+            "shippingAddress": {
+                "street": "321 Elm St",
+                "city": "Austin",
+                "state": "TX",
+                "zip": "78701"
+            }
+        },
+        {
+            "id": "order-006",
+            "type": "order",
+            "customerId": "customer-005",
+            "productId": "product-001",
+            "orderDate": "2024-03-01T13:10:00Z",
+            "quantity": 1,
+            "unitPrice": 1299.99,
+            "totalAmount": 1299.99,
+            "status": "delivered",
+            "shippingAddress": {
+                "street": "654 Maple Dr",
+                "city": "Boston",
+                "state": "MA",
+                "zip": "02101"
+            }
+        },
+        {
+            "id": "order-007",
+            "type": "order",
+            "customerId": "customer-003",
+            "productId": "product-005",
+            "orderDate": "2024-03-10T15:30:00Z",
+            "quantity": 2,
+            "unitPrice": 299.99,
+            "totalAmount": 599.98,
+            "status": "delivered",
+            "shippingAddress": {
+                "street": "789 Pine Rd",
+                "city": "San Francisco",
+                "state": "CA",
+                "zip": "94102"
+            }
+        }
+    ],
+    "queries": [
+        {
+            "label": "All orders (IDs only)",
+            "query": "SELECT c.id, c.customerId, c.productId, c.totalAmount, c.status FROM c WHERE c.type = 'order'"
+        },
+        {
+            "label": "All customers",
+            "query": "SELECT c.id, c.name, c.email, c.loyaltyTier FROM c WHERE c.type = 'customer'"
+        },
+        {
+            "label": "All products",
+            "query": "SELECT c.id, c.name, c.price, c.inStock FROM c WHERE c.type = 'product'"
+        },
+        {
+            "label": "Orders by specific customer",
+            "query": "SELECT c.id, c.orderDate, c.productId, c.totalAmount, c.status FROM c WHERE c.type = 'order' AND c.customerId = 'customer-001'"
+        },
+        {
+            "label": "Orders for specific product",
+            "query": "SELECT c.id, c.customerId, c.quantity, c.totalAmount, c.orderDate FROM c WHERE c.type = 'order' AND c.productId = 'product-001'"
+        },
+        {
+            "label": "High-value orders (>$500)",
+            "query": "SELECT c.id, c.customerId, c.productId, c.totalAmount, c.orderDate FROM c WHERE c.type = 'order' AND c.totalAmount > 500"
+        },
+        {
+            "label": "Orders in February 2024",
+            "query": "SELECT c.id, c.customerId, c.totalAmount, c.orderDate FROM c WHERE c.type = 'order' AND c.orderDate >= '2024-02-01' AND c.orderDate < '2024-03-01'"
+        },
+        {
+            "label": "Gold tier customers",
+            "query": "SELECT c.id, c.name, c.email, c.loyaltyTier, c.memberSince FROM c WHERE c.type = 'customer' AND c.loyaltyTier = 'gold'"
+        }
+    ]
+}

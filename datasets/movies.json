@@ -1724,12 +1724,16 @@
             "query": "SELECT c.title, c.year FROM c WHERE EXISTS(SELECT VALUE a FROM a IN c.actors WHERE a.name = 'Leonardo DiCaprio')"
         },
         {
-            "label": "Recent movies",
-            "query": "SELECT c.title, c.year, c.genres FROM c WHERE c.year >= 2020 ORDER BY c.year DESC"
+            "label": "Sci-Fi movies",
+            "query": "SELECT c.title, c.year FROM c WHERE ARRAY_CONTAINS(c.genres, 'Sci-Fi') ORDER BY c.rating DESC"
         },
         {
-            "label": "Long movies (runtime)",
-            "query": "SELECT c.title, c.runtime FROM c WHERE c.runtime > 150 ORDER BY c.runtime DESC"
+            "label": "Movies by director",
+            "query": "SELECT c.title, c.year, c.rating FROM c WHERE c.director.name = 'Christopher Nolan' ORDER BY c.year DESC"
+        },
+        {
+            "label": "Highly-rated movies by genre",
+            "query": "SELECT c.title, genre FROM c JOIN genre IN c.genres WHERE c.rating >= 8.5"
         },
         {
             "label": "Average rating by year",

@@ -203,8 +203,11 @@
                         style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;">
                         <option value="simple">Simple Demo (3 items)</option>
                         <option value="products">E-commerce Products (10 items)</option>
-                        <option value="iot">IoT Device Telemetry (15 items)</option>
+                        <option value="iot">IoT Device Telemetry (45 items)</option>
                         <option value="movies">Movie Database (50 items)</option>
+                        <option value="embed">Blog Posts - Embedded Data Model (8 items)</option>
+                        <option value="reference">Order System - Referenced Data Model (17 items)</option>
+                        <option value="hybrid">Conference System - Hybrid Data Model (10 items)</option>
                         <option value="custom">Custom Data</option>
                     </select>
                 </div>
@@ -235,8 +238,9 @@
                     <p>
                         This playground uses <code
                             class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
-                        the partition key for all queries. This works with any JSON data since the script auto-generates
-                        an <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field if needed.
+                        the partition key for all queries. This works with any JSON data since
+                        the <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field is
+                        auto-generated if missing.
                     </p>
                     <p>
                         <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on
@@ -379,6 +383,15 @@
             },
             movies: {
                 description: "Classic and contemporary films with genres, directors, actors, ratings, and awards."
+            },
+            embed: {
+                description: "Demonstrates embedded data modeling pattern where related data is stored within a single document. Blog posts with embedded author details, comments array, and tags. This pattern is ideal when data is always accessed together, reducing the need for joins and improving query performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#embed-data"
+            },
+            reference: {
+                description: "Demonstrates referenced data modeling pattern where related data is stored in separate documents and linked via IDs. Orders reference customers and products rather than embedding them. This pattern is ideal when data changes frequently, is accessed independently, or could grow unbounded. Avoids data duplication and enables independent updates. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#reference-data"
+            },
+            hybrid: {
+                description: "Demonstrates hybrid data modeling pattern combining embedded and referenced data based on access patterns. Conferences embed session details (always accessed together) but reference speaker documents (shared across sessions, updated independently). This approach balances the benefits of both patterns for optimal performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#hybrid-data-models"
             },
             custom: {
                 description: "Experiment with your data."

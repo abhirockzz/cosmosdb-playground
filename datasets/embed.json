@@ -1,0 +1,346 @@
+{
+    "name": "Blog Posts (Embedded Data Model)",
+    "description": "Demonstrates embedded data modeling pattern where related data is stored within a single document. Blog posts with embedded author details, comments array, and tags. This pattern is ideal when data is always accessed together, reducing the need for joins and improving query performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#embed-data",
+    "itemCount": 8,
+    "data": [
+        {
+            "id": "1",
+            "title": "Getting Started with Azure Cosmos DB",
+            "content": "Azure Cosmos DB is a globally distributed, multi-model database service. In this post, we'll explore the basics of getting started with Cosmos DB and understanding its core concepts.",
+            "author": {
+                "name": "Sarah Chen",
+                "email": "sarah.chen@example.com",
+                "bio": "Cloud Solutions Architect specializing in distributed systems"
+            },
+            "publishedDate": "2024-01-15T09:00:00Z",
+            "status": "published",
+            "views": 1523,
+            "tags": [
+                "azure",
+                "cosmosdb",
+                "database",
+                "tutorial"
+            ],
+            "comments": [
+                {
+                    "id": "c1",
+                    "author": "Mike Johnson",
+                    "text": "Great introduction! Very helpful for beginners.",
+                    "timestamp": "2024-01-15T14:30:00Z",
+                    "likes": 12
+                },
+                {
+                    "id": "c2",
+                    "author": "Emma Wilson",
+                    "text": "Could you cover partition keys in more detail?",
+                    "timestamp": "2024-01-16T08:15:00Z",
+                    "likes": 8
+                },
+                {
+                    "id": "c3",
+                    "author": "David Lee",
+                    "text": "Excellent explanation of the core concepts!",
+                    "timestamp": "2024-01-17T11:45:00Z",
+                    "likes": 5
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "Understanding Partition Keys in Cosmos DB",
+            "content": "Choosing the right partition key is crucial for optimal performance in Cosmos DB. This post explores best practices and common patterns for partition key selection.",
+            "author": {
+                "name": "Sarah Chen",
+                "email": "sarah.chen@example.com",
+                "bio": "Cloud Solutions Architect specializing in distributed systems"
+            },
+            "publishedDate": "2024-02-01T10:30:00Z",
+            "status": "published",
+            "views": 2341,
+            "tags": [
+                "azure",
+                "cosmosdb",
+                "performance",
+                "best-practices"
+            ],
+            "comments": [
+                {
+                    "id": "c4",
+                    "author": "Emma Wilson",
+                    "text": "This answers my question from the previous post. Thanks!",
+                    "timestamp": "2024-02-01T15:20:00Z",
+                    "likes": 15
+                },
+                {
+                    "id": "c5",
+                    "author": "Alex Martinez",
+                    "text": "Very detailed analysis. Bookmarking this for reference.",
+                    "timestamp": "2024-02-02T09:10:00Z",
+                    "likes": 10
+                },
+                {
+                    "id": "c6",
+                    "author": "Lisa Thompson",
+                    "text": "Great examples! Really helped me understand the trade-offs.",
+                    "timestamp": "2024-02-03T13:40:00Z",
+                    "likes": 7
+                },
+                {
+                    "id": "c7",
+                    "author": "James Park",
+                    "text": "Could you write about hierarchical partition keys next?",
+                    "timestamp": "2024-02-04T16:25:00Z",
+                    "likes": 20
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "title": "NoSQL Data Modeling Patterns",
+            "content": "Learn about different data modeling patterns in NoSQL databases, including when to embed vs reference data, and how to optimize for your query patterns.",
+            "author": {
+                "name": "Michael Roberts",
+                "email": "michael.roberts@example.com",
+                "bio": "Database architect with 15 years of experience in NoSQL systems"
+            },
+            "publishedDate": "2024-02-10T14:00:00Z",
+            "status": "published",
+            "views": 1876,
+            "tags": [
+                "nosql",
+                "data-modeling",
+                "architecture",
+                "best-practices"
+            ],
+            "comments": [
+                {
+                    "id": "c8",
+                    "author": "Sarah Chen",
+                    "text": "Excellent post! The embed vs reference comparison is spot on.",
+                    "timestamp": "2024-02-11T10:15:00Z",
+                    "likes": 18
+                },
+                {
+                    "id": "c9",
+                    "author": "Rachel Green",
+                    "text": "This helped me redesign our data model. Thank you!",
+                    "timestamp": "2024-02-12T11:30:00Z",
+                    "likes": 9
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "title": "Building Scalable APIs with Cosmos DB",
+            "content": "Design patterns and best practices for building high-performance, scalable APIs using Azure Cosmos DB as your backend data store.",
+            "author": {
+                "name": "Jennifer Wu",
+                "email": "jennifer.wu@example.com",
+                "bio": "Senior Software Engineer focusing on cloud-native applications"
+            },
+            "publishedDate": "2024-02-20T08:45:00Z",
+            "status": "published",
+            "views": 2103,
+            "tags": [
+                "api",
+                "azure",
+                "cosmosdb",
+                "scalability",
+                "architecture"
+            ],
+            "comments": [
+                {
+                    "id": "c10",
+                    "author": "Tom Anderson",
+                    "text": "The caching strategies section was particularly useful!",
+                    "timestamp": "2024-02-20T16:20:00Z",
+                    "likes": 14
+                },
+                {
+                    "id": "c11",
+                    "author": "Nina Patel",
+                    "text": "Great real-world examples. Much appreciated!",
+                    "timestamp": "2024-02-21T09:45:00Z",
+                    "likes": 11
+                },
+                {
+                    "id": "c12",
+                    "author": "Chris Miller",
+                    "text": "How do you handle rate limiting with variable workloads?",
+                    "timestamp": "2024-02-22T14:10:00Z",
+                    "likes": 6
+                },
+                {
+                    "id": "c13",
+                    "author": "Jennifer Wu",
+                    "text": "@Chris Great question! I'll cover that in my next post.",
+                    "timestamp": "2024-02-22T15:30:00Z",
+                    "likes": 8
+                },
+                {
+                    "id": "c14",
+                    "author": "Mark Stevens",
+                    "text": "Implementing these patterns in our production API now.",
+                    "timestamp": "2024-02-23T10:00:00Z",
+                    "likes": 5
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "title": "Cosmos DB Query Optimization Tips",
+            "content": "Learn how to write efficient queries in Cosmos DB, understand RU consumption, and optimize your database performance.",
+            "author": {
+                "name": "Michael Roberts",
+                "email": "michael.roberts@example.com",
+                "bio": "Database architect with 15 years of experience in NoSQL systems"
+            },
+            "publishedDate": "2024-03-05T11:20:00Z",
+            "status": "published",
+            "views": 3215,
+            "tags": [
+                "cosmosdb",
+                "query-optimization",
+                "performance",
+                "tutorial"
+            ],
+            "comments": [
+                {
+                    "id": "c15",
+                    "author": "Oliver Brown",
+                    "text": "The indexing tips alone saved us 40% on RU costs!",
+                    "timestamp": "2024-03-06T08:30:00Z",
+                    "likes": 25
+                },
+                {
+                    "id": "c16",
+                    "author": "Sophie Turner",
+                    "text": "Fantastic article! Please write more on this topic.",
+                    "timestamp": "2024-03-07T13:15:00Z",
+                    "likes": 13
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "title": "Multi-Region Deployment Strategies",
+            "content": "Explore different strategies for deploying Cosmos DB across multiple regions, including consistency levels, conflict resolution, and failover patterns.",
+            "author": {
+                "name": "Sarah Chen",
+                "email": "sarah.chen@example.com",
+                "bio": "Cloud Solutions Architect specializing in distributed systems"
+            },
+            "publishedDate": "2024-03-15T15:00:00Z",
+            "status": "published",
+            "views": 1654,
+            "tags": [
+                "azure",
+                "cosmosdb",
+                "multi-region",
+                "distributed-systems",
+                "architecture"
+            ],
+            "comments": [
+                {
+                    "id": "c17",
+                    "author": "Daniel Kim",
+                    "text": "The consistency levels comparison table is really helpful!",
+                    "timestamp": "2024-03-16T10:45:00Z",
+                    "likes": 16
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "Cost Optimization for Cosmos DB",
+            "content": "Practical strategies to optimize your Cosmos DB costs while maintaining performance, including autoscale, reserved capacity, and efficient data modeling.",
+            "author": {
+                "name": "Jennifer Wu",
+                "email": "jennifer.wu@example.com",
+                "bio": "Senior Software Engineer focusing on cloud-native applications"
+            },
+            "publishedDate": "2024-03-25T09:30:00Z",
+            "status": "published",
+            "views": 2789,
+            "tags": [
+                "azure",
+                "cosmosdb",
+                "cost-optimization",
+                "best-practices"
+            ],
+            "comments": [
+                {
+                    "id": "c18",
+                    "author": "Kevin Zhang",
+                    "text": "Implemented autoscale based on this - reduced costs by 30%!",
+                    "timestamp": "2024-03-26T11:20:00Z",
+                    "likes": 22
+                },
+                {
+                    "id": "c19",
+                    "author": "Amy Rodriguez",
+                    "text": "Very practical advice. Thank you!",
+                    "timestamp": "2024-03-27T14:50:00Z",
+                    "likes": 12
+                },
+                {
+                    "id": "c20",
+                    "author": "Brian Foster",
+                    "text": "The reserved capacity section was eye-opening.",
+                    "timestamp": "2024-03-28T16:15:00Z",
+                    "likes": 9
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "title": "Serverless vs Provisioned Throughput",
+            "content": "A comprehensive comparison of serverless and provisioned throughput modes in Cosmos DB, helping you choose the right option for your workload.",
+            "author": {
+                "name": "Michael Roberts",
+                "email": "michael.roberts@example.com",
+                "bio": "Database architect with 15 years of experience in NoSQL systems"
+            },
+            "publishedDate": "2024-04-01T12:00:00Z",
+            "status": "published",
+            "views": 987,
+            "tags": [
+                "azure",
+                "cosmosdb",
+                "serverless",
+                "architecture"
+            ],
+            "comments": []
+        }
+    ],
+    "queries": [
+        {
+            "label": "All posts with authors",
+            "query": "SELECT c.id, c.title, c.author.name, c.views FROM c"
+        },
+        {
+            "label": "Posts by specific author",
+            "query": "SELECT c.title, c.publishedDate, c.views FROM c WHERE c.author.name = 'Sarah Chen'"
+        },
+        {
+            "label": "Posts with specific tag",
+            "query": "SELECT c.title, c.tags FROM c WHERE ARRAY_CONTAINS(c.tags, 'cosmosdb')"
+        },
+        {
+            "label": "Posts with comments from Emma",
+            "query": "SELECT c.title, c.comments FROM c JOIN comment IN c.comments WHERE comment.author = 'Emma Wilson'"
+        },
+        {
+            "label": "High engagement posts",
+            "query": "SELECT c.title, c.views, ARRAY_LENGTH(c.comments) AS comments FROM c WHERE c.views > 2000"
+        },
+        {
+            "label": "Posts published in Feb 2024",
+            "query": "SELECT c.title, c.publishedDate, c.author.name FROM c WHERE c.publishedDate >= '2024-02-01' AND c.publishedDate < '2024-03-01'"
+        },
+        {
+            "label": "All comments across posts",
+            "query": "SELECT c.title, comment.author, comment.text, comment.likes FROM c JOIN comment IN c.comments ORDER BY comment.likes DESC"
+        }
+    ]
+}

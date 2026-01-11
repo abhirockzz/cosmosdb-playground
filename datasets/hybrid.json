@@ -1,0 +1,348 @@
+{
+    "name": "Conference System (Hybrid Data Model)",
+    "description": "Demonstrates hybrid data modeling pattern combining embedded and referenced data based on access patterns. Conferences embed session details (always accessed together) but reference speaker documents (shared across sessions, updated independently). This approach balances the benefits of both patterns for optimal performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#hybrid-data-models",
+    "itemCount": 10,
+    "data": [
+        {
+            "id": "speaker-001",
+            "type": "speaker",
+            "name": "Dr. Sarah Mitchell",
+            "email": "sarah.mitchell@example.com",
+            "bio": "Cloud architect with 15 years of experience in distributed systems and database design",
+            "company": "CloudTech Solutions",
+            "expertise": [
+                "Cloud Architecture",
+                "NoSQL Databases",
+                "Microservices"
+            ],
+            "socialMedia": {
+                "twitter": "@sarahmitchell",
+                "linkedin": "linkedin.com/in/sarahmitchell"
+            }
+        },
+        {
+            "id": "speaker-002",
+            "type": "speaker",
+            "name": "James Rodriguez",
+            "email": "james.rodriguez@example.com",
+            "bio": "Principal engineer specializing in high-performance data platforms and real-time analytics",
+            "company": "DataScale Inc",
+            "expertise": [
+                "Data Engineering",
+                "Real-time Analytics",
+                "Performance Optimization"
+            ],
+            "socialMedia": {
+                "twitter": "@jamesrod",
+                "linkedin": "linkedin.com/in/jamesrodriguez"
+            }
+        },
+        {
+            "id": "speaker-003",
+            "type": "speaker",
+            "name": "Lisa Chen",
+            "email": "lisa.chen@example.com",
+            "bio": "Developer advocate passionate about serverless architectures and cloud-native applications",
+            "company": "ServerlessCo",
+            "expertise": [
+                "Serverless",
+                "DevOps",
+                "Cloud-Native Development"
+            ],
+            "socialMedia": {
+                "twitter": "@lisachen",
+                "linkedin": "linkedin.com/in/lisachen"
+            }
+        },
+        {
+            "id": "speaker-004",
+            "type": "speaker",
+            "name": "Michael Park",
+            "email": "michael.park@example.com",
+            "bio": "Security researcher focused on cloud security and data protection strategies",
+            "company": "SecureCloud Labs",
+            "expertise": [
+                "Cloud Security",
+                "Data Protection",
+                "Compliance"
+            ],
+            "socialMedia": {
+                "twitter": "@michaelpark",
+                "linkedin": "linkedin.com/in/michaelpark"
+            }
+        },
+        {
+            "id": "speaker-005",
+            "type": "speaker",
+            "name": "Emma Thompson",
+            "email": "emma.thompson@example.com",
+            "bio": "AI researcher working on machine learning applications in cloud environments",
+            "company": "AI Innovations",
+            "expertise": [
+                "Machine Learning",
+                "AI",
+                "Cloud AI Services"
+            ],
+            "socialMedia": {
+                "twitter": "@emmathompson",
+                "linkedin": "linkedin.com/in/emmathompson"
+            }
+        },
+        {
+            "id": "speaker-006",
+            "type": "speaker",
+            "name": "David Kim",
+            "email": "david.kim@example.com",
+            "bio": "Full-stack developer with expertise in building scalable web applications",
+            "company": "WebScale Solutions",
+            "expertise": [
+                "Full-Stack Development",
+                "Scalability",
+                "Web Performance"
+            ],
+            "socialMedia": {
+                "twitter": "@davidkim",
+                "linkedin": "linkedin.com/in/davidkim"
+            }
+        },
+        {
+            "id": "speaker-007",
+            "type": "speaker",
+            "name": "Rachel Green",
+            "email": "rachel.green@example.com",
+            "bio": "Product manager specializing in developer tools and platform experiences",
+            "company": "DevTools Corp",
+            "expertise": [
+                "Product Management",
+                "Developer Experience",
+                "API Design"
+            ],
+            "socialMedia": {
+                "twitter": "@rachelgreen",
+                "linkedin": "linkedin.com/in/rachelgreen"
+            }
+        },
+        {
+            "id": "conf-001",
+            "type": "conference",
+            "name": "CloudData Summit 2024",
+            "location": "Seattle, WA",
+            "startDate": "2024-03-15",
+            "endDate": "2024-03-17",
+            "description": "Annual conference on cloud databases and data platforms",
+            "sessions": [
+                {
+                    "sessionId": "s001",
+                    "title": "Building Globally Distributed Applications",
+                    "description": "Learn how to design and implement applications that span multiple regions",
+                    "track": "Architecture",
+                    "date": "2024-03-15",
+                    "time": "09:00",
+                    "duration": 60,
+                    "room": "Hall A",
+                    "speakerIds": [
+                        "speaker-001"
+                    ],
+                    "level": "Intermediate"
+                },
+                {
+                    "sessionId": "s002",
+                    "title": "Real-time Analytics at Scale",
+                    "description": "Techniques for processing millions of events per second",
+                    "track": "Data Engineering",
+                    "date": "2024-03-15",
+                    "time": "11:00",
+                    "duration": 60,
+                    "room": "Hall B",
+                    "speakerIds": [
+                        "speaker-002"
+                    ],
+                    "level": "Advanced"
+                },
+                {
+                    "sessionId": "s003",
+                    "title": "Serverless Data Processing Patterns",
+                    "description": "Best practices for building serverless data pipelines",
+                    "track": "Serverless",
+                    "date": "2024-03-16",
+                    "time": "14:00",
+                    "duration": 90,
+                    "room": "Hall A",
+                    "speakerIds": [
+                        "speaker-003",
+                        "speaker-002"
+                    ],
+                    "level": "Intermediate"
+                },
+                {
+                    "sessionId": "s004",
+                    "title": "Securing Your Cloud Data",
+                    "description": "Comprehensive guide to cloud data security",
+                    "track": "Security",
+                    "date": "2024-03-16",
+                    "time": "16:00",
+                    "duration": 60,
+                    "room": "Hall C",
+                    "speakerIds": [
+                        "speaker-004"
+                    ],
+                    "level": "Intermediate"
+                }
+            ]
+        },
+        {
+            "id": "conf-002",
+            "type": "conference",
+            "name": "AI & Cloud Integration 2024",
+            "location": "San Francisco, CA",
+            "startDate": "2024-04-20",
+            "endDate": "2024-04-21",
+            "description": "Exploring the intersection of AI and cloud technologies",
+            "sessions": [
+                {
+                    "sessionId": "s005",
+                    "title": "Machine Learning on Cloud Databases",
+                    "description": "Integrating ML models with cloud data platforms",
+                    "track": "AI/ML",
+                    "date": "2024-04-20",
+                    "time": "10:00",
+                    "duration": 75,
+                    "room": "Auditorium",
+                    "speakerIds": [
+                        "speaker-005"
+                    ],
+                    "level": "Advanced"
+                },
+                {
+                    "sessionId": "s006",
+                    "title": "Building AI-Powered Applications",
+                    "description": "From prototype to production with cloud AI services",
+                    "track": "AI/ML",
+                    "date": "2024-04-20",
+                    "time": "14:00",
+                    "duration": 60,
+                    "room": "Room 101",
+                    "speakerIds": [
+                        "speaker-005",
+                        "speaker-006"
+                    ],
+                    "level": "Beginner"
+                },
+                {
+                    "sessionId": "s007",
+                    "title": "Scalable Web Architectures for AI Apps",
+                    "description": "Designing web applications that leverage AI at scale",
+                    "track": "Architecture",
+                    "date": "2024-04-21",
+                    "time": "09:00",
+                    "duration": 90,
+                    "room": "Auditorium",
+                    "speakerIds": [
+                        "speaker-006",
+                        "speaker-001"
+                    ],
+                    "level": "Intermediate"
+                }
+            ]
+        },
+        {
+            "id": "conf-003",
+            "type": "conference",
+            "name": "Developer Experience Summit 2024",
+            "location": "Austin, TX",
+            "startDate": "2024-05-10",
+            "endDate": "2024-05-11",
+            "description": "Conference focused on developer tools, APIs, and platform experiences",
+            "sessions": [
+                {
+                    "sessionId": "s008",
+                    "title": "Designing Developer-Friendly APIs",
+                    "description": "Best practices for API design and documentation",
+                    "track": "API Design",
+                    "date": "2024-05-10",
+                    "time": "09:30",
+                    "duration": 60,
+                    "room": "Main Stage",
+                    "speakerIds": [
+                        "speaker-007"
+                    ],
+                    "level": "Beginner"
+                },
+                {
+                    "sessionId": "s009",
+                    "title": "Cloud Security Best Practices",
+                    "description": "Essential security patterns for cloud applications",
+                    "track": "Security",
+                    "date": "2024-05-10",
+                    "time": "13:00",
+                    "duration": 75,
+                    "room": "Room 201",
+                    "speakerIds": [
+                        "speaker-004"
+                    ],
+                    "level": "Intermediate"
+                },
+                {
+                    "sessionId": "s010",
+                    "title": "Serverless Architecture Patterns",
+                    "description": "Common patterns and anti-patterns in serverless development",
+                    "track": "Serverless",
+                    "date": "2024-05-11",
+                    "time": "10:00",
+                    "duration": 90,
+                    "room": "Main Stage",
+                    "speakerIds": [
+                        "speaker-003"
+                    ],
+                    "level": "Intermediate"
+                },
+                {
+                    "sessionId": "s011",
+                    "title": "Panel: Future of Cloud Development",
+                    "description": "Industry leaders discuss trends and predictions",
+                    "track": "Keynote",
+                    "date": "2024-05-11",
+                    "time": "15:00",
+                    "duration": 60,
+                    "room": "Main Stage",
+                    "speakerIds": [
+                        "speaker-001",
+                        "speaker-003",
+                        "speaker-007"
+                    ],
+                    "level": "All Levels"
+                }
+            ]
+        }
+    ],
+    "queries": [
+        {
+            "label": "All conferences with sessions",
+            "query": "SELECT c.id, c.name, c.location, c.sessions FROM c WHERE c.type = 'conference'"
+        },
+        {
+            "label": "All speakers",
+            "query": "SELECT c.id, c.name, c.company, c.expertise FROM c WHERE c.type = 'speaker'"
+        },
+        {
+            "label": "Conference in Seattle",
+            "query": "SELECT c.name, c.startDate, c.sessions FROM c WHERE c.type = 'conference' AND c.location = 'Seattle, WA'"
+        },
+        {
+            "label": "Sessions by track (JOIN)",
+            "query": "SELECT c.name AS conference, s.title, s.track, s.date FROM c JOIN s IN c.sessions WHERE c.type = 'conference' AND s.track = 'Security'"
+        },
+        {
+            "label": "Sessions with specific speaker",
+            "query": "SELECT c.name AS conference, s.title, s.date FROM c JOIN s IN c.sessions WHERE c.type = 'conference' AND ARRAY_CONTAINS(s.speakerIds, 'speaker-001')"
+        },
+        {
+            "label": "Intermediate level sessions",
+            "query": "SELECT c.name AS conference, s.title, s.track, s.level FROM c JOIN s IN c.sessions WHERE c.type = 'conference' AND s.level = 'Intermediate'"
+        },
+        {
+            "label": "Speaker by expertise",
+            "query": "SELECT c.name, c.company, c.expertise FROM c WHERE c.type = 'speaker' AND ARRAY_CONTAINS(c.expertise, 'Cloud Security')"
+        }
+    ]
+}
