@@ -1,6 +1,6 @@
 {
     "name": "Conference System (Hybrid Data Model)",
-    "description": "Demonstrates hybrid data modeling pattern combining embedded and referenced data based on access patterns. Conferences embed session details (always accessed together) but reference speaker documents (shared across sessions, updated independently). This approach balances the benefits of both patterns for optimal performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#hybrid-data-models",
+    "description": "Conferences embed session details but reference speakers, balancing embedded and referenced data for optimal performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#hybrid-data-models",
     "itemCount": 10,
     "data": [
         {

@@ -1,6 +1,6 @@
 {
     "name": "Blog Posts (Embedded Data Model)",
-    "description": "Demonstrates embedded data modeling pattern where related data is stored within a single document. Blog posts with embedded author details, comments array, and tags. This pattern is ideal when data is always accessed together, reducing the need for joins and improving query performance. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#embed-data",
+    "description": "Blog posts with embedded author, comments, and tags — ideal when data is always accessed together for fast queries. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#embed-data",
     "itemCount": 8,
     "data": [
         {

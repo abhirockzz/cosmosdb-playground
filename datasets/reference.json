@@ -1,6 +1,6 @@
 {
     "name": "Order System (Referenced Data Model)",
-    "description": "Demonstrates referenced data modeling pattern where related data is stored in separate documents and linked via IDs. Orders reference customers and products rather than embedding them. This pattern is ideal when data changes frequently, is accessed independently, or could grow unbounded. Avoids data duplication and enables independent updates. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#reference-data",
+    "description": "Orders reference customers and products — ideal when related data changes often or is accessed independently. Learn more: https://learn.microsoft.com/azure/cosmos-db/modeling-data#reference-data",
     "itemCount": 17,
     "data": [
         {
