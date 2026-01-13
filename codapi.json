@@ -20,6 +20,6 @@
         "user": "sandbox",
         "action": "run",
         "timeout": 15,
-        "noutput": 8192
+        "noutput": 65536
     }
 }
