@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azure Cosmos DB Playground</title>
 
+    <!-- Fonts: Outfit (display) + JetBrains Mono (code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -20,7 +25,7 @@
                         }
                     },
                     fontFamily: {
-                        mono: ['SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Consolas', 'Courier New', 'monospace']
+                        mono: ['JetBrains Mono', 'SF Mono', 'Monaco', 'Cascadia Code', 'Consolas', 'monospace']
                     }
                 }
             }
@@ -36,7 +41,7 @@
     <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js"></script>
 
     <!-- Prism.js for SQL syntax highlighting -->
-    <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
     <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
     <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://unpkg.com/prismjs@1.29.0/components/prism-sql.min.js"></script>
@@ -46,513 +51,693 @@
 
     <style>
         /* ============================================
-           CSS DESIGN TOKENS - Modern 2025 Foundation
+           COSMOS DARK — Design Tokens
            ============================================ */
-
         :root {
-            /* Azure Blues - Extended Range */
-            --azure-50: #f0f6ff;
-            --azure-100: #deecf9;
-            --azure-200: #c7e0f4;
-            --azure-300: #a4cafe;
-            --azure-400: #72a8f0;
-            --azure-500: #0078d4;  /* Main brand - unchanged */
-            --azure-600: #106ebe;  /* Hover - unchanged */
-            --azure-700: #005a9e;
-            --azure-800: #004578;
+            --bg-deepspace: #0a0e1a;
+            --bg-nebula: #0f1629;
+            --bg-card: #141b2d;
+            --bg-card-hover: #1a2340;
+            --bg-elevated: #1e2741;
+            --bg-input: #111827;
 
-            /* Accent Colors */
-            --cosmos-purple: #8b5cf6;
-            --cosmos-purple-light: #a78bfa;
-            --cosmos-teal: #14b8a6;
+            --border-dim: rgba(99, 130, 191, 0.12);
+            --border-subtle: rgba(99, 130, 191, 0.20);
+            --border-focus: #3b82f6;
 
-            /* Neutral Grays - Enhanced */
-            --neutral-50: #fafafa;
-            --neutral-100: #f5f5f5;
-            --neutral-200: #e5e5e5;
-            --neutral-300: #d4d4d4;
-            --neutral-400: #a3a3a3;
-            --neutral-500: #737373;
-            --neutral-600: #525252;
-            --neutral-700: #404040;
-            --neutral-800: #262626;
-            --neutral-900: #171717;
+            --text-primary: #e8ecf4;
+            --text-secondary: #8d9bb5;
+            --text-muted: #5b6a87;
+            --text-accent: #60a5fa;
 
-            /* Semantic Colors */
-            --success: #10b981;
-            --success-light: #d1fae5;
-            --warning: #f59e0b;
-            --warning-light: #fffbeb;
-            --error: #ef4444;
-            --error-light: #fee2e2;
-            --info: #3b82f6;
-            --info-light: #dbeafe;
+            --azure-400: #60a5fa;
+            --azure-500: #3b82f6;
+            --azure-600: #2563eb;
+            --azure-700: #1d4ed8;
+            --azure-glow: rgba(59, 130, 246, 0.25);
 
-            /* Glassmorphism Effects */
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --glass-blur: blur(12px);
+            --purple-400: #a78bfa;
+            --purple-500: #8b5cf6;
+            --teal-400: #2dd4bf;
 
-            /* Shadows - Material-inspired elevation */
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --success: #34d399;
+            --success-bg: rgba(52, 211, 153, 0.1);
+            --warning: #fbbf24;
+            --warning-bg: rgba(251, 191, 36, 0.1);
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.1);
+            --info: #60a5fa;
+            --info-bg: rgba(96, 165, 250, 0.1);
 
-            /* Typography System */
-            --font-display: 'Segoe UI Variable Display', 'Inter', system-ui, sans-serif;
-            --font-body: 'Segoe UI Variable Text', system-ui, sans-serif;
-            --font-mono: 'Cascadia Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
+            --glass: rgba(20, 27, 45, 0.80);
+            --glass-border: rgba(99, 130, 191, 0.15);
 
-            /* Fluid Typography (responsive with clamp) */
-            --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8rem);
-            --text-sm: clamp(0.875rem, 0.825rem + 0.25vw, 0.9375rem);
-            --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
-            --text-lg: clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem);
-            --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
-            --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(99, 130, 191, 0.08);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+            --shadow-button: 0 2px 8px rgba(59, 130, 246, 0.25);
 
-            /* Line Heights */
-            --leading-tight: 1.25;
-            --leading-normal: 1.5;
-            --leading-relaxed: 1.625;
-
-            /* Spacing Scale (t-shirt sizing) */
-            --space-xs: 0.5rem;   /* 8px */
-            --space-sm: 0.75rem;  /* 12px */
-            --space-md: 1rem;     /* 16px */
-            --space-lg: 1.5rem;   /* 24px */
-            --space-xl: 2rem;     /* 32px */
-            --space-2xl: 3rem;    /* 48px */
-
-            /* Border Radius */
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --radius-xl: 16px;
-            --radius-2xl: 24px;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 20px;
             --radius-full: 9999px;
+
+            --font-display: 'Outfit', system-ui, sans-serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deepspace);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Cosmic background grain */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Gradient orbs */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-purple {
+            position: fixed;
+            bottom: -15%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
         }
 
         /* ============================================
-           EXISTING UTILITY STYLES
+           HIDDEN UTILITY
            ============================================ */
+        .hidden { display: none !important; }
 
-        /* Minimal custom styles */
-        .hidden {
-            display: none !important;
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-4px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 8px rgba(59,130,246,0.2); }
+            50% { box-shadow: 0 0 20px rgba(59,130,246,0.4); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes toast-slide-in {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes banner-slide-down {
+            from { opacity: 0; transform: translateY(-1rem); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-fade-in {
-            animation: fadeIn 0.2s ease;
-        }
+        .animate-fade-in { animation: fadeIn 0.2s ease; }
 
-        /* Custom scrollbar for textareas */
-        .data-textarea::-webkit-scrollbar {
-            width: 8px;
-        }
+        .stagger-1 { animation: fadeInUp 0.6s var(--ease-out-expo) 0.1s both; }
+        .stagger-2 { animation: fadeInUp 0.6s var(--ease-out-expo) 0.2s both; }
+        .stagger-3 { animation: fadeInUp 0.6s var(--ease-out-expo) 0.3s both; }
+        .stagger-4 { animation: fadeInUp 0.6s var(--ease-out-expo) 0.4s both; }
+        .stagger-5 { animation: fadeInUp 0.6s var(--ease-out-expo) 0.5s both; }
 
-        .data-textarea::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-nebula); }
+        ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-        .data-textarea::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
+        .data-textarea::-webkit-scrollbar { width: 6px; }
+        .data-textarea::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 4px; }
+        .data-textarea::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
+        .data-textarea::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-        .data-textarea::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        /* Modified indicator for textarea */
         .data-textarea.modified {
-            border-left: 3px solid #f59e0b;
+            border-left: 3px solid var(--warning);
             padding-left: 13px;
         }
 
-        /* Drag over state for file upload */
         .file-upload-section.drag-over {
-            border-color: #0078d4 !important;
-            background-color: rgba(0, 120, 212, 0.05) !important;
+            border-color: var(--azure-500) !important;
+            background-color: rgba(59,130,246,0.05) !important;
         }
 
         /* ============================================
-           MODERN COMPONENT STYLES
+           BUTTONS
            ============================================ */
-
-        /* Button System */
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: var(--space-sm);
-            padding: 0.625rem 1.25rem;
-            font-size: var(--text-sm);
+            gap: 8px;
+            padding: 10px 20px;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
             font-weight: 500;
             line-height: 1;
             border-radius: var(--radius-md);
             border: 1px solid transparent;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s var(--ease-out-expo);
             user-select: none;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--azure-500), var(--azure-600));
             color: white;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-button);
+            border: 1px solid rgba(59,130,246,0.3);
         }
-
         .btn-primary:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--azure-600), var(--azure-700));
+            background: linear-gradient(135deg, var(--azure-400), var(--azure-500));
             transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
         }
-
         .btn-primary:active:not(:disabled) {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
-
         .btn-primary:disabled {
-            background: var(--neutral-300);
-            color: var(--neutral-500);
+            background: var(--bg-elevated);
+            color: var(--text-muted);
             cursor: not-allowed;
             box-shadow: none;
+            border-color: var(--border-dim);
         }
 
         .btn-secondary {
-            background: white;
-            border: 1px solid var(--neutral-300);
-            color: var(--neutral-700);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
         }
-
         .btn-secondary:hover:not(:disabled) {
             border-color: var(--azure-500);
-            color: var(--azure-600);
-            box-shadow: var(--shadow-sm);
+            color: var(--text-accent);
+            background: var(--bg-card-hover);
         }
 
         .btn-ghost {
             background: transparent;
-            color: var(--neutral-600);
+            color: var(--text-secondary);
         }
-
         .btn-ghost:hover:not(:disabled) {
-            background: var(--neutral-100);
-            color: var(--neutral-900);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
         }
 
         .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: var(--text-xs);
+            padding: 7px 14px;
+            font-size: 0.8125rem;
         }
 
-        /* Card Components */
-        .card {
-            background: white;
-            border: 1px solid var(--neutral-200);
+        /* ============================================
+           CARDS
+           ============================================ */
+        .cosmos-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
             border-radius: var(--radius-xl);
-            padding: var(--space-xl);
-            box-shadow: var(--shadow-md);
-            transition: box-shadow 0.2s ease;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition: border-color 0.3s ease;
         }
-
-        .card:hover {
-            box-shadow: var(--shadow-lg);
+        .cosmos-card:hover {
+            border-color: var(--border-subtle);
         }
 
         .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
+            background: var(--glass);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius-xl);
-            padding: var(--space-xl);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
         }
 
-        /* Enhanced Header Styling */
-        header.modern-header {
+        /* ============================================
+           HEADER / HERO
+           ============================================ */
+        .hero-section {
             text-align: center;
-            margin-bottom: var(--space-xl);
-            padding: var(--space-xl);
-            background: linear-gradient(135deg, var(--azure-50), var(--neutral-50));
-            border-radius: var(--radius-xl);
+            padding: 48px 24px 40px;
+            position: relative;
         }
-
-        header.modern-header h1 {
-            font-size: var(--text-2xl);
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center top, rgba(59,130,246,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.75rem);
             font-weight: 700;
-            color: var(--neutral-900);
-            letter-spacing: -0.025em;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #e8ecf4 30%, var(--azure-400) 70%, var(--purple-400) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+        .hero-subtitle a {
+            color: var(--text-accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .hero-subtitle a:hover { text-decoration: underline; }
+
+        /* Cosmos DB logo float animation */
+        .cosmos-logo {
+            animation: float 4s ease-in-out infinite;
         }
 
-        /* Section Headers */
-        .section {
-            margin-bottom: var(--space-xl);
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            margin-bottom: var(--space-lg);
-            font-size: var(--text-lg);
-            font-weight: 600;
-            color: var(--neutral-900);
-        }
-
-        /* Custom Select */
+        /* ============================================
+           DATASET SELECT
+           ============================================ */
         .custom-select {
             appearance: none;
-            background: white;
-            border: 2px solid var(--neutral-200);
-            border-radius: var(--radius-lg);
-            padding: 0.875rem 3rem 0.875rem 1rem;
-            font-size: var(--text-base);
-            color: var(--neutral-900);
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 40px 12px 16px;
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            color: var(--text-primary);
             transition: all 0.2s ease;
             cursor: pointer;
             width: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238d9bb5' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
         }
-
-        .custom-select:hover {
-            border-color: var(--azure-400);
-        }
-
+        .custom-select:hover { border-color: var(--azure-400); }
         .custom-select:focus {
             outline: none;
             border-color: var(--azure-500);
-            box-shadow: 0 0 0 3px var(--azure-100);
+            box-shadow: 0 0 0 3px var(--azure-glow);
+        }
+        .custom-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
 
-        /* Code Editor (Textarea) */
+        /* ============================================
+           CODE EDITOR
+           ============================================ */
         .code-editor {
             width: 100%;
-            min-height: 250px;
-            padding: var(--space-lg);
+            min-height: 220px;
+            padding: 20px;
             font-family: var(--font-mono);
-            font-size: var(--text-sm);
-            line-height: var(--leading-relaxed);
-            background: white;
-            border: 2px solid var(--neutral-200);
-            border-radius: var(--radius-lg);
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border-dim);
+            border-radius: 0;
+            color: var(--text-primary);
             transition: all 0.2s ease;
             resize: vertical;
         }
-
         .code-editor:focus {
             outline: none;
             border-color: var(--azure-500);
-            box-shadow: 0 0 0 3px var(--azure-100);
+            box-shadow: inset 0 0 0 1px var(--azure-glow);
         }
-
         .code-editor.modified {
-            background: linear-gradient(90deg, var(--warning-light) 0%, white 3rem);
             border-left: 3px solid var(--warning);
         }
+        .code-editor::placeholder {
+            color: var(--text-muted);
+        }
 
-        /* Query Pills */
+        /* ============================================
+           QUERY PILLS
+           ============================================ */
         .query-pill {
-            padding: 0.625rem 1.25rem;
-            background: white;
-            border: 1.5px solid var(--neutral-200);
+            padding: 8px 18px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
             border-radius: var(--radius-full);
-            font-size: var(--text-sm);
+            font-family: var(--font-body);
+            font-size: 0.8125rem;
             font-weight: 500;
-            color: var(--azure-700);
+            color: var(--text-accent);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s var(--ease-out-expo);
+            white-space: nowrap;
         }
-
         .query-pill:hover {
-            border-color: var(--azure-500);
-            background: linear-gradient(135deg, var(--azure-500), var(--cosmos-purple));
+            background: linear-gradient(135deg, var(--azure-500), var(--purple-500));
             color: white;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(59,130,246,0.3);
         }
+        .query-pill:active { transform: scale(0.96); }
 
-        .query-pill:active {
-            transform: scale(0.98);
-        }
-
-        /* Toast Notifications */
+        /* ============================================
+           TOASTS
+           ============================================ */
         .toast {
             position: fixed;
-            bottom: var(--space-xl);
-            right: var(--space-xl);
+            bottom: 24px;
+            right: 24px;
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-md) var(--space-lg);
-            background: white;
-            border: 1px solid var(--neutral-200);
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             z-index: 1000;
-            animation: toast-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: toast-slide-in 0.3s var(--ease-out-expo);
         }
+        .toast-success { border-left: 4px solid var(--success); }
+        .toast-error { border-left: 4px solid var(--error); }
+        .toast-warning { border-left: 4px solid var(--warning); }
+        .toast-info { border-left: 4px solid var(--info); }
 
-        @keyframes toast-slide-in {
-            from {
-                transform: translateX(120%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .toast-success {
-            border-left: 4px solid var(--success);
-        }
-
-        .toast-error {
-            border-left: 4px solid var(--error);
-        }
-
-        .toast-warning {
-            border-left: 4px solid var(--warning);
-        }
-
-        .toast-info {
-            border-left: 4px solid var(--info);
-        }
-
-        /* Enhanced Banners */
+        /* ============================================
+           BANNERS
+           ============================================ */
         .banner {
-            padding: var(--space-lg);
+            padding: 16px 20px;
             border-radius: var(--radius-lg);
             border-left: 4px solid;
             animation: banner-slide-down 0.3s ease;
-            margin-bottom: var(--space-lg);
+            margin-bottom: 20px;
         }
-
-        @keyframes banner-slide-down {
-            from {
-                opacity: 0;
-                transform: translateY(-1rem);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .banner-info {
-            background: var(--info-light);
+            background: var(--info-bg);
             border-color: var(--info);
         }
-
         .banner-warning {
-            background: var(--warning-light);
+            background: var(--warning-bg);
             border-color: var(--warning);
         }
-
         .banner-success {
-            background: var(--success-light);
+            background: var(--success-bg);
             border-color: var(--success);
         }
 
         /* ============================================
-           ACCESSIBILITY ENHANCEMENTS
+           SECTION HEADERS
            ============================================ */
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
 
-        /* Modern Focus Indicators */
+        /* ============================================
+           CODAPI OVERRIDES (dark theme)
+           ============================================ */
+        codapi-snippet {
+            --codapi-font: var(--font-mono);
+            --codapi-color: var(--text-primary);
+            --codapi-bg: var(--bg-input);
+            --codapi-border: var(--border-dim);
+            --codapi-radius: var(--radius-md);
+        }
+        /* Override codapi run button */
+        codapi-snippet button[class*="run"],
+        codapi-snippet .toolbar button {
+            font-family: var(--font-body) !important;
+        }
+
+        /* Prism dark overrides */
+        pre[class*="language-"],
+        code[class*="language-"] {
+            font-family: var(--font-mono) !important;
+            font-size: 0.8125rem !important;
+        }
+
+        /* ============================================
+           DIVIDER LINE
+           ============================================ */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border-dim);
+        }
+
+        /* ============================================
+           DETAILS/SUMMARY
+           ============================================ */
+        details summary {
+            list-style: none;
+        }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::before {
+            content: '▸';
+            display: inline-block;
+            margin-right: 8px;
+            transition: transform 0.2s ease;
+            color: var(--text-muted);
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        /* ============================================
+           ACCESSIBILITY
+           ============================================ */
         *:focus-visible {
             outline: 2px solid var(--azure-500);
             outline-offset: 2px;
         }
-
         .btn:focus-visible {
-            outline: 3px solid var(--azure-300);
+            outline: 3px solid var(--azure-400);
             outline-offset: 3px;
         }
-
-        /* Screen Reader Only */
         .sr-only {
             position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+            clip: rect(0,0,0,0);
+            white-space: nowrap; border: 0;
         }
 
         /* ============================================
-           RESPONSIVE DESIGN
+           RESPONSIVE
            ============================================ */
-
-        /* Mobile Optimizations */
         @media (max-width: 640px) {
-            /* Prevent iOS zoom on input focus */
-            .custom-select,
-            .code-editor {
-                font-size: 16px;
-            }
-
-            /* Stack buttons vertically */
-            .button-group {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .button-group .btn {
-                width: 100%;
-            }
-
-            /* Smaller query pills on mobile */
-            .query-pill {
-                padding: 0.5rem 1rem;
-                font-size: 0.8125rem;
-            }
-
-            /* Adjust toast position on mobile */
-            .toast {
-                bottom: var(--space-md);
-                right: var(--space-md);
-                left: var(--space-md);
-            }
+            .custom-select, .code-editor { font-size: 16px; }
+            .button-group { flex-direction: column; width: 100%; }
+            .button-group .btn { width: 100%; }
+            .query-pill { padding: 6px 14px; font-size: 0.75rem; }
+            .toast { bottom: 12px; right: 12px; left: 12px; }
+            .hero-section { padding: 32px 16px 28px; }
         }
 
-        /* Tablet Improvements */
-        @media (min-width: 641px) and (max-width: 1023px) {
-            .container {
-                padding-inline: var(--space-lg);
-            }
-        }
-
-        /* Reduced Motion Support (Accessibility) */
         @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
+            *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-link:hover { color: var(--text-accent); }
+
+        /* ============================================
+           LIGHT THEME OVERRIDES
+           ============================================ */
+        [data-theme="light"] {
+            --bg-deepspace: #f8fafc;
+            --bg-nebula: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --bg-elevated: #f1f5f9;
+            --bg-input: #ffffff;
+
+            --border-dim: rgba(15, 23, 42, 0.08);
+            --border-subtle: rgba(15, 23, 42, 0.15);
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --text-accent: #2563eb;
+
+            --azure-glow: rgba(59, 130, 246, 0.12);
+
+            --glass: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(15, 23, 42, 0.08);
+
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(15, 23, 42, 0.04);
+            --shadow-button: 0 1px 4px rgba(59, 130, 246, 0.15);
+
+            --success-bg: rgba(52, 211, 153, 0.08);
+            --warning-bg: rgba(251, 191, 36, 0.08);
+            --error-bg: rgba(248, 113, 113, 0.08);
+            --info-bg: rgba(96, 165, 250, 0.08);
+        }
+        [data-theme="light"] body::before { opacity: 0; }
+        [data-theme="light"] body::after {
+            background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%);
+        }
+        [data-theme="light"] .orb-purple {
+            background: radial-gradient(circle, rgba(139,92,246,0.03) 0%, transparent 70%);
+        }
+        [data-theme="light"] .hero-title {
+            background: linear-gradient(135deg, #0f172a 30%, #2563eb 70%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        [data-theme="light"] .query-pill:hover {
+            box-shadow: 0 4px 16px rgba(59,130,246,0.2);
+        }
+        [data-theme="light"] .btn-primary {
+            box-shadow: 0 1px 4px rgba(59,130,246,0.2);
+        }
+        [data-theme="light"] .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 4px 12px rgba(59,130,246,0.25);
+        }
+        [data-theme="light"] .btn-secondary {
+            background: #ffffff;
+            border-color: rgba(15, 23, 42, 0.15);
+            color: #475569;
+        }
+        [data-theme="light"] .btn-secondary:hover:not(:disabled) {
+            background: #f8fafc;
+        }
+        [data-theme="light"] .code-editor {
+            border-color: rgba(15, 23, 42, 0.12);
+        }
+        [data-theme="light"] .custom-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
+        }
+        [data-theme="light"] .custom-select option {
+            background: #ffffff;
+            color: #0f172a;
+        }
+        /* Prism light override */
+        [data-theme="light"] pre[class*="language-"],
+        [data-theme="light"] code[class*="language-"] {
+            color: #1e293b !important;
+        }
+        [data-theme="light"] .token.keyword { color: #2563eb !important; }
+        [data-theme="light"] .token.string { color: #059669 !important; }
+        [data-theme="light"] .token.function { color: #7c3aed !important; }
+        [data-theme="light"] .token.operator { color: #d97706 !important; }
+        [data-theme="light"] .token.comment { color: #94a3b8 !important; }
+        [data-theme="light"] .token.number { color: #dc2626 !important; }
+        [data-theme="light"] .token.punctuation { color: #64748b !important; }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out-expo);
+        }
+        .theme-toggle:hover {
+            border-color: var(--azure-500);
+            color: var(--text-accent);
+            background: var(--bg-card-hover);
+        }
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s var(--ease-out-expo);
+        }
+        .theme-toggle:hover svg {
+            transform: rotate(15deg);
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function() {
+            const saved = localStorage.getItem('cosmosdb-playground-theme');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            }
+        })();
+    </script>
+    <div class="orb-purple"></div>
+
     <script>
         // Auto-detect environment and write codapi-settings element with correct URL
         const isLocal = window.location.hostname === 'localhost' ||
@@ -566,43 +751,42 @@
         document.write('<codapi-settings url="' + codapiUrl + '"></codapi-settings>');
     </script>
 
-    <!-- Main Container -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         <!-- Top Navigation -->
-        <nav class="flex justify-end items-center mb-8">
+        <nav class="flex justify-end items-center gap-3 mb-6 stagger-1">
+            <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+                <svg id="theme-icon-sun" class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
             <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank"
-                class="btn btn-secondary">
+                class="btn btn-secondary" style="font-size:0.8125rem;">
                 <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                    <path
-                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
-                    </path>
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
                 </svg>
                 Star on GitHub
             </a>
         </nav>
 
-        <!-- Header -->
-        <header class="modern-header">
-            <div class="flex items-center justify-center gap-3 mb-3">
+        <!-- Hero Section -->
+        <header class="hero-section stagger-1">
+            <div class="flex items-center justify-center gap-3 mb-4">
                 <img src="https://raw.githubusercontent.com/AzureCosmosDB/gallery/main/static/img/cosmos.png"
-                    alt="Azure Cosmos DB" class="h-10 w-10">
-                <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
-                    Azure Cosmos DB Playground
-                </h1>
+                    alt="Azure Cosmos DB" class="h-12 w-12 cosmos-logo">
+                <h1 class="hero-title">Azure Cosmos DB Playground</h1>
             </div>
-            <p class="text-sm text-slate-500">
+            <p class="hero-subtitle">
                 Powered by
-                <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank"
-                    class="text-accent hover:underline">Azure Cosmos DB vNext Emulator</a>
+                <a href="https://learn.microsoft.com/azure/cosmos-db/emulator-linux" target="_blank">Azure Cosmos DB vNext Emulator</a>
                 and
-                <a href="https://codapi.org/" target="_blank" class="text-accent hover:underline">Codapi</a>
+                <a href="https://codapi.org/" target="_blank">Codapi</a>
             </p>
         </header>
 
         <!-- URL Loaded Banner -->
         <div id="url-loaded-banner" class="hidden banner banner-warning">
-            <p class="text-sm text-amber-800">
+            <p class="text-sm" style="color: var(--warning);">
                 ✨ Code loaded from shared link. You can edit and experiment freely!
             </p>
         </div>
@@ -611,50 +795,43 @@
         <div id="session-restore-banner" class="hidden banner banner-info">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-sm font-medium text-blue-800 mb-1">
+                    <p class="text-sm font-medium" style="color: var(--info);">
                         📝 Welcome back! You have a previous session.
                     </p>
-                    <p id="session-restore-details" class="text-xs text-blue-600"></p>
+                    <p id="session-restore-details" class="text-xs" style="color: var(--text-secondary); margin-top: 4px;"></p>
                 </div>
                 <div class="flex gap-2 flex-shrink-0">
-                    <button onclick="restoreSession()"
-                        class="btn btn-primary btn-sm">
-                        Restore
-                    </button>
-                    <button onclick="dismissSessionRestore()"
-                        class="btn btn-secondary btn-sm">
-                        Start Fresh
-                    </button>
+                    <button onclick="restoreSession()" class="btn btn-primary btn-sm">Restore</button>
+                    <button onclick="dismissSessionRestore()" class="btn btn-secondary btn-sm">Start Fresh</button>
                 </div>
             </div>
         </div>
 
         <!-- Intro Text -->
-        <p class="text-slate-600 mb-8 text-center max-w-2xl mx-auto">
+        <p class="stagger-2" style="color: var(--text-secondary); text-align: center; max-width: 560px; margin: 0 auto 32px; font-size: 0.9375rem; line-height: 1.6;">
             Experiment with
             <a href="https://learn.microsoft.com/en-us/cosmos-db/query/overview" target="_blank"
-                class="text-accent hover:underline font-medium">Cosmos DB SQL queries</a>
+                style="color: var(--text-accent); text-decoration: none; font-weight: 500;">Cosmos DB SQL queries</a>
             interactively. Choose a preset dataset or load your own data.
         </p>
 
         <!-- Main Content Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="cosmos-card stagger-3">
 
             <!-- Dataset Section -->
-            <div class="p-6 border-b border-slate-100">
-                <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                    <span class="text-xl">📊</span> Sample Data
-                </h2>
+            <div style="padding: 28px 28px 24px; border-bottom: 1px solid var(--border-dim);">
+                <div class="flex items-center gap-2 mb-4">
+                    <span style="font-size: 1.25rem;">📊</span>
+                    <h2 class="section-title">Sample Data</h2>
+                </div>
 
                 <!-- Dataset Selector -->
-                <div class="mb-4">
-                    <label for="dataset-picker" class="block text-sm font-medium text-slate-700 mb-2">
+                <div style="margin-bottom: 16px;">
+                    <label for="dataset-picker" class="block text-sm font-medium mb-2" style="color: var(--text-secondary);">
                         Choose a Dataset
                     </label>
-                    <select id="dataset-picker" onchange="loadPresetDataset()"
-                        class="custom-select"
-                        aria-label="Select a preset dataset or choose custom data"
-                        style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;">
+                    <select id="dataset-picker" onchange="loadPresetDataset()" class="custom-select"
+                        aria-label="Select a preset dataset or choose custom data">
                         <option value="simple">Simple Demo (3 items)</option>
                         <option value="products">E-commerce Products (10 items)</option>
                         <option value="iot">IoT Device Telemetry (45 items)</option>
@@ -668,61 +845,51 @@
 
                 <!-- Dataset Info -->
                 <div id="dataset-info"
-                    class="text-sm text-slate-500 bg-slate-50 rounded-lg p-3 border border-slate-100">
+                    style="font-size: 0.8125rem; color: var(--text-secondary); background: var(--bg-elevated); border-radius: var(--radius-md); padding: 12px 16px; border: 1px solid var(--border-dim); line-height: 1.5;">
                     Basic user records with name, city, and age. Perfect for learning SQL query basics.
                 </div>
             </div>
 
             <!-- Query Suggestions -->
-            <div id="query-suggestions"
-                class="hidden glass-card border-b border-slate-100">
-                <h4 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+            <div id="query-suggestions" class="hidden" style="padding: 20px 28px; border-bottom: 1px solid var(--border-dim); background: rgba(59,130,246,0.02);">
+                <h4 style="font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                     <span>💡</span> Try these queries:
                 </h4>
                 <div id="query-buttons-container" class="flex flex-wrap gap-2"></div>
             </div>
 
             <!-- Partition Key Info -->
-            <details class="border-b border-slate-100">
-                <summary
-                    class="px-6 py-4 cursor-pointer text-sm font-medium text-slate-600 hover:text-accent transition-colors select-none">
-                    ℹ️ About Partition Keys in this Playground
+            <details style="border-bottom: 1px solid var(--border-dim);">
+                <summary style="padding: 16px 28px; cursor: pointer; font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); transition: color 0.2s; user-select: none;">
+                    About Partition Keys in this Playground
                 </summary>
-                <div class="px-6 pb-4 text-sm text-slate-500 space-y-2">
-                    <p>
-                        This playground uses <code
-                            class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/id</code> as
+                <div style="padding: 0 28px 16px; font-size: 0.8125rem; color: var(--text-muted); line-height: 1.7;">
+                    <p style="margin-bottom: 8px;">
+                        This playground uses <code style="background: var(--bg-elevated); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem;">/id</code> as
                         the partition key for all queries. This works with any JSON data since
-                        the <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">id</code> field is
-                        auto-generated if missing.
+                        the <code style="background: var(--bg-elevated); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem;">id</code> field is auto-generated if missing.
                     </p>
                     <p>
-                        <strong class="text-slate-700">In production Cosmos DB:</strong> Choose partition keys based on
-                        your
-                        query patterns (e.g., <code
-                            class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/tenantId</code>,
-                        <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">/userId</code>).
+                        <strong style="color: var(--text-secondary);">In production Cosmos DB:</strong> Choose partition keys based on your
+                        query patterns (e.g., <code style="background: var(--bg-elevated); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem;">/tenantId</code>,
+                        <code style="background: var(--bg-elevated); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem;">/userId</code>).
                         <a href="https://learn.microsoft.com/azure/cosmos-db/partitioning-overview" target="_blank"
-                            class="text-accent hover:underline">
-                            Learn more →
-                        </a>
+                            style="color: var(--text-accent); text-decoration: none;">Learn more →</a>
                     </p>
                 </div>
             </details>
 
             <!-- File Upload Section (hidden by default) -->
-            <div id="file-upload-section" class="hidden p-6 border-b border-slate-100 file-upload-section">
-                <div
-                    class="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-slate-300 transition-colors">
+            <div id="file-upload-section" class="hidden file-upload-section" style="padding: 24px 28px; border-bottom: 1px solid var(--border-dim);">
+                <div style="border: 2px dashed var(--border-subtle); border-radius: var(--radius-lg); padding: 32px; text-align: center; transition: all 0.2s;">
                     <input type="file" id="data-file-picker" accept=".json,application/json"
-                        class="text-sm text-slate-500 mb-3">
-                    <button id="load-file-btn" onclick="loadFromFile()"
-                        class="btn btn-primary">
+                        style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 12px;">
+                    <button id="load-file-btn" onclick="loadFromFile()" class="btn btn-primary">
                         <i data-lucide="upload" class="w-4 h-4"></i>
                         Load from File
                     </button>
                 </div>
-                <div id="status-message" class="hidden mt-3 px-4 py-2 rounded-lg text-sm"></div>
+                <div id="status-message" class="hidden" style="margin-top: 12px; padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.8125rem;"></div>
             </div>
 
             <!-- Hidden script tag for codapi to reference -->
@@ -735,7 +902,7 @@
             </script>
 
             <!-- Data Editor -->
-            <div class="border-b border-slate-100">
+            <div style="border-bottom: 1px solid var(--border-dim);">
                 <label for="data-textarea" class="sr-only">Edit JSON data</label>
                 <textarea id="data-textarea"
                     class="data-textarea code-editor"
@@ -745,24 +912,23 @@
   {"id": "2", "name": "Bob", "city": "London", "age": 25},
   {"id": "3", "name": "Charlie", "city": "London", "age": 35}
 ]</textarea>
-                <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
-                    <button id="apply-button" onclick="applyDataChanges()" disabled
-                        class="btn btn-primary">
+                <div style="padding: 12px 20px; background: var(--bg-nebula); border-top: 1px solid var(--border-dim); display: flex; align-items: center; gap: 12px;">
+                    <button id="apply-button" onclick="applyDataChanges()" disabled class="btn btn-primary btn-sm">
                         <i data-lucide="check" class="w-4 h-4"></i>
                         Apply Changes
                     </button>
-                    <div id="data-status" class="hidden text-sm px-3 py-1.5 rounded-lg"></div>
+                    <div id="data-status" class="hidden" style="font-size: 0.8125rem; padding: 4px 12px; border-radius: var(--radius-md);"></div>
                 </div>
             </div>
 
             <!-- SQL Query Section -->
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                    <span class="text-xl">⚡</span> SQL Query
-                </h2>
+            <div style="padding: 28px;">
+                <div class="flex items-center gap-2 mb-4">
+                    <span style="font-size: 1.25rem;">⚡</span>
+                    <h2 class="section-title">SQL Query</h2>
+                </div>
 
-                <pre
-                    class="bg-slate-50 border border-slate-200 rounded-lg p-4 overflow-x-auto mb-4"><code id="query-display" class="language-sql text-sm">SELECT * FROM c WHERE c.city = 'London'</code></pre>
+                <pre style="background: var(--bg-input); border: 1px solid var(--border-dim); border-radius: var(--radius-md); padding: 16px 20px; overflow-x: auto; margin-bottom: 16px;"><code id="query-display" class="language-sql" style="font-size: 0.8125rem;">SELECT * FROM c WHERE c.city = 'London'</code></pre>
 
                 <!-- Codapi Widget -->
                 <codapi-snippet sandbox="cosmosdb" command="run" editor="basic" files="#data.json">
@@ -770,28 +936,26 @@
             </div>
 
             <!-- Share Section -->
-            <div class="glass-card border-t border-slate-100">
-                <h3 class="text-base font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                    <span>🔗</span> Share with others
-                </h3>
-                <p class="text-sm text-slate-500 mb-4">
+            <div style="padding: 24px 28px; border-top: 1px solid var(--border-dim); background: var(--bg-nebula);">
+                <div class="flex items-center gap-2 mb-2">
+                    <span>🔗</span>
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary);">Share with others</h3>
+                </div>
+                <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 16px;">
                     Generate a shareable link. Perfect for blog posts, tutorials, and more!
                 </p>
                 <!-- Share row -->
                 <div class="flex flex-wrap items-center gap-3 mb-3 button-group">
-                    <button onclick="generateShareLink()"
-                        class="btn btn-primary">
+                    <button onclick="generateShareLink()" class="btn btn-primary">
                         <i data-lucide="link" class="w-4 h-4"></i>
                         Generate Link
                     </button>
                     <div id="share-buttons" class="hidden flex items-center gap-2">
-                        <button onclick="copyShareLink()"
-                            class="btn btn-secondary">
+                        <button onclick="copyShareLink()" class="btn btn-secondary">
                             <i data-lucide="copy" class="w-4 h-4"></i>
                             Copy Link
                         </button>
-                        <button onclick="openShareLink()"
-                            class="btn btn-secondary">
+                        <button onclick="openShareLink()" class="btn btn-secondary">
                             <i data-lucide="external-link" class="w-4 h-4"></i>
                             Open Link
                         </button>
@@ -802,12 +966,12 @@
                     <!-- Export/Import buttons hidden: feature temporarily unavailable -->
                     <!--
                     <button onclick="exportSession()"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-colors">
+                        class="btn btn-secondary">
                         <i data-lucide="download" class="w-4 h-4"></i>
                         Export to File
                     </button>
                     <button onclick="document.getElementById('import-file-picker').click()"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-colors">
+                        class="btn btn-secondary">
                         <i data-lucide="upload" class="w-4 h-4"></i>
                         Import from File
                     </button>
@@ -815,12 +979,12 @@
                         onchange="importSession()">
                     -->
                 </div>
-                <div id="share-status" class="hidden mt-3 text-sm px-3 py-1.5 rounded-lg"></div>
+                <div id="share-status" class="hidden" style="margin-top: 12px; font-size: 0.8125rem; padding: 4px 12px; border-radius: var(--radius-md);"></div>
             </div>
         </div>
 
         <!-- Footer -->
-        <footer class="mt-12 pt-6 border-t border-slate-200 text-center text-sm text-slate-400">
+        <footer class="stagger-5" style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border-dim); text-align: center; font-size: 0.8125rem; color: var(--text-muted);">
             <p>Built with ❤️ for the Azure Cosmos DB community</p>
         </footer>
     </div>
@@ -861,24 +1025,21 @@
 
         let currentShareUrl = '';
         let originalData = '';
-        let originalQuery = ''; // Query state when dataset was loaded
+        let originalQuery = '';
         let lastSelectedPreset = 'simple';
         let currentDatasetKey = 'simple';
         let originalPresetData = null;
-        let originalPresetQueries = []; // Array of valid queries for current preset
+        let originalPresetQueries = [];
         let pendingSessionRestore = null;
 
-        // Session storage constants
         const SESSION_STORAGE_KEY = 'cosmosdb-playground-session';
         const SESSION_TTL_DAYS = 7;
 
-        // Reset share link when content changes (prevents sharing stale links)
         function resetShareLink() {
             currentShareUrl = '';
             document.getElementById('share-buttons').classList.add('hidden');
         }
 
-        // Session management functions
         function saveSession() {
             try {
                 const textarea = document.getElementById('data-textarea');
@@ -889,16 +1050,13 @@
                 const currentQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
                     queryDisplay?.textContent?.trim() || '';
 
-                // Only save if there's meaningful custom data (not just default preset unchanged)
                 const isDataModified = currentDatasetKey === 'custom' ||
                     (originalPresetData && currentData !== JSON.stringify(originalPresetData, null, 2));
 
-                // Check if query has changed from original state OR is a preset query (user clicked suggestion)
                 const isQueryUnchanged = currentQuery === originalQuery ||
                     (originalPresetQueries.length > 0 && originalPresetQueries.some(q => q === currentQuery));
 
                 if (!isDataModified && isQueryUnchanged) {
-                    // Unmodified preset state, no need to save
                     clearSession();
                     return;
                 }
@@ -913,7 +1071,6 @@
 
                 localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
             } catch (e) {
-                // Silently fail - quota exceeded or other localStorage issues
                 if (e.name === 'QuotaExceededError') {
                     console.warn('Session auto-save failed: localStorage quota exceeded');
                 }
@@ -927,7 +1084,6 @@
 
                 const session = JSON.parse(stored);
 
-                // Check if session has expired
                 if (session.expiresAt && Date.now() > session.expiresAt) {
                     clearSession();
                     return null;
@@ -952,7 +1108,6 @@
 
             if (!banner || !session) return;
 
-            // Calculate time ago
             const minutesAgo = Math.floor((Date.now() - session.timestamp) / (1000 * 60));
             let timeAgo;
             if (minutesAgo < 1) {
@@ -984,14 +1139,12 @@
             const snippet = document.querySelector('codapi-snippet');
             const datasetPicker = document.getElementById('dataset-picker');
 
-            // Restore data
             if (session.data) {
                 if (textarea) textarea.value = session.data;
                 if (scriptTag) scriptTag.textContent = session.data;
                 originalData = session.data;
             }
 
-            // Restore query
             if (session.query) {
                 if (queryDisplay) queryDisplay.textContent = session.query;
                 if (snippet) {
@@ -1000,12 +1153,10 @@
                 }
             }
 
-            // Restore dataset picker
             if (session.datasetKey) {
                 currentDatasetKey = session.datasetKey;
                 if (datasetPicker) {
                     datasetPicker.value = session.datasetKey;
-                    // Hide query suggestions for custom data (no presets)
                     if (session.datasetKey === 'custom') {
                         document.getElementById('query-suggestions')?.classList.add('hidden');
                     }
@@ -1020,54 +1171,44 @@
             const banner = document.getElementById('session-restore-banner');
             if (banner) banner.classList.add('hidden');
             pendingSessionRestore = null;
-            // Clear the saved session when user chooses "Start Fresh"
-            if (!arguments[0]) { // Called from "Start Fresh" button
-                // Don't clear here - only clear if explicitly starting fresh
-            }
+            if (!arguments[0]) { }
         }
 
         function setupAutoSave() {
-            // Debounced save function
             let saveTimeout = null;
             const debouncedSave = () => {
                 if (saveTimeout) clearTimeout(saveTimeout);
-                saveTimeout = setTimeout(saveSession, 2000); // Save 2 seconds after last change
+                saveTimeout = setTimeout(saveSession, 2000);
             };
 
-            // Save on data textarea changes
             const textarea = document.getElementById('data-textarea');
             if (textarea) {
                 textarea.addEventListener('input', debouncedSave);
             }
 
-            // Save on apply changes
             const originalApplyDataChanges = window.applyDataChanges;
             window.applyDataChanges = function () {
                 originalApplyDataChanges.apply(this, arguments);
                 saveSession();
             };
 
-            // Save when query changes (observe codapi snippet)
             const snippet = document.querySelector('codapi-snippet');
             if (snippet) {
                 const observer = new MutationObserver(() => {
                     debouncedSave();
-                    resetShareLink(); // Hide share buttons when query is modified
+                    resetShareLink();
                 });
                 observer.observe(snippet, { childList: true, subtree: true, characterData: true });
 
-                // Also listen for input events on the editor (MutationObserver doesn't catch typing)
                 snippet.addEventListener('input', () => {
                     debouncedSave();
                     resetShareLink();
-                }, true); // Use capture to catch events from child elements
+                }, true);
             }
 
-            // Save on page unload as a safety net
             window.addEventListener('beforeunload', saveSession);
         }
 
-        // Load preset dataset (from external JSON files)
         async function loadPresetDataset() {
             const selector = document.getElementById('dataset-picker');
             const datasetKey = selector.value;
@@ -1096,11 +1237,9 @@
                 originalData = '';
                 currentDatasetKey = 'custom';
                 originalPresetData = null;
-                originalPresetQueries = []; // No preset queries for custom data
-                // Update the dataset description for custom data
+                originalPresetQueries = [];
                 const infoDiv = document.getElementById('dataset-info');
                 if (infoDiv) infoDiv.innerHTML = presetDatasets.custom.description;
-                // Capture current query state for custom data
                 const snippet = document.querySelector('codapi-snippet');
                 const queryDisplay = document.getElementById('query-display');
                 originalQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
@@ -1133,7 +1272,6 @@
 
             currentDatasetKey = datasetKey;
             originalPresetData = dataset.data;
-            // Store the preset's default queries for session save comparison
             originalPresetQueries = dataset.queries ? dataset.queries.map(q => q.query) : [];
 
             const prettyData = JSON.stringify(dataset.data, null, 2);
@@ -1152,7 +1290,6 @@
 
             originalData = prettyData;
 
-            // Capture current query state when loading preset
             const snippet = document.querySelector('codapi-snippet');
             const queryDisplay = document.getElementById('query-display');
 
@@ -1163,7 +1300,6 @@
 
             if (dataset.queries && dataset.queries.length > 0) {
                 showQuerySuggestions(dataset.queries);
-                // Auto-load first query to match the dataset (no scroll)
                 const firstQuery = dataset.queries[0].query;
                 if (queryDisplay) queryDisplay.textContent = firstQuery;
                 const editor = snippet?.querySelector('.snippet-code');
@@ -1171,7 +1307,6 @@
                 originalQuery = firstQuery;
             } else {
                 querySection.classList.add('hidden');
-                // No preset queries, capture current query state
                 originalQuery = snippet?.querySelector('.snippet-code')?.textContent?.trim() ||
                     queryDisplay?.textContent?.trim() || '';
             }
@@ -1216,7 +1351,6 @@
                 }
             }
 
-            // Update originalQuery since user selected a preset query (not a custom edit)
             originalQuery = queryText;
 
             showDataStatus('✓ Query loaded - click "Run" to execute', false);
@@ -1236,7 +1370,7 @@
 
             if (hasChanged) {
                 textarea.classList.add('modified');
-                resetShareLink(); // Hide share buttons when data is modified
+                resetShareLink();
             } else {
                 textarea.classList.remove('modified');
             }
@@ -1266,7 +1400,7 @@
 
                 applyButton.disabled = true;
                 textarea.classList.remove('modified');
-                resetShareLink(); // Hide share buttons since data changed
+                resetShareLink();
 
                 showDataStatus('✓ Data updated successfully', false);
             } catch (error) {
@@ -1277,8 +1411,8 @@
         function showDataStatus(message, isError = false) {
             const statusDiv = document.getElementById('data-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'text-sm px-3 py-1.5 rounded-lg animate-fade-in ' +
-                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
+            statusDiv.className = 'animate-fade-in';
+            statusDiv.style.cssText = `font-size: 0.8125rem; padding: 4px 12px; border-radius: var(--radius-md); background: ${isError ? 'var(--error-bg)' : 'var(--success-bg)'}; color: ${isError ? 'var(--error)' : 'var(--success)'}; border: 1px solid ${isError ? 'rgba(248,113,113,0.2)' : 'rgba(52,211,153,0.2)'};`;
             statusDiv.classList.remove('hidden');
 
             setTimeout(() => {
@@ -1317,8 +1451,8 @@
         function showStatus(message, isError = false) {
             const statusDiv = document.getElementById('status-message');
             statusDiv.textContent = message;
-            statusDiv.className = 'mt-3 px-4 py-2 rounded-lg text-sm animate-fade-in ' +
-                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
+            statusDiv.className = 'animate-fade-in';
+            statusDiv.style.cssText = `margin-top: 12px; padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.8125rem; background: ${isError ? 'var(--error-bg)' : 'var(--success-bg)'}; color: ${isError ? 'var(--error)' : 'var(--success)'}; border: 1px solid ${isError ? 'rgba(248,113,113,0.2)' : 'rgba(52,211,153,0.2)'};`;
             statusDiv.classList.remove('hidden');
 
             setTimeout(() => {
@@ -1347,9 +1481,7 @@
                     const content = e.target.result;
                     const parsed = JSON.parse(content);
 
-                    // Check if this is a session export file
                     if (parsed._playgroundSession === true && parsed.data) {
-                        // Session file - extract data and query
                         const sessionData = typeof parsed.data === 'string' ? parsed.data : JSON.stringify(parsed.data, null, 2);
                         const prettyData = JSON.stringify(JSON.parse(sessionData), null, 2);
 
@@ -1364,7 +1496,6 @@
                             originalData = prettyData;
                         }
 
-                        // Restore query if present
                         if (parsed.query) {
                             const queryDisplay = document.getElementById('query-display');
                             if (queryDisplay) {
@@ -1384,7 +1515,6 @@
 
                         showStatus(`✓ Imported session from ${file.name}`, false);
                     } else {
-                        // Raw data file - existing behavior
                         const prettyData = JSON.stringify(parsed, null, 2);
 
                         const scriptTag = document.getElementById('data.json');
@@ -1398,7 +1528,6 @@
                             originalData = prettyData;
                         }
 
-                        // Update dataset key to custom and save session
                         currentDatasetKey = 'custom';
                         saveSession();
 
@@ -1464,7 +1593,7 @@
 
             if (!file.name.endsWith('.json')) {
                 showShareStatus('Please select a valid JSON file (.json)', true);
-                fileInput.value = ''; // Reset for next selection
+                fileInput.value = '';
                 return;
             }
 
@@ -1477,13 +1606,10 @@
 
                     let dataToLoad, queryToLoad;
 
-                    // Check if this is a session export file
                     if (parsed._playgroundSession === true && parsed.data) {
-                        // Session file - extract data and query
                         dataToLoad = typeof parsed.data === 'string' ? parsed.data : JSON.stringify(parsed.data, null, 2);
                         queryToLoad = parsed.query || null;
                     } else {
-                        // Raw data file
                         dataToLoad = JSON.stringify(parsed, null, 2);
                         queryToLoad = null;
                     }
@@ -1501,7 +1627,6 @@
                         originalData = prettyData;
                     }
 
-                    // Restore query if present
                     if (queryToLoad) {
                         const queryDisplay = document.getElementById('query-display');
                         if (queryDisplay) {
@@ -1516,10 +1641,8 @@
                         }
                     }
 
-                    // Update UI state
                     currentDatasetKey = 'custom';
                     document.getElementById('dataset-picker').value = 'custom';
-                    // Don't show file-upload-section - import was done via Import button
                     document.getElementById('query-suggestions')?.classList.add('hidden');
                     saveSession();
 
@@ -1530,7 +1653,7 @@
                     showShareStatus(`Invalid JSON: ${error.message}`, true);
                 }
 
-                fileInput.value = ''; // Reset for next selection
+                fileInput.value = '';
             };
 
             reader.onerror = function () {
@@ -1613,8 +1736,8 @@
         function showShareStatus(message, isError = false) {
             const statusDiv = document.getElementById('share-status');
             statusDiv.textContent = message;
-            statusDiv.className = 'mt-3 text-sm px-3 py-1.5 rounded-lg animate-fade-in ' +
-                (isError ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200');
+            statusDiv.className = 'animate-fade-in';
+            statusDiv.style.cssText = `margin-top: 12px; font-size: 0.8125rem; padding: 4px 12px; border-radius: var(--radius-md); background: ${isError ? 'var(--error-bg)' : 'var(--success-bg)'}; color: ${isError ? 'var(--error)' : 'var(--success)'}; border: 1px solid ${isError ? 'rgba(248,113,113,0.2)' : 'rgba(52,211,153,0.2)'};`;
             statusDiv.classList.remove('hidden');
 
             setTimeout(() => {
@@ -1675,24 +1798,19 @@
             });
         }
 
-        // Apply syntax highlighting to SQL code blocks
         if (typeof Prism !== 'undefined') {
             Prism.highlightAll();
         }
 
-        // Initialize Lucide icons
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
 
-        // Main initialization function
         function initializePlayground() {
-            // Check for URL params first (share links take priority)
             const urlParams = new URLSearchParams(window.location.search);
             const hasUrlParams = urlParams.get('query') || urlParams.get('data');
 
             if (hasUrlParams) {
-                // URL params exist - use them and clear any saved session
                 loadFromUrlParams();
                 clearSession();
                 originalData = document.getElementById('data-textarea').value.trim();
@@ -1700,14 +1818,11 @@
                 return;
             }
 
-            // Check for saved session
             const savedSession = loadSession();
             if (savedSession && savedSession.data) {
-                // Show restore banner - don't auto-restore
                 showSessionRestoreBanner(savedSession);
             }
 
-            // Load default/last selected preset dataset
             try {
                 const savedDataset = localStorage.getItem('selectedDataset');
                 if (savedDataset && presetDatasets[savedDataset]) {
@@ -1718,7 +1833,6 @@
 
             originalData = document.getElementById('data-textarea').value.trim();
 
-            // Capture initial query state if not already set by loadPresetDataset
             if (!originalQuery) {
                 const snippet = document.querySelector('codapi-snippet');
                 const queryDisplay = document.getElementById('query-display');
@@ -1726,11 +1840,33 @@
                     queryDisplay?.textContent?.trim() || '';
             }
 
-            // Setup auto-save for future changes
             setupAutoSave();
         }
 
-        // Initialize on page load
+        // Theme toggle
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cosmosdb-playground-theme', next);
+            updateThemeIcon(next);
+        }
+
+        function updateThemeIcon(theme) {
+            const sun = document.getElementById('theme-icon-sun');
+            const moon = document.getElementById('theme-icon-moon');
+            if (theme === 'light') {
+                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
+            } else {
+                sun.classList.add('hidden');
+                moon.classList.remove('hidden');
+            }
+        }
+
+        // Initialize theme icon on load
+        updateThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializePlayground);
         } else {
