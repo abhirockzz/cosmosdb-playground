@@ -20,6 +20,10 @@ Generate a shareable link that captures both the current dataset and the query. 
 
 When you refresh the page or reopen the tab, you can restore your last dataset and query (in case you made changes to them). This makes it easier to explore ideas over time without losing your previous work.
 
+## Dark and Light Mode
+
+Switch between dark and light themes using the toggle in the navigation bar. Your preference is saved automatically and persists across pages and sessions.
+
 ## Embed Interactive Examples Anywhere
 
 Embed the playground into external sites such as blogs, documentation, or tutorials. Readers can interact with live data and queries directly alongside the written content.
