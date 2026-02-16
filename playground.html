@@ -611,10 +611,131 @@
             transition: color 0.2s;
         }
         .footer-link:hover { color: var(--text-accent); }
+
+        /* ============================================
+           LIGHT THEME OVERRIDES
+           ============================================ */
+        [data-theme="light"] {
+            --bg-deepspace: #f8fafc;
+            --bg-nebula: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8fafc;
+            --bg-elevated: #f1f5f9;
+            --bg-input: #ffffff;
+
+            --border-dim: rgba(15, 23, 42, 0.08);
+            --border-subtle: rgba(15, 23, 42, 0.15);
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --text-accent: #2563eb;
+
+            --azure-glow: rgba(59, 130, 246, 0.12);
+
+            --glass: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(15, 23, 42, 0.08);
+
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(15, 23, 42, 0.04);
+            --shadow-button: 0 1px 4px rgba(59, 130, 246, 0.15);
+
+            --success-bg: rgba(52, 211, 153, 0.08);
+            --warning-bg: rgba(251, 191, 36, 0.08);
+            --error-bg: rgba(248, 113, 113, 0.08);
+            --info-bg: rgba(96, 165, 250, 0.08);
+        }
+        [data-theme="light"] body::before { opacity: 0; }
+        [data-theme="light"] body::after {
+            background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%);
+        }
+        [data-theme="light"] .orb-purple {
+            background: radial-gradient(circle, rgba(139,92,246,0.03) 0%, transparent 70%);
+        }
+        [data-theme="light"] .hero-title {
+            background: linear-gradient(135deg, #0f172a 30%, #2563eb 70%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        [data-theme="light"] .query-pill:hover {
+            box-shadow: 0 4px 16px rgba(59,130,246,0.2);
+        }
+        [data-theme="light"] .btn-primary {
+            box-shadow: 0 1px 4px rgba(59,130,246,0.2);
+        }
+        [data-theme="light"] .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 4px 12px rgba(59,130,246,0.25);
+        }
+        [data-theme="light"] .btn-secondary {
+            background: #ffffff;
+            border-color: rgba(15, 23, 42, 0.15);
+            color: #475569;
+        }
+        [data-theme="light"] .btn-secondary:hover:not(:disabled) {
+            background: #f8fafc;
+        }
+        [data-theme="light"] .code-editor {
+            border-color: rgba(15, 23, 42, 0.12);
+        }
+        [data-theme="light"] .custom-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
+        }
+        [data-theme="light"] .custom-select option {
+            background: #ffffff;
+            color: #0f172a;
+        }
+        /* Prism light override */
+        [data-theme="light"] pre[class*="language-"],
+        [data-theme="light"] code[class*="language-"] {
+            color: #1e293b !important;
+        }
+        [data-theme="light"] .token.keyword { color: #2563eb !important; }
+        [data-theme="light"] .token.string { color: #059669 !important; }
+        [data-theme="light"] .token.function { color: #7c3aed !important; }
+        [data-theme="light"] .token.operator { color: #d97706 !important; }
+        [data-theme="light"] .token.comment { color: #94a3b8 !important; }
+        [data-theme="light"] .token.number { color: #dc2626 !important; }
+        [data-theme="light"] .token.punctuation { color: #64748b !important; }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out-expo);
+        }
+        .theme-toggle:hover {
+            border-color: var(--azure-500);
+            color: var(--text-accent);
+            background: var(--bg-card-hover);
+        }
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s var(--ease-out-expo);
+        }
+        .theme-toggle:hover svg {
+            transform: rotate(15deg);
+        }
     </style>
 </head>
 
 <body>
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function() {
+            const saved = localStorage.getItem('cosmosdb-playground-theme');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            }
+        })();
+    </script>
     <div class="orb-purple"></div>
 
     <script>
@@ -634,7 +755,11 @@
     <div class="main-wrapper max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         <!-- Top Navigation -->
-        <nav class="flex justify-end items-center mb-6 stagger-1">
+        <nav class="flex justify-end items-center gap-3 mb-6 stagger-1">
+            <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+                <svg id="theme-icon-sun" class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
             <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank"
                 class="btn btn-secondary" style="font-size:0.8125rem;">
                 <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
@@ -1717,6 +1842,30 @@
 
             setupAutoSave();
         }
+
+        // Theme toggle
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cosmosdb-playground-theme', next);
+            updateThemeIcon(next);
+        }
+
+        function updateThemeIcon(theme) {
+            const sun = document.getElementById('theme-icon-sun');
+            const moon = document.getElementById('theme-icon-moon');
+            if (theme === 'light') {
+                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
+            } else {
+                sun.classList.add('hidden');
+                moon.classList.remove('hidden');
+            }
+        }
+
+        // Initialize theme icon on load
+        updateThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializePlayground);
