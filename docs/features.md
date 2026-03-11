@@ -32,10 +32,8 @@ When you refresh the page or reopen the tab, you can restore your last dataset a
 
 Switch between dark and light themes using the toggle in the navigation bar. Your preference is saved automatically and persists across pages and sessions.
 
-![Light mode](../images/feature_light_mode.png)
+![Dark mode](../images/feature_dark_mode.png)
 
 ## Embed Interactive Examples Anywhere
 
 Embed the playground into external sites such as blogs, documentation, or tutorials. Readers can interact with live data and queries directly alongside the written content.
-
-![Embed page](../images/feature_embed.png)
