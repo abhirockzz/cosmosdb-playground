@@ -5,7 +5,7 @@ Built with [Azure Cosmos DB vNext emulator](https://learn.microsoft.com/en-us/az
 🌐 **Access a hosted version on https://aka.ms/cosmosdb-playground**, or deploy your own instance on an Azure VM by following the [deployment instructions](./docs/azure-deployment.md).
 
 ▶️ **Quick Demo** (click to play)
-[![Playground Demo](images/playground.png)](http://abhirockzz.github.io/videos/playground_demo.mp4)
+[![Playground Demo](images/playground_homepage.png)](http://abhirockzz.github.io/videos/playground_demo.mp4)
 
 📖 **Check out the documentation** for details on [features, architecture]((./docs)), etc.
 

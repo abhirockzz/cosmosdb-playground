@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Cosmos DB Playground — Query. Learn. Share.</title>
+    <meta name="description"
+        content="An interactive, browser-based playground for learning and experimenting with Azure Cosmos DB SQL queries. No setup, no costs, instant results.">
+    <meta name="theme-color" content="#0b0f1a">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Azure Cosmos DB Playground">
+    <meta property="og:description"
+        content="Query. Learn. Share. No setup required. An interactive playground for Azure Cosmos DB SQL queries.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://abhirockzz.github.io/cosmosdb-playground/">
+    <meta property="og:image" content="https://abhirockzz.github.io/cosmosdb-playground/images/playground_homepage.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ===== CSS Variables / Theme ===== */
+        :root {
+            --bg: #0b0f1a;
+            --bg-surface: #131825;
+            --bg-surface-2: #1a2033;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9ca3af;
+            --text-tertiary: #6b7280;
+            --accent: #3ecfb4;
+            --accent-dim: rgba(62, 207, 180, 0.15);
+            --accent-warm: #e8a849;
+            --accent-warm-dim: rgba(232, 168, 73, 0.12);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --code-bg: #0d1117;
+            --card-glow: rgba(62, 207, 180, 0.06);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --dot-color: rgba(255, 255, 255, 0.03);
+            --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        [data-theme="light"] {
+            --bg: #f8f7f4;
+            --bg-surface: #ffffff;
+            --bg-surface-2: #f0efec;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --accent: #0e8a6f;
+            --accent-dim: rgba(14, 138, 111, 0.1);
+            --accent-warm: #c4872a;
+            --accent-warm-dim: rgba(196, 135, 42, 0.08);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.15);
+            --code-bg: #f0efec;
+            --card-glow: rgba(14, 138, 111, 0.04);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --dot-color: rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== Reset & Base ===== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dot-grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== Layout ===== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== Typography ===== */
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-display);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            max-width: 560px;
+            font-size: 1.05rem;
+        }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(11, 15, 26, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        [data-theme="light"] nav {
+            background: rgba(248, 247, 244, 0.85);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .nav-brand svg {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            opacity: 1;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* GitHub button */
+        .gh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .gh-btn:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+            opacity: 1;
+        }
+
+        .gh-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Mobile nav toggle */
+        .nav-mobile-toggle {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-mobile-toggle svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            padding-top: 140px;
+            padding-bottom: 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            max-width: 720px;
+            margin: 0 auto 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 56px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.925rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            opacity: 1;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0b0f1a;
+            box-shadow: 0 2px 16px rgba(62, 207, 180, 0.25);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 24px rgba(62, 207, 180, 0.35);
+        }
+
+        [data-theme="light"] .btn-primary {
+            color: #fff;
+            box-shadow: 0 2px 16px rgba(14, 138, 111, 0.2);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-hover);
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Hero demo */
+        .hero-demo {
+            max-width: 860px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            background: var(--code-bg);
+        }
+
+        [data-theme="light"] .hero-demo {
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-demo video,
+        .hero-demo img {
+            width: 100%;
+            display: block;
+        }
+
+        .hero-demo-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .hero-demo-overlay:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .hero-demo-overlay.hidden {
+            display: none;
+        }
+
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .hero-demo-overlay:hover .play-btn {
+            transform: scale(1.08);
+        }
+
+        .play-btn svg {
+            width: 24px;
+            height: 24px;
+            margin-left: 3px;
+            color: #0b0f1a;
+        }
+
+        /* ===== Features ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 24px;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 0 40px var(--card-glow);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .feature-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        /* Alternate warm accent for some cards */
+        .feature-card--warm .feature-icon {
+            background: var(--accent-warm-dim);
+            color: var(--accent-warm);
+        }
+
+        /* ===== How It Works ===== */
+        .how-it-works {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid rgba(62, 207, 180, 0.15);
+        }
+
+        .step h3 {
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .step-connector {
+            display: none;
+            /* shown on desktop via :after on .steps */
+        }
+
+        /* ===== Architecture ===== */
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            margin-top: 48px;
+        }
+
+        .arch-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            justify-content: center;
+        }
+
+        .arch-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            text-align: center;
+            min-width: 170px;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .arch-box:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 0 24px var(--card-glow);
+        }
+
+        .arch-box-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .arch-box-sub {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        .arch-box--accent {
+            border-color: rgba(62, 207, 180, 0.25);
+            background: var(--accent-dim);
+        }
+
+        .arch-box--warm {
+            border-color: rgba(232, 168, 73, 0.2);
+            background: var(--accent-warm-dim);
+        }
+
+        .arch-connector-h {
+            width: 40px;
+            height: 2px;
+            background: var(--border-hover);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .arch-connector-h::before,
+        .arch-connector-h::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            border: 2px solid var(--text-tertiary);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            background: var(--bg);
+        }
+
+        .arch-connector-h::before {
+            left: -3px;
+        }
+
+        .arch-connector-h::after {
+            right: -3px;
+        }
+
+        .arch-connector-v {
+            width: 2px;
+            height: 32px;
+            background: var(--border-hover);
+            position: relative;
+        }
+
+        .arch-connector-v::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid var(--text-tertiary);
+        }
+
+        .arch-note {
+            margin-top: 24px;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .arch-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .arch-connector-h {
+                width: 2px;
+                height: 32px;
+            }
+
+            .arch-connector-h::before {
+                left: 50%;
+                top: -3px;
+                transform: translateX(-50%);
+            }
+
+            .arch-connector-h::after {
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -3px;
+                transform: translateX(-50%);
+            }
+
+            .arch-box {
+                min-width: 200px;
+            }
+        }
+
+        /* ===== Quick Start ===== */
+        .quickstart {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quickstart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 48px;
+            align-items: start;
+        }
+
+        .quickstart-text p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+
+        .quickstart-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quickstart-text li {
+            position: relative;
+            padding-left: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .quickstart-text li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .code-body {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-body pre {
+            font-family: var(--font-mono);
+            font-size: 0.825rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .code-body .cm {
+            color: var(--text-tertiary);
+        }
+
+        .code-body .cmd {
+            color: var(--accent);
+        }
+
+        .code-body .url {
+            color: var(--accent-warm);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-text {
+            font-size: 0.825rem;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 0.825rem;
+            color: var(--text-tertiary);
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+            opacity: 1;
+        }
+
+        /* ===== Animations ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* stagger children */
+        .stagger>.fade-in:nth-child(1) {
+            transition-delay: 0s;
+        }
+
+        .stagger>.fade-in:nth-child(2) {
+            transition-delay: 0.07s;
+        }
+
+        .stagger>.fade-in:nth-child(3) {
+            transition-delay: 0.14s;
+        }
+
+        .stagger>.fade-in:nth-child(4) {
+            transition-delay: 0.21s;
+        }
+
+        .stagger>.fade-in:nth-child(5) {
+            transition-delay: 0.28s;
+        }
+
+        .stagger>.fade-in:nth-child(6) {
+            transition-delay: 0.35s;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            section {
+                padding: 56px 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-mobile-toggle {
+                display: flex;
+            }
+
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: var(--bg-surface);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 24px;
+                gap: 16px;
+            }
+
+            .hero {
+                padding-top: 120px;
+                padding-bottom: 40px;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .quickstart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .hero {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+
+            <a href="#" class="nav-brand">
+                Azure Cosmos DB Playground
+            </a>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="https://github.com/abhirockzz/cosmosdb-playground/blob/main/docs/faq.md" target="_blank"
+                        rel="noopener" style="color:var(--accent);font-weight:600;">FAQ</a></li>
+            </ul>
+
+            <div class="nav-right">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <!-- Moon (dark) / Sun (light) -->
+                    <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                    <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                </button>
+                <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" rel="noopener"
+                    class="gh-btn">
+                    <svg viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                    </svg>
+                    GitHub
+                </a>
+                <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Toggle menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="fade-in">Azure Cosmos DB<br>Playground</h1>
+            <p class="hero-subtitle fade-in">Query. Learn. Share. No setup required.<br>An interactive sandbox for
+                Cosmos DB SQL queries — powered by the vNext emulator.</p>
+
+            <div class="hero-ctas fade-in">
+                <a href="https://aka.ms/cosmosdb-playground" target="_blank" rel="noopener" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    Try the Playground
+                </a>
+                <a href="https://github.com/abhirockzz/cosmosdb-playground" target="_blank" rel="noopener"
+                    class="btn btn-secondary">
+                    <svg viewBox="0 0 16 16" fill="currentColor" style="width:16px;height:16px">
+                        <path
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+
+            <!-- Demo video -->
+            <div class="hero-demo fade-in">
+                <video id="demo-video" poster="images/playground_homepage.png" preload="metadata" playsinline muted>
+                    <source src="https://abhirockzz.github.io/videos/playground_demo.mp4" type="video/mp4">
+                </video>
+                <div class="hero-demo-overlay" id="demo-overlay">
+                    <div class="play-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="6 3 20 12 6 21 6 3" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <div class="section-label fade-in">Features</div>
+            <h2 class="section-title fade-in">Everything you need to explore Azure Cosmos DB</h2>
+            <p class="section-desc fade-in">A focused set of capabilities for learning, prototyping, and sharing —
+                without the overhead.</p>
+
+            <div class="features-grid stagger">
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3" />
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                        </svg>
+                    </div>
+                    <h3>Pre-Loaded Datasets</h3>
+                    <p>Choose from built-in datasets—IoT telemetry, movies, products—each paired with ready-to-run
+                        example queries.</p>
+                </div>
+
+                <div class="feature-card feature-card--warm fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="12" y1="18" x2="12" y2="12" />
+                            <line x1="9" y1="15" x2="15" y2="15" />
+                        </svg>
+                    </div>
+                    <h3>Custom Data</h3>
+                    <p>Paste your own JSON or upload a file. Write queries from scratch against your own data models and
+                        structures.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3" />
+                            <circle cx="6" cy="12" r="3" />
+                            <circle cx="18" cy="19" r="3" />
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                        </svg>
+                    </div>
+                    <h3>Shareable Links</h3>
+                    <p>Generate a link that captures your dataset and query. Anyone opening it lands in the same state,
+                        ready to run.</p>
+                </div>
+
+                <div class="feature-card feature-card--warm fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        </svg>
+                    </div>
+                    <h3>Session Restore</h3>
+                    <p>Refresh the page or close the tab — your last dataset and query are saved. Pick up exactly where
+                        you left off.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <h3>Embeddable</h3>
+                    <p>Embed interactive examples in blogs, docs, and tutorials. Readers run live queries alongside your
+                        written content.</p>
+                </div>
+
+                <div class="feature-card feature-card--warm fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5" />
+                            <line x1="12" y1="1" x2="12" y2="3" />
+                            <line x1="12" y1="21" x2="12" y2="23" />
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                            <line x1="1" y1="12" x2="3" y2="12" />
+                            <line x1="21" y1="12" x2="23" y2="12" />
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                        </svg>
+                    </div>
+                    <h3>Dark &amp; Light Mode</h3>
+                    <p>Toggle between themes with a click. Your preference persists across pages and sessions
+                        automatically.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-label fade-in">How It Works</div>
+            <h2 class="section-title fade-in">From query to result in seconds</h2>
+            <p class="section-desc fade-in">Each query runs in an isolated container against the Cosmos DB vNext
+                emulator. Nothing to install.</p>
+
+            <div class="steps stagger">
+                <div class="step fade-in">
+                    <div class="step-number">01</div>
+                    <h3>Write Your Query</h3>
+                    <p>Choose a dataset or paste your own JSON, then write a SQL query in the interactive editor.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">02</div>
+                    <h3>Runs in a Sandbox</h3>
+                    <p>Behind the scenes, an ephemeral Docker container spins up, seeds your data, and executes the
+                        query against the emulator.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">03</div>
+                    <h3>See Results Instantly</h3>
+                    <p>Results appear inline. Iterate, modify, share — all in the browser with zero cleanup required.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section id="architecture">
+        <div class="container">
+            <div class="section-label fade-in">Architecture</div>
+            <h2 class="section-title fade-in">Under the hood</h2>
+            <p class="section-desc fade-in">Four components, one Docker network. Simple by design.</p>
+
+            <div class="arch-flow fade-in">
+                <div class="arch-row">
+                    <div class="arch-box">
+                        <div class="arch-box-title">User Browser</div>
+                        <div class="arch-box-sub">HTML + Codapi Widget</div>
+                    </div>
+                    <div class="arch-connector-h"></div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">nginx</div>
+                        <div class="arch-box-sub">Reverse Proxy + Static Files</div>
+                    </div>
+                    <div class="arch-connector-h"></div>
+                    <div class="arch-box arch-box--accent">
+                        <div class="arch-box-title">Codapi</div>
+                        <div class="arch-box-sub">Sandbox Server</div>
+                    </div>
+                </div>
+                <div class="arch-connector-v"></div>
+                <div class="arch-box arch-box--warm">
+                    <div class="arch-box-title">Ephemeral Container</div>
+                </div>
+                <div class="arch-connector-v"></div>
+                <div class="arch-box arch-box--accent">
+                    <div class="arch-box-title">Cosmos DB vNext Emulator</div>
+                </div>
+            </div>
+
+            <p class="arch-note fade-in">Each query runs in an isolated, ephemeral container. Data is seeded per-request
+                and cleaned up automatically. <a
+                    href="https://github.com/abhirockzz/cosmosdb-playground/blob/main/docs/architecture.md"
+                    target="_blank" rel="noopener">Read the full architecture docs →</a></p>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quickstart" class="quickstart">
+        <div class="container">
+            <div class="section-label fade-in">Quick Start</div>
+            <h2 class="section-title fade-in">Self-host in minutes</h2>
+
+            <div class="quickstart-grid">
+                <div class="quickstart-text fade-in">
+                    <p>Run the full playground locally with Docker Compose. All services — emulator, sandbox server, and
+                        frontend — start automatically on a shared network.</p>
+                    <ul>
+                        <li>No cloud account or API keys needed</li>
+                        <li>Runs entirely on your machine</li>
+                        <li>Only Docker required as a prerequisite</li>
+                    </ul>
+                </div>
+
+                <div class="code-block fade-in">
+                    <div class="code-header">
+                        <div class="code-dots"><span></span><span></span><span></span></div>
+                        terminal
+                    </div>
+                    <div class="code-body">
+                        <pre><span class="cm"># Clone the repo</span>
+<span class="cmd">git clone</span> https://github.com/abhirockzz/cosmosdb-playground.git
+<span class="cmd">cd</span> cosmosdb-playground
+
+<span class="cm"># Start everything</span>
+<span class="cmd">docker compose up</span>
+
+<span class="cm"># Open in browser</span>
+<span class="url">http://localhost/playground.html</span></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div class="footer-text">
+                Azure Cosmos DB Playground &middot; An experimental project, not an official Microsoft or Azure
+                offering.<br>
+                Built with the <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux"
+                    target="_blank" rel="noopener">Azure Cosmos DB vNext Emulator</a> and <a href="https://codapi.org/"
+                    target="_blank" rel="noopener">Codapi</a>.
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // ===== Theme Toggle =====
+        const html = document.documentElement;
+        const toggle = document.getElementById('theme-toggle');
+        const iconMoon = document.getElementById('icon-moon');
+        const iconSun = document.getElementById('icon-sun');
+
+        function setTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            if (theme === 'light') {
+                iconMoon.style.display = 'none';
+                iconSun.style.display = 'block';
+            } else {
+                iconMoon.style.display = 'block';
+                iconSun.style.display = 'none';
+            }
+        }
+
+        // Init: check saved pref > system pref > default dark
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+            setTheme(saved);
+        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+            setTheme('light');
+        }
+
+        toggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            setTheme(current === 'light' ? 'dark' : 'light');
+        });
+
+        // ===== Mobile Nav =====
+        const navToggle = document.getElementById('nav-toggle');
+        const navLinks = document.getElementById('nav-links');
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+        // Close on link click
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+
+        // ===== Demo Video Play =====
+        const video = document.getElementById('demo-video');
+        const overlay = document.getElementById('demo-overlay');
+        overlay.addEventListener('click', () => {
+            overlay.classList.add('hidden');
+            video.controls = true;
+            video.muted = false;
+            video.play();
+        });
+        video.addEventListener('ended', () => {
+            video.controls = false;
+            overlay.classList.remove('hidden');
+        });
+
+        // ===== Scroll Animations =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>
